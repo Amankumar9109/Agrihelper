@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriCommunity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-green-950 text-white">
+
+  <!-- Header -->
+  <header class="bg-green-800 shadow-md py-6 text-center">
+    <h1 class="text-4xl font-bold text-lime-300">AgriCommunity</h1>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="text-center py-16 px-6">
+    <h2 class="text-3xl sm:text-4xl font-semibold mb-4 text-lime-200">Welcome to the Heart of Agriculture</h2>
+    <p class="max-w-2xl mx-auto text-green-100 text-lg">
+      Explore, learn, and grow with fellow farmers and agri-enthusiasts. Let’s cultivate knowledge together! 🌱
+    </p>
+  </section>
+
+  <!-- Search Section -->
+  <section class="text-center px-6 pb-10">
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
+    	<div class="w-full flex flex-col sm:flex-row items-center justify-center gap-4">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search posts..."
+        class="w-full sm:w-3/4 p-3 rounded-lg text-green-900 bg-green-100 focus:outline-none focus:ring-2 focus:ring-lime-300"
+      />
+      <button
+        id="searchBtn"
+        class="bg-lime-400 text-green-900 px-5 py-3 rounded-lg font-semibold hover:bg-lime-300 transition"
+      >
+        OK
+      </button>
+      </div>
+      <a href="{{ url_for('post') }}">
+      <button
+      id="shareBtn"
+      class="bg-lime-400 text-green-900 px-5 py-3 rounded-lg font-semibold hover:bg-lime-300 transition"
+    >
+      Share Post
+    </button>
+    </a>
+    </div>
+  </section>
+
+  <!-- Blog Posts Section -->
+  <section id="postSection" class="max-w-6xl mx-auto px-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-8 pb-16">
+    
+    <div class="bg-green-800 p-6 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300">
+      <h3 class="text-xl font-semibold text-lime-200 mb-2">🌿 The Power of Organic Farming</h3>
+      <p class="text-green-100">Organic farming isn’t just a trend—it’s a sustainable future. By avoiding harmful pesticides and synthetic fertilizers, organic practices protect soil health, support biodiversity, and yield nutritious crops. 🌾
+        Hashtags: #OrganicFarming #SustainableAgriculture #HealthySoil</p>
+    </div>
+
+    <div class="bg-green-800 p-6 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300">
+      <h3 class="text-xl font-semibold text-lime-200 mb-2">🤖 Top 5 AgriTech Innovations</h3>
+      <p class="text-green-100">Points to Cover:
+        #Drones for crop monitoring
+        #Irrigation systems
+        #AI-powered pest control
+        #Precision farming via GPS
+        #Automated harvesting machines
+        These innovations are making farming more efficient and less labor-intensive!
+        Hashtags: #AgriTech #SmartFarming #FutureOfFarming</p>
+    </div>
+
+    <div class="bg-green-800 p-6 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300">
+      <h3 class="text-xl font-semibold text-lime-200 mb-2">🔄 Why Crop Rotation Still Wins</h3>
+      <p class="text-green-100">Crop rotation isn’t just old-school wisdom—it’s proven science. It helps prevent soil depletion, reduces pest cycles, and improves overall yield. Farmers who rotate crops are investing in long-term productivity.
+        Hashtags: #CropRotation #SustainableFarming #FarmingTips</p>
+    </div>
+    
+    <div class="bg-green-800 p-6 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300">
+        <h3 class="text-xl font-semibold text-lime-200 mb-2">💧 Water Conservation in Farming</h3>
+        <p class="text-green-100">Efficient water use is becoming crucial as climate patterns shift. Techniques like drip irrigation, rainwater harvesting, and soil moisture sensors help farmers reduce water waste while maintaining healthy crops. Saving water means saving the future. 💧🌱
+            Hashtags: #WaterSmartFarming #SustainableAg #DripIrrigation #AgriInnovation</p>
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-green-900 text-center py-6 text-green-300">
+    &copy; 2025 AgriCommunity. All rights reserved.
+  </footer>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const posts = document.querySelectorAll("#postSection .bg-green-800");
+
+    // OK button scroll to first match
+    searchBtn.addEventListener("click", () => {
+      const query = searchInput.value.toLowerCase();
+      let found = false;
+
+      for (let post of posts) {
+        const text = post.innerText.toLowerCase();
+        if (text.includes(query)) {
+          post.scrollIntoView({ behavior: "smooth", block: "start" });
+          post.classList.add("ring-4", "ring-lime-300"); // briefly highlight
+          setTimeout(() => post.classList.remove("ring-4", "ring-lime-300"), 1500);
+          found = true;
+          break; // Exit the loop once the first match is found
+        }
+      }
+
+      if (!found) {
+        alert("No matching post found.");
+      }
+    });
+  </script>
+
+</body>
+</html>
+

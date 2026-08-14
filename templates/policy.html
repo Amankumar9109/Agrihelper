@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Government Policies for Farmers | AgriHelper</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='policy.css') }}">
+  <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+  <header>
+    <h1>🌱 Government Schemes for Farmers</h1>
+    <p>Explore all central government schemes designed to empower farmers with financial support, insurance, and market access.</p>
+    <input type="text" id="searchBar" placeholder="Search scheme name..." />
+  </header>
+
+  <main id="policyList">
+
+        <!-- Policy Card 1 -->
+    <a href="{{ url_for('p1') }}" class="card-link">
+      <section class="policy-card">
+        <h2>👨‍🌾 PM-KISAN</h2>
+        <p><strong>Support:</strong> ₹6,000/year to eligible farmers in 3 installments.</p>
+        <h3>How to Apply:</h3>
+        <ol>
+          <li>Visit the local revenue or agriculture office.</li>
+          <li>Submit Aadhaar, land records, and bank passbook.</li>
+          <li>Register online via <a href="https://pmkisan.gov.in/" target="_blank">pmkisan.gov.in</a>.</li>
+        </ol>
+        <span class="link-btn">Read More</span>
+      </section>
+    </a>
+
+    <!-- Policy Card 2 -->
+    <a href="{{ url_for('p2') }}" class="card-link">
+      <section class="policy-card">
+        <h2>🌾 PMFBY</h2>
+        <p><strong>Support:</strong> Crop insurance against natural calamities.</p>
+        <h3>How to Apply:</h3>
+        <ol>
+          <li>Check if your crop is covered on <a href="https://pmfby.gov.in/" target="_blank">pmfby.gov.in</a>.</li>
+          <li>Apply through your bank, CSC, or the PMFBY portal.</li>
+          <li>Pay a small premium. The government covers the rest.</li>
+        </ol>
+        <span class="link-btn">Read More</span>
+      </section>
+    </a>
+
+    <!-- Policy Card 3 -->
+    <a href="{{ url_for('p3') }}" class="card-link">
+      <section class="policy-card">
+        <h2>🧪 Soil Health Card Scheme</h2>
+        <p><strong>Support:</strong> Detailed report on soil quality + fertilizer suggestions.</p>
+        <h3>How to Apply:</h3>
+        <ol>
+          <li>Contact your nearest Krishi Vigyan Kendra (KVK).</li>
+          <li>Give a sample of your farm soil.</li>
+          <li>Receive a card with suggestions within a few weeks.</li>
+        </ol>
+        <span class="link-btn">Read More</span>
+      </section>
+    </a>
+
+    <!-- Policy Card 4 -->
+    <a href="{{ url_for('p4') }}" class="card-link">
+      <section class="policy-card">
+        <h2>📈 eNAM (National Agriculture Market)</h2>
+        <p><strong>Support:</strong> Sell crops online at competitive prices across India.</p>
+        <h3>How to Join:</h3>
+        <ol>
+          <li>Check if your mandi is registered with eNAM.</li>
+          <li>Get your produce quality graded.</li>
+          <li>Register through the mandi or at <a href="https://enam.gov.in/" target="_blank">enam.gov.in</a>.</li>
+        </ol>
+        <span class="link-btn">Read More</span>
+      </section>
+    </a>
+
+    <!-- Policy Card 5 -->
+    <a href="{{ url_for('p5') }}" class="card-link">
+      <section class="policy-card">
+        <h2>💳 Kisan Credit Card (KCC)</h2>
+        <p><strong>Support:</strong> Instant credit for crop input, harvesting, etc.</p>
+        <h3>How to Apply:</h3>
+        <ol>
+          <li>Visit any bank with land proof and Aadhaar.</li>
+          <li>Fill out the KCC form or apply through the PM-KISAN portal.</li>
+          <li>Get the card in a few days to use like a debit card.</li>
+        </ol>
+        <span class="link-btn">Read More</span>
+      </section>
+    </a>
+
+  </main>
+
+  <footer>
+    <p>© 2025 AgriHelper | Helping Bharat's Farmers Grow Smarter 🌾</p>
+  </footer>
+</body>
+</html>
+

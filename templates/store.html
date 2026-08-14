@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AgriHelper Market</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #eafaf1, #f4fcf7);
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: linear-gradient(to right, #4CAF50, #45a049);
+      color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 3rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 3rem;
+    }
+
+    .product-card {
+      background-color: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .product-card h3 {
+      margin-bottom: 0.5rem;
+      color: #388E3C;
+    }
+
+    .product-card p {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: #666;
+    }
+
+    .product-card button {
+      padding: 0.6rem 1.2rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .product-card button:hover {
+      background-color: #2e7d32;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #e0f2f1;
+      margin-top: 2rem;
+      color: #333;
+    }
+
+    /* Popup message styles */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .popup button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .popup button:hover {
+      background-color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AgriHelper Market</h1>
+    <p>Your one-stop shop for all farming essentials</p>
+  </header>
+
+  <section class="market-grid">
+    <div class="product-card">
+      <img src="https://wallpapercave.com/wp/wp3760036.jpg" alt="Seeds">
+      <h3>Seeds</h3>
+      <p>High-quality wheat, rice, and vegetable seeds.</p>
+      <button onclick="addToCart('Seeds')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://th.bing.com/th/id/OIP.pVuAVSXeVAX0UNJXpq466QAAAA?rs=1&pid=ImgDetMain" alt="Fertilizer">
+      <h3>Fertilizers</h3>
+      <p>Organic and chemical fertilizers for better yield.</p>
+      <button onclick="addToCart('Fertilizers')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://th.bing.com/th/id/OIP.6U-Onk221n1vBwrJSFXwoQHaE8?rs=1&pid=ImgDetMain" alt="Pesticides">
+      <h3>Pesticides</h3>
+      <p>Protect crops from insects and weeds.</p>
+      <button onclick="addToCart('Pesticides')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://image.made-in-china.com/2f0j00MysTSHaBApgn/Manual-Control-Agriculture-Machinery-Seeder.jpg" alt="Tools">
+      <h3>Farming Tools</h3>
+      <p>Durable hand tools and equipment.</p>
+      <button onclick="addToCart('Farming Tools')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://cdn.agdaily.com/wp-content/uploads/2019/04/bg-irrigation-By-Bob-Pool.jpg" alt="Irrigation">
+      <h3>Irrigation Equipment</h3>
+      <p>Drip kits, sprinklers, and water pipes.</p>
+      <button onclick="addToCart('Irrigation Equipment')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://th.bing.com/th/id/OIP.tRwlXaGQkhYO4QnX3XMlygHaE8?rs=1&pid=ImgDetMain" alt="Machinery">
+      <h3>Farm Machinery</h3>
+      <p>Mini tractors, ploughs, and harvesters.</p>
+      <button onclick="addToCart('Farm Machinery')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://th.bing.com/th/id/OIP.xnNwrcfSRyfnEuPEr4YpCwHaEK?rs=1&pid=ImgDetMain" alt="Gear">
+      <h3>Protective Gear</h3>
+      <p>Safety gloves, masks, boots, and kits.</p>
+      <button onclick="addToCart('Protective Gear')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://www.growingformarket.com/custom/2021%20issues/Jan%202021/winter%20storage/potato%20storage%20web.jpg" alt="Storage">
+      <h3>Storage Items</h3>
+      <p>Grain sacks, crates, and containers.</p>
+      <button onclick="addToCart('Storage Items')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://climatebiz.com/wp-content/uploads/2021/04/Solar-water-pumping-1536x1119.jpg" alt="Solar Pumps">
+      <h3>Solar Pumps</h3>
+      <p>Eco-friendly solar water pumping systems.</p>
+      <button onclick="addToCart('Solar Pumps')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://th.bing.com/th/id/OIP.XbKHp9HfHq35OcNELautHgAAAA?rs=1&pid=ImgDetMain" alt="Animal Feed">
+      <h3>Animal Feed</h3>
+      <p>Nutritious fodder for livestock.</p>
+      <button onclick="addToCart('Animal Feed')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://www.thespruce.com/thmb/oxFthqLNFEtT_qoWAA4UmYPaLpI=/3936x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1423388554-2dc0d71d8cd342a985be5f92cdb37047.jpg" alt="Composters">
+      <h3>Compost Bins</h3>
+      <p>Convert waste into organic manure easily.</p>
+      <button onclick="addToCart('Compost Bins')">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <img src="https://th.bing.com/th/id/OIP.Btn25Ee40vSTKDFteIuutgHaEI?rs=1&pid=ImgDetMain" alt="Crop Netting">
+      <h3>Crop Netting</h3>
+      <p>Protect plants from birds and pests.</p>
+      <button onclick="addToCart('Crop Netting')">Add to Cart</button>
+    </div>
+  </section>
+
+
+  <!-- Popup message -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <p>Item added to cart: <span id="popup-item"></span></p>
+      <button onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 AgriHelper. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Function to display the popup with the selected product name
+    function addToCart(productName) {
+      document.getElementById('popup-item').innerText = productName;
+      document.getElementById('popup').style.display = 'flex';
+    }
+
+    // Function to close the popup
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
+

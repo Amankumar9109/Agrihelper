@@ -1,0 +1,54 @@
+.hero {
+    background-color: #2e7d32; /* green shade */
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.section {
+    padding: 60px 0;
+}
+
+.tech-card {
+    border: 1px solid #c8e6c9;
+    padding: 25px;
+    border-radius: 8px;
+    transition: 0.3s ease;
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.tech-card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background: #1b5e20;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.image-box {
+    max-width: 50%;
+    display: inline-block;
+    float: left;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.tech-content {
+    overflow: hidden;
+}
+
+img.tech-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Market Price Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='market.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Select Market Details</h2>
+
+    <!-- State Dropdown: rendered with Jinja -->
+    <select id="stateDropdown" class="form-select">
+      <option selected disabled>Select State</option>
+      {% for state in states %}
+        <option value="{{ state }}">{{ state }}</option>
+      {% endfor %}
+    </select>
+
+    <!-- These will be filled dynamically via JavaScript -->
+    <select id="districtDropdown" class="form-select">
+      <option selected disabled>Select District</option>
+    </select>
+
+    <select id="marketDropdown" class="form-select">
+      <option selected disabled>Select Market</option>
+    </select>
+
+    <select id="commodityDropdown" class="form-select">
+      <option selected disabled>Select Commodity</option>
+    </select>
+
+    <button id="getPrices">Get Prices</button>
+  </div>
+
+  <div id="output">
+    <div id="priceData"></div>
+    <canvas id="stateMarketChart"></canvas>
+    <canvas id="nationalChart"></canvas>
+  </div>
+
+  <script src="{{ url_for('static', filename='market.js') }}"></script>
+</body>
+</html>
+
