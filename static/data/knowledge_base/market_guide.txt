@@ -1,0 +1,24 @@
+# AGRICULTURAL COMMODITY PRICING & APMC MANDI INTELLIGENCE
+
+## APMC Wholesale Mandi System
+- What is an APMC?: Agricultural Produce Market Committee (APMC) is a marketing board established by state governments to ensure farmers are safeguarded from exploitation by large retailers and unscrupulous middlemen.
+- Three Price Metrics in Mandis:
+  1. Minimum Price (Min Price): The lowest rate at which a lot of a specific crop quality was auctioned during the trading day.
+  2. Maximum Price (Max Price): The highest rate fetched by premium grade, well-sorted, and low-moisture produce during that session.
+  3. Modal Price (Modal Rate): The most frequently occurring price at which the highest volume of commodity was traded. This is the true market benchmark price for farmers.
+- All prices in Indian wholesale mandis are officially quoted in Rupees per Quintal (1 Quintal = 100 Kilograms).
+
+## Minimum Support Price (MSP) in India
+- Concept: The guaranteed price fixed by the Government of India upon recommendations of the Commission for Agricultural Costs and Prices (CACP) to protect producers from sharp price falls in bumper harvest years.
+- Coverage: 22 mandated agricultural crops:
+  * 7 Cereals: Paddy (Rice), Wheat, Maize, Sorghum (Jowar), Pearl Millet (Bajra), Barley, and Ragi.
+  * 5 Pulses: Gram (Chana), Arhar (Tur), Moong, Urad, and Lentil (Masur).
+  * 7 Oilseeds: Groundnut, Rapeseed/Mustard, Soybean, Sesamum, Sunflower, Safflower, and Nigerseed.
+  * 3 Commercial Crops: Cotton, Sugarcane (Fair & Remunerative Price - FRP), and Raw Jute.
+- MSP Formula: Fixed at a minimum of 1.5 times the comprehensive cost of production (covering paid-out costs A2 + imputed value of family labor FL).
+
+## Tips for Farmers to Maximize Modal Price Realization
+1. Cleaning and Grading: Produce sorted into uniform sizes, cleaned of chaff/dirt, and graded fetches 15% to 30% higher modal rates in mandis.
+2. Moisture Management: Grains with moisture content strictly below 12% to 14% prevent post-harvest fungal spoilage and deductions during mandi assaying.
+3. Market Timing & Arrival Monitoring: Heavy peak harvest arrival days (typically 2-4 weeks after harvest begins) lead to localized market glut and price depressions. Storing grains in certified WDRA warehouses with Negotiable Warehouse Receipts (NWR) allows farmers to hold stock until modal rates stabilize while accessing low-interest pledge finance.
+4. Cross-Mandi Price Comparison: Using digital platforms like AgriHelper and e-NAM to check neighboring district and interstate prices allows farmers to transport commodities to nearby high-paying APMCs.

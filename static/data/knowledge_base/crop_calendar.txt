@@ -1,0 +1,42 @@
+# INDIAN CROP CALENDAR, SEASONS & AGRONOMY GUIDELINES
+
+## Indian Cropping Seasons
+
+### 1. Kharif Season (Monsoon / Autumn Crops)
+- Sowing Window: June to July (with the onset of South-West monsoon rains).
+- Harvesting Window: September to October.
+- Climatic Needs: Warm and wet weather during growth, dry weather during grain ripening.
+- Major Kharif Crops:
+  * Rice / Paddy: Requires high temperatures (25°C–35°C), standing water, and clayey loam soils.
+  * Cotton (Kapas): Deep black clay soil (Regur), 21°C–30°C temperature, minimum 180–200 frost-free days.
+  * Maize (Corn): Well-drained alluvial or red loams, requires balanced Nitrogen application.
+  * Soybean: Excellent nitrogen-fixing legume; optimal in Madhya Pradesh, Maharashtra, and Rajasthan.
+  * Groundnut (Peanut): Sandy loam soil with good drainage to facilitate peg penetration.
+  * Pulses: Arhar (Pigeon pea / Tur), Moong (Green gram), Urad (Black gram).
+
+### 2. Rabi Season (Winter / Spring Crops)
+- Sowing Window: October to November (after monsoon retreat).
+- Harvesting Window: March to April.
+- Climatic Needs: Cool and dry climate during vegetative growth, warm temperatures during maturity and harvesting.
+- Major Rabi Crops:
+  * Wheat: Optimum sowing temperature is 20°C–22°C. Critical irrigation stages: Crown Root Initiation (CRI) at 21 days after sowing, Tillering, Late Jointing, Flowering, Milk, and Dough stages.
+  * Mustard & Rapeseed: Deep well-drained loam soil; sensitive to frost and aphid pest attacks during flowering.
+  * Gram / Chickpea (Chana): Prefers sandy loam to clay loam; sensitive to excessive moisture and waterlogging.
+  * Barley & Oats: Tolerant to salinity and drought conditions.
+  * Potato: Tuberization thrives at night temperatures of 15°C–18°C. Requires friable, loose sandy loam soil.
+
+### 3. Zaid Season (Summer Short Crops)
+- Sowing Window: March to April.
+- Harvesting Window: May to June.
+- Climatic Needs: Warm dry weather with artificial irrigation.
+- Major Zaid Crops:
+  * Cucurbits: Watermelon, Muskmelon, Cucumber, Bottle Gourd (Lauki), Bitter Gourd (Karela), Pumpkin.
+  * Fodder crops: Cowpea, Sorghum, Maize fodder for dairy cattle.
+  * Summer Moong and Urad: Fast-maturing short duration pulses (60–65 days) enriching soil nitrogen before Kharif rice.
+
+## Fertilizer Guidelines for Common Indian Crops
+- Wheat: Standard NPK recommendation is 120:60:40 kg/ha. Apply half nitrogen + full P and K at basal sowing; apply remaining nitrogen in two equal splits at CRI (1st irrigation) and late tillering (2nd irrigation).
+- Paddy (Transplanted Rice): NPK 100:50:50 kg/ha. Zinc sulphate (25 kg/ha) at basal stage to prevent Khaira disease.
+- Potato: NPK 150:100:120 kg/ha. High potash requirement for starch synthesis and tuber sizing.
+- Tomato: NPK 150:100:100 kg/ha with calcium nitrate foliar spray at fruit set to prevent Blossom End Rot.
+- Sugarcane: Heavy feeder; NPK 250:100:125 kg/ha applied across multiple earthing-up stages.

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders - AgriHelper Store{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1000px; margin-top: 100px; margin-bottom: 50px;">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="text-white fw-bold brand-font mb-1"><i class="fa-solid fa-boxes-stacked text-success me-2"></i> My Order History</h2>
+      <span class="text-muted small">Track deliveries, view past purchases, and download official invoices</span>
+    </div>
+    <a href="{{ url_for('store.store') }}" class="btn btn-outline-success btn-sm rounded-pill px-3">
+      <i class="fa-solid fa-cart-plus me-1"></i> Shop More
+    </a>
+  </div>
+
+  {% if orders %}
+  <div class="d-flex flex-column gap-3">
+    {% for order in orders %}
+    <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-25 shadow-sm">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pb-3 border-bottom border-secondary border-opacity-25 mb-3">
+        <div>
+          <span class="fw-bold text-white fs-5 brand-font me-2">Order #AGRI-{{ order.id }}</span>
+          <span class="badge bg-{{ 'success' if order.status == 'paid' else ('warning' if order.status == 'pending' else 'danger') }}-subtle text-{{ 'success' if order.status == 'paid' else ('warning' if order.status == 'pending' else 'danger') }} border border-{{ 'success' if order.status == 'paid' else ('warning' if order.status == 'pending' else 'danger') }}-subtle px-3 py-1 rounded-pill text-uppercase" style="font-size: 11px;">
+            <i class="fa-solid fa-circle-check me-1"></i> {{ order.status }}
+          </span>
+        </div>
+        <div class="text-end">
+          <span class="text-muted small d-block">Placed on {{ order.created_at.strftime('%d %b %Y, %I:%M %p') }}</span>
+          <span class="text-white fw-bold fs-5">₹{{ order.amount | int }}</span>
+        </div>
+      </div>
+
+      <!-- Items breakdown -->
+      <div class="row g-2 mb-3">
+        {% for item in order.items %}
+        <div class="col-md-6">
+          <div class="p-2 rounded bg-black bg-opacity-40 d-flex justify-content-between align-items-center small text-light">
+            <span><strong>{{ item.product_name }}</strong> &times; {{ item.quantity }}</span>
+            <span class="text-success fw-semibold">₹{{ (item.price * item.quantity) | int }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-2 text-secondary small">
+        <div>
+          <i class="fa-solid fa-location-dot me-1 text-danger"></i> {{ order.shipping_address or "Standard Delivery" }}
+        </div>
+        <a href="{{ url_for('store.order_success', order_id=order.id) }}" class="btn btn-sm btn-outline-light rounded-pill px-3">
+          <i class="fa-solid fa-file-invoice me-1"></i> View Receipt
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="p-5 text-center bg-dark rounded-4 border border-secondary border-opacity-25">
+    <div class="mb-3">
+      <i class="fa-solid fa-box-open text-secondary opacity-50" style="font-size: 4rem;"></i>
+    </div>
+    <h4 class="text-white fw-bold mb-2">No Past Orders Found</h4>
+    <p class="text-muted mb-4">You haven't placed any orders yet. Visit our agricultural store to explore verified farming essentials.</p>
+    <a href="{{ url_for('store.store') }}" class="btn btn-success px-4 py-2 rounded-pill fw-bold">
+      <i class="fa-solid fa-bag-shopping me-1"></i> Explore Agri Store
+    </a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

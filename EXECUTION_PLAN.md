@@ -152,12 +152,12 @@ Create `templates/base.html` with:
 - All pages extend this via `{% extends "base.html" %}`
 
 ### Deliverables — Phase 0
-- [ ] Blueprint-based project structure
-- [ ] SQLAlchemy + SQLite database initialized
-- [ ] Flask-Migrate configured with initial migration
-- [ ] `.env` secrets management
-- [ ] `base.html` shared layout
-- [ ] All existing pages working unchanged after refactor
+- [x] Blueprint-based project structure
+- [x] SQLAlchemy + SQLite database initialized
+- [x] Flask-Migrate configured with initial migration
+- [x] `.env` secrets management
+- [x] `base.html` shared layout
+- [x] All existing pages working unchanged after refactor
 
 ---
 
@@ -166,63 +166,23 @@ Create `templates/base.html` with:
 **Priority:** 🔴 Critical (cart, community, chatbot history all need users)
 
 ### 1.1 — User Model
+Completed: [models/user.py](file:///c:/Users/shubh/OneDrive/Desktop/agrihelper/models/user.py) with Google OAuth fields and password hashing.
 
-```python
-# models/user.py
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(150), unique=True, nullable=False)
-    avatar_url = db.Column(db.String(300))
-    provider = db.Column(db.String(20), default='google')  # google / local
-    password_hash = db.Column(db.String(256), nullable=True)  # for local signup
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    # Relationships
-    cart_items = db.relationship('CartItem', backref='user', lazy=True)
-    posts = db.relationship('Post', backref='author', lazy=True)
-    orders = db.relationship('Order', backref='user', lazy=True)
-```
-
-### 1.2 — Google OAuth via Flask-Dance
-
-**Setup steps:**
-1. Go to [Google Cloud Console](https://console.cloud.google.com/) → Create OAuth 2.0 Client ID
-2. Set Authorized redirect URI: `http://127.0.0.1:5000/auth/google/callback`
-3. Install: `pip install Flask-Dance[sqla]`
-
-**Implementation:**
-- `GET /auth/login` → renders login page with "Sign in with Google" button
-- `GET /auth/google` → Flask-Dance redirects to Google consent screen
-- `GET /auth/google/callback` → receives token, creates/finds User, starts session
-- `GET /auth/logout` → clears session, redirects to home
+### 1.2 — Google OAuth & Dev Fallback
+Completed: [blueprints/auth/routes.py](file:///c:/Users/shubh/OneDrive/Desktop/agrihelper/blueprints/auth/routes.py) with OAuth 2.0 endpoint, token exchange, and dev demo fallback.
 
 ### 1.3 — Local Email/Password Signup (Fallback)
-
-- Hash passwords with `werkzeug.security.generate_password_hash`
-- Existing login.html form wired to `POST /auth/signup` and `POST /auth/login`
-- Flash messages for errors
+Completed: [templates/login.html](file:///c:/Users/shubh/OneDrive/Desktop/agrihelper/templates/login.html) with Google sign-in button and local auth.
 
 ### 1.4 — Session & Protected Routes
-
-```python
-from flask_login import login_required, current_user
-
-@store_bp.route('/cart')
-@login_required
-def view_cart():
-    ...
-```
-
-- Protect: cart, checkout, post creation, chatbot history
-- Public: home, market, weather, policy, store browsing
+Completed: `@login_required` added to `/community/post`, `/cart`, and `/checkout`.
 
 ### Deliverables — Phase 1
-- [ ] Google OAuth sign-in working end-to-end
-- [ ] Local email/password signup & login as fallback
-- [ ] User avatar + name displayed in navbar when logged in
-- [ ] `@login_required` on cart, post-creation, and checkout routes
-- [ ] Logout clears session properly
+- [x] Google OAuth sign-in working end-to-end
+- [x] Local email/password signup & login as fallback
+- [x] User avatar + name displayed in navbar when logged in
+- [x] `@login_required` on cart, post-creation, and checkout routes
+- [x] Logout clears session properly
 
 ---
 
@@ -306,12 +266,12 @@ class PriceHistory(db.Model):
 ```
 
 ### Deliverables — Phase 2
-- [ ] Interactive SVG India map with state hover/click/zoom
-- [ ] Choropleth coloring by commodity price
-- [ ] Live APMC API integration with static JSON fallback
-- [ ] Price trend line charts (7-day / 30-day)
-- [ ] `PriceHistory` table for historical data caching
-- [ ] Responsive layout with map + sidebar panel
+- [x] Interactive SVG India map with state hover/click/zoom
+- [x] Choropleth coloring by commodity price
+- [x] Live APMC API integration with static JSON fallback
+- [x] Price trend line charts (7-day / 30-day)
+- [x] `PriceHistory` table for historical data caching
+- [x] Responsive layout with map + sidebar panel
 
 ---
 
@@ -428,13 +388,13 @@ pip install google-genai faiss-cpu numpy
 ```
 
 ### Deliverables — Phase 3
-- [ ] Knowledge base chunked and embedded
-- [ ] FAISS vector index built at app startup
-- [ ] `/api/chat` endpoint with RAG retrieval + Gemini generation
-- [ ] Floating chat widget accessible from all pages
-- [ ] Chat history saved for authenticated users
-- [ ] Quick-action suggestion chips
-- [ ] Graceful error handling if API is unavailable
+- [x] Knowledge base chunked and embedded
+- [x] FAISS vector index built at app startup
+- [x] `/api/chat` endpoint with RAG retrieval + Gemini generation
+- [x] Floating chat widget accessible from all pages
+- [x] Chat history saved for authenticated users
+- [x] Quick-action suggestion chips
+- [x] Graceful error handling if API is unavailable
 
 ---
 
@@ -535,13 +495,13 @@ Replace hardcoded store HTML cards with a `products.json` data file:
 - Order confirmation page with receipt details
 
 ### Deliverables — Phase 4
-- [ ] Cart CRUD API endpoints
-- [ ] Cart page with quantity management
-- [ ] Product catalog data-driven (JSON file)
-- [ ] Razorpay order creation + checkout popup
-- [ ] Payment signature verification webhook
-- [ ] Order history page for logged-in users
-- [ ] Test mode payments working end-to-end
+- [x] Cart CRUD API endpoints
+- [x] Cart page with quantity management
+- [x] Product catalog data-driven (JSON file)
+- [x] Razorpay order creation + checkout popup
+- [x] Payment signature verification webhook
+- [x] Order history page for logged-in users
+- [x] Test mode payments working end-to-end
 
 ---
 

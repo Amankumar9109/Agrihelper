@@ -1,0 +1,443 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Cart & Checkout - AgriHelper{% endblock %}
+
+{% block extra_css %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+  .cart-container {
+    max-width: 1200px;
+    margin: 95px auto 40px auto;
+  }
+
+  .cart-card {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(10px);
+  }
+
+  .cart-table th {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+  }
+
+  .cart-table td {
+    padding: 16px 8px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #f8fafc;
+  }
+
+  .cart-item-img {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .qty-selector {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .qty-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .qty-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #4ade80;
+  }
+
+  .qty-val {
+    width: 32px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .btn-remove-item {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .btn-remove-item:hover {
+    color: #f87171;
+  }
+
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    color: #cbd5e1;
+  }
+
+  .btn-razorpay-pay {
+    background: linear-gradient(135deg, #0284c7, #0369a1);
+    color: #ffffff;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .btn-razorpay-pay:hover {
+    background: linear-gradient(135deg, #0369a1, #075985);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(2, 132, 199, 0.5);
+    color: #ffffff;
+  }
+
+  .razorpay-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cart-container">
+
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <h2 class="text-white fw-bold brand-font mb-1"><i class="fa-solid fa-cart-shopping text-success me-2"></i> Your Farming Cart</h2>
+      <span class="text-muted small">Review products, manage quantities, and checkout securely with Razorpay</span>
+    </div>
+    <a href="{{ url_for('store.store') }}" class="btn btn-outline-light btn-sm rounded-pill px-3">
+      <i class="fa-solid fa-arrow-left me-1"></i> Continue Shopping
+    </a>
+  </div>
+
+  {% if items %}
+  <div class="row g-4">
+    
+    <!-- LEFT: Cart Items Table -->
+    <div class="col-lg-8">
+      <div class="cart-card">
+        <div class="table-responsive">
+          <table class="table cart-table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th class="text-center">Quantity</th>
+                <th class="text-end">Subtotal</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in items %}
+              <tr id="cartRow-{{ item.id }}">
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="{{ item.image_url }}" alt="{{ item.product_name }}" class="cart-item-img">
+                    <div>
+                      <h6 class="mb-0 fw-bold text-white fs-6">{{ item.product_name }}</h6>
+                      <span class="text-muted small">Item ID: {{ item.product_id }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-semibold">₹{{ item.price | int }}</span>
+                </td>
+                <td class="text-center">
+                  <div class="qty-selector">
+                    <button class="qty-btn" onclick="updateItemQuantity('{{ item.id }}', -1)"><i class="fa-solid fa-minus"></i></button>
+                    <span class="qty-val" id="qtyVal-{{ item.id }}">{{ item.quantity }}</span>
+                    <button class="qty-btn" onclick="updateItemQuantity('{{ item.id }}', 1)"><i class="fa-solid fa-plus"></i></button>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <span class="fw-bold text-success fs-6" id="rowSubtotal-{{ item.id }}">₹{{ (item.price * item.quantity) | int }}</span>
+                </td>
+                <td class="text-center">
+                  <button class="btn-remove-item" onclick="removeItemFromCart('{{ item.id }}')" title="Remove Item">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Order Summary & Checkout -->
+    <div class="col-lg-4">
+      <div class="cart-card">
+        <h5 class="text-white fw-bold mb-3 brand-font border-bottom border-secondary border-opacity-25 pb-2">
+          Order Summary
+        </h5>
+
+        <div class="summary-line">
+          <span>Cart Subtotal</span>
+          <span class="fw-semibold text-white" id="summarySubtotal">₹{{ subtotal }}</span>
+        </div>
+
+        <div class="summary-line">
+          <span>Standard Delivery</span>
+          <span class="fw-semibold text-{{ 'success' if shipping == 0 else 'warning' }}" id="summaryShipping">
+            {{ 'FREE' if shipping == 0 else '₹' ~ shipping }}
+          </span>
+        </div>
+
+        <div class="summary-line">
+          <span>GST (Included)</span>
+          <span class="text-muted small">All taxes paid</span>
+        </div>
+
+        <hr class="border-secondary opacity-25 my-3">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <span class="fs-5 fw-bold text-white">Grand Total</span>
+          <span class="fs-4 fw-bold text-success brand-font" id="summaryGrandTotal">₹{{ total }}</span>
+        </div>
+
+        <!-- Delivery Details -->
+        <div class="mb-3">
+          <label class="form-label text-light small fw-semibold"><i class="fa-solid fa-location-dot text-danger me-1"></i> Delivery Address</label>
+          <textarea id="shippingAddress" class="form-control bg-dark text-white border-secondary border-opacity-50 small" rows="2" placeholder="House/Village, Post, Tehsil, District, PIN code">Village Rampur, Post Kalan, Dist. Meerut, UP - 250001</textarea>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label text-light small fw-semibold"><i class="fa-solid fa-phone text-success me-1"></i> Contact Phone</label>
+          <input type="tel" id="contactPhone" class="form-control bg-dark text-white border-secondary border-opacity-50 small" value="9876543210" placeholder="10-digit mobile number">
+        </div>
+
+        <!-- Razorpay Pay Button -->
+        <button class="btn-razorpay-pay" id="razorpayPayBtn" onclick="initiateRazorpayCheckout()">
+          <i class="fa-solid fa-lock"></i>
+          <span>Pay Securely with Razorpay</span>
+          <span class="razorpay-badge">UPI / Cards / NetBanking</span>
+        </button>
+
+        <div class="text-center mt-3">
+          <span class="text-muted small" style="font-size: 11px;">
+            <i class="fa-solid fa-shield-halved text-success me-1"></i> 256-bit Encrypted Checkout &bull; Verified Farm Delivery
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  {% else %}
+  <!-- Empty Cart State -->
+  <div class="cart-card text-center py-5">
+    <div class="mb-3">
+      <i class="fa-solid fa-bag-shopping text-secondary opacity-50" style="font-size: 4rem;"></i>
+    </div>
+    <h3 class="text-white fw-bold mb-2">Your Shopping Cart is Empty</h3>
+    <p class="text-muted mb-4">Explore high-quality certified seeds, organic bio-fertilizers, and modern farming equipment.</p>
+    <a href="{{ url_for('store.store') }}" class="btn btn-success px-4 py-2 rounded-pill fw-bold">
+      <i class="fa-solid fa-seedling me-2"></i> Browse Farming Essentials
+    </a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function updateItemQuantity(itemId, delta) {
+    fetch('/store/cart/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ item_id: itemId, delta: delta })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        if (data.item_quantity === 0) {
+          const row = document.getElementById(`cartRow-${itemId}`);
+          if (row) row.remove();
+          if (data.cart_count === 0) location.reload();
+        } else {
+          document.getElementById(`qtyVal-${itemId}`).textContent = data.item_quantity;
+          document.getElementById(`rowSubtotal-${itemId}`).textContent = `₹${data.item_total}`;
+        }
+
+        // Update summaries
+        document.getElementById('summarySubtotal').textContent = `₹${data.subtotal}`;
+        document.getElementById('summaryShipping').textContent = data.shipping === 0 ? 'FREE' : `₹${data.shipping}`;
+        document.getElementById('summaryGrandTotal').textContent = `₹${data.total}`;
+
+        // Update nav badge
+        const badge = document.getElementById("nav-cart-badge");
+        if (badge) badge.textContent = data.cart_count;
+      }
+    })
+    .catch(err => console.error(err));
+  }
+
+  function removeItemFromCart(itemId) {
+    if (!confirm("Remove this item from your cart?")) return;
+
+    fetch(`/store/cart/remove/${itemId}`, { method: 'POST' })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        const row = document.getElementById(`cartRow-${itemId}`);
+        if (row) row.remove();
+        if (data.cart_count === 0) location.reload();
+
+        document.getElementById('summarySubtotal').textContent = `₹${data.subtotal}`;
+        document.getElementById('summaryShipping').textContent = data.shipping === 0 ? 'FREE' : `₹${data.shipping}`;
+        document.getElementById('summaryGrandTotal').textContent = `₹${data.total}`;
+
+        const badge = document.getElementById("nav-cart-badge");
+        if (badge) badge.textContent = data.cart_count;
+      }
+    });
+  }
+
+  // Razorpay Checkout Integration
+  function initiateRazorpayCheckout() {
+    const address = document.getElementById('shippingAddress').value.trim();
+    const phone = document.getElementById('contactPhone').value.trim();
+
+    if (!address || !phone) {
+      alert("Please provide both shipping address and phone number for delivery.");
+      return;
+    }
+
+    const payBtn = document.getElementById('razorpayPayBtn');
+    payBtn.disabled = true;
+    payBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Preparing Checkout...`;
+
+    // 1. Create order on server
+    fetch('/store/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ shipping_address: address, phone_number: phone })
+    })
+    .then(res => res.json())
+    .then(orderData => {
+      if (!orderData.success) {
+        alert(orderData.error || "Failed to create order");
+        payBtn.disabled = false;
+        payBtn.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Securely with Razorpay</span>`;
+        return;
+      }
+
+      // Check if real Razorpay or Test Mode
+      if (orderData.is_test_mode) {
+        // Test mode: provide instant simulated confirmation
+        if (confirm(`[Razorpay Test Mode Active]\nOrder ID: ${orderData.razorpay_order_id}\nTotal Amount: ₹${orderData.amount_display}\n\nClick OK to simulate successful payment confirmation!`)) {
+          completeVerification(orderData.order_id, orderData.razorpay_order_id, "pay_test_" + Math.random().toString(36).substring(7), "simulated_signature", address, phone);
+        } else {
+          payBtn.disabled = false;
+          payBtn.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Securely with Razorpay</span>`;
+        }
+      } else {
+        // Production / Live Razorpay Checkout Modal
+        const options = {
+          key: orderData.key_id,
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: "AgriHelper Platform",
+          description: "Farming Seeds & Equipment Order",
+          image: "https://cdn-icons-png.flaticon.com/512/606/606553.png",
+          order_id: orderData.razorpay_order_id,
+          handler: function (response) {
+            completeVerification(
+              orderData.order_id,
+              response.razorpay_order_id,
+              response.razorpay_payment_id,
+              response.razorpay_signature,
+              address,
+              phone
+            );
+          },
+          prefill: {
+            name: orderData.user_name,
+            email: orderData.user_email,
+            contact: phone
+          },
+          theme: { color: "#15803d" },
+          modal: {
+            ondismiss: function() {
+              payBtn.disabled = false;
+              payBtn.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Securely with Razorpay</span>`;
+            }
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Checkout connection failed. Please try again.");
+      payBtn.disabled = false;
+      payBtn.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Securely with Razorpay</span>`;
+    });
+  }
+
+  function completeVerification(orderId, rzpOrderId, rzpPaymentId, rzpSignature, address, phone) {
+    fetch('/store/verify_payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        order_id: orderId,
+        razorpay_order_id: rzpOrderId,
+        razorpay_payment_id: rzpPaymentId,
+        razorpay_signature: rzpSignature,
+        address: address,
+        phone: phone
+      })
+    })
+    .then(res => res.json())
+    .then(resData => {
+      if (resData.success) {
+        window.location.href = resData.redirect_url;
+      } else {
+        alert("Payment signature could not be verified: " + resData.error);
+        location.reload();
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error confirming payment. Please check your order history.");
+    });
+  }
+</script>
+{% endblock %}

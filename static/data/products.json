@@ -1,0 +1,134 @@
+[
+  {
+    "id": "seed-001",
+    "name": "Certified HD-3086 Wheat Seeds (10kg)",
+    "price": 650.0,
+    "category": "Seeds",
+    "rating": 4.8,
+    "reviews": 142,
+    "badge": "Best Seller",
+    "image": "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=600&auto=format&fit=crop&q=80",
+    "description": "High-yield rust-resistant certified wheat seed variety with 98% germination rate. Ideal for North & Central Indian Rabi season."
+  },
+  {
+    "id": "seed-002",
+    "name": "Hybrid Basmati Rice Seeds PB-1509 (5kg)",
+    "price": 820.0,
+    "category": "Seeds",
+    "rating": 4.7,
+    "reviews": 98,
+    "badge": "Popular",
+    "image": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop&q=80",
+    "description": "Early maturing aromatic long grain Basmati seeds. Matures in 115-120 days with high disease resistance."
+  },
+  {
+    "id": "seed-003",
+    "name": "Hybrid Vegetable Seeds Combo (12 Varieties)",
+    "price": 380.0,
+    "category": "Seeds",
+    "rating": 4.9,
+    "reviews": 315,
+    "badge": "Value Pack",
+    "image": "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&auto=format&fit=crop&q=80",
+    "description": "Assorted kit containing high-germination seeds of Tomato, Chilli, Capsicum, Brinjal, Okra, Cucumber, and Coriander."
+  },
+  {
+    "id": "fert-001",
+    "name": "Organic Vermicompost Bio-Fertilizer (25kg)",
+    "price": 490.0,
+    "category": "Fertilizers",
+    "rating": 4.9,
+    "reviews": 210,
+    "badge": "100% Organic",
+    "image": "https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=600&auto=format&fit=crop&q=80",
+    "description": "Rich in beneficial soil microbes, nitrogen, phosphorus, and potassium. Restores soil organic carbon and moisture retention."
+  },
+  {
+    "id": "fert-002",
+    "name": "Water Soluble NPK 19-19-19 Foliar Grade (5kg)",
+    "price": 540.0,
+    "category": "Fertilizers",
+    "rating": 4.6,
+    "reviews": 86,
+    "badge": "High Yield",
+    "image": "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?w=600&auto=format&fit=crop&q=80",
+    "description": "100% water-soluble balanced NPK fertilizer with chelated micronutrients for drip fertigation and foliar spray."
+  },
+  {
+    "id": "fert-003",
+    "name": "Cold-Pressed Pure Neem Cake Fertilizer (10kg)",
+    "price": 390.0,
+    "category": "Fertilizers",
+    "rating": 4.8,
+    "reviews": 114,
+    "badge": "Pest Repellent",
+    "image": "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80",
+    "description": "Dual action organic bio-manure that enriches soil fertility while acting as an effective natural nematode and termite repellent."
+  },
+  {
+    "id": "irri-001",
+    "name": "Precision Drip Irrigation Kit (0.5 Acre)",
+    "price": 3499.0,
+    "category": "Irrigation Equipment",
+    "rating": 4.9,
+    "reviews": 73,
+    "badge": "Govt Subsidy Compatible",
+    "image": "https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=600&auto=format&fit=crop&q=80",
+    "description": "Complete setup including 16mm lateral pipes, turbo drippers, screen filter, punch tool, connectors, and ball valve."
+  },
+  {
+    "id": "irri-002",
+    "name": "Adjustable Brass Impact Sprinkler Set (4 Pack)",
+    "price": 1250.0,
+    "category": "Irrigation Equipment",
+    "rating": 4.7,
+    "reviews": 64,
+    "badge": "",
+    "image": "https://images.unsplash.com/photo-1527842891421-42eec6e703ea?w=600&auto=format&fit=crop&q=80",
+    "description": "Heavy-duty 1/2 inch male thread brass impact sprinklers with 360-degree rotation and 30-40 ft radius coverage."
+  },
+  {
+    "id": "tool-001",
+    "name": "16-Liter 2-in-1 Battery & Manual Knapsack Sprayer",
+    "price": 2150.0,
+    "category": "Farming Tools & Machinery",
+    "rating": 4.8,
+    "reviews": 189,
+    "badge": "Top Rated",
+    "image": "https://images.unsplash.com/photo-1589923188900-85dae523342b?w=600&auto=format&fit=crop&q=80",
+    "description": "12V 12AH rechargeable battery sprayer with stainless steel lance, 4 brass nozzles, and manual hand-pump backup."
+  },
+  {
+    "id": "tool-002",
+    "name": "Digital 4-in-1 Soil pH, Moisture & Sunlight Meter",
+    "price": 799.0,
+    "category": "Farming Tools & Machinery",
+    "rating": 4.5,
+    "reviews": 230,
+    "badge": "Smart Tool",
+    "image": "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?w=600&auto=format&fit=crop&q=80",
+    "description": "Instant digital readout of soil pH, moisture level, temperature, and sunlight intensity without batteries required."
+  },
+  {
+    "id": "prot-001",
+    "name": "Pure Cold-Pressed Neem Oil 10,000 PPM (1 Liter)",
+    "price": 420.0,
+    "category": "Pesticides & Bio-Control",
+    "rating": 4.8,
+    "reviews": 156,
+    "badge": "Eco-Friendly",
+    "image": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600&auto=format&fit=crop&q=80",
+    "description": "Broad-spectrum organic bio-pesticide and repellent for aphids, whiteflies, thrips, caterpillars, and powdery mildew."
+  },
+  {
+    "id": "prot-002",
+    "name": "Solar Insect Pest Trap with Auto Day/Night Sensor",
+    "price": 1450.0,
+    "category": "Pesticides & Bio-Control",
+    "rating": 4.7,
+    "reviews": 82,
+    "badge": "Zero Electricity",
+    "image": "https://images.unsplash.com/photo-1509391365360-2e959784a276?w=600&auto=format&fit=crop&q=80",
+    "description": "Attracts and neutralizes flying pests and bollworms using specific UV wavelengths. Covers 1 to 2 acres continuously."
+  }
+]

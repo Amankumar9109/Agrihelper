@@ -197,6 +197,171 @@
             0% { transform: scale(1); opacity: 0.8; }
             100% { transform: scale(1.6); opacity: 0; }
         }
+
+        /* Slide-out RAG Chat Drawer */
+        .agri-chat-drawer {
+            position: fixed;
+            bottom: 95px;
+            right: 25px;
+            width: 380px;
+            max-width: calc(100vw - 35px);
+            height: 540px;
+            max-height: calc(100vh - 120px);
+            background: #091710;
+            border: 1px solid rgba(74, 222, 128, 0.35);
+            border-radius: 18px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1045;
+            backdrop-filter: blur(16px);
+            animation: chatSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes chatSlideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #15803d, #064e3b);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: radial-gradient(circle at 50% 0%, #0d281a 0%, #06120b 100%);
+        }
+
+        .chat-quick-chips {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.35);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            white-space: nowrap;
+            scrollbar-width: thin;
+        }
+
+        .chat-chip {
+            background: rgba(74, 222, 128, 0.12);
+            color: #86efac;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 14px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .chat-chip:hover {
+            background: #15803d;
+            color: #ffffff;
+            border-color: #4ade80;
+        }
+
+        .chat-msg {
+            max-width: 85%;
+            padding: 10px 14px;
+            font-size: 13px;
+            line-height: 1.45;
+            border-radius: 14px;
+            word-wrap: break-word;
+        }
+
+        .chat-msg-bot {
+            align-self: flex-start;
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+            border-bottom-left-radius: 3px;
+        }
+
+        .chat-msg-user {
+            align-self: flex-end;
+            background: #15803d;
+            color: #ffffff;
+            border-bottom-right-radius: 3px;
+        }
+
+        .chat-input-bar {
+            padding: 10px 14px;
+            background: #091710;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: #4ade80;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .chat-send-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #22c55e;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.08);
+            background: #16a34a;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 8px 12px;
+            align-self: flex-start;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 12px;
+        }
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
     </style>
 
     {% block extra_css %}{% endblock %}
@@ -244,13 +409,18 @@
                     <!-- Authentication / User profile -->
                     {% if current_user.is_authenticated %}
                     <li class="nav-item dropdown ms-lg-2">
-                        <a class="nav-link dropdown-toggle btn btn-sm btn-outline-success text-light px-3 py-1" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-regular fa-circle-user me-1 text-success"></i> {{ current_user.name }}
+                        <a class="nav-link dropdown-toggle btn btn-sm btn-outline-success text-light px-3 py-1 d-flex align-items-center gap-1" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if current_user.avatar_url %}
+                            <img src="{{ current_user.avatar_url }}" alt="{{ current_user.name }}" class="rounded-circle border border-success" width="24" height="24" style="object-fit: cover;">
+                            {% else %}
+                            <i class="fa-regular fa-circle-user text-success"></i>
+                            {% endif %}
+                            <span>{{ current_user.name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="userDropdown">
                             <li><h6 class="dropdown-header">{{ current_user.email }}</h6></li>
                             <li><hr class="dropdown-divider border-secondary"></li>
-                            <li><a class="dropdown-item" href="{{ url_for('store.store') }}"><i class="fa-solid fa-box-open me-2"></i> My Orders</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('store.order_history') }}"><i class="fa-solid fa-box-open me-2"></i> My Orders</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('community.community') }}"><i class="fa-solid fa-pen me-2"></i> My Posts</a></li>
                             <li><hr class="dropdown-divider border-secondary"></li>
                             <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</a></li>
@@ -287,7 +457,63 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Floating Chatbot Action Button (Phase 3 ready) -->
+    <!-- Slide-out RAG Chat Drawer -->
+    <div class="agri-chat-drawer" id="agriChatDrawer">
+        <!-- Chat Header -->
+        <div class="chat-header text-white">
+            <div class="d-flex align-items-center gap-2">
+                <div class="position-relative">
+                    <div class="rounded-circle bg-dark d-flex align-items-center justify-content-center text-success" style="width: 32px; height: 32px; border: 1px solid rgba(74, 222, 128, 0.4);">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <span class="position-absolute bottom-0 end-0 rounded-circle bg-success" style="width: 8px; height: 8px; border: 1.5px solid #091710;"></span>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold brand-font" style="font-size: 14px;">KisanMitra &bull; AgriBot AI</h6>
+                    <span class="small text-white-50" style="font-size: 11px;">RAG Agronomy & Scheme Advisory</span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm text-white-50 p-1 hover-light" onclick="clearAgriChat()" title="Clear Chat History">
+                    <i class="fa-regular fa-trash-can" style="font-size: 12px;"></i>
+                </button>
+                <button class="btn btn-sm text-white-50 p-1 hover-light" onclick="toggleAgriBot()" title="Close">
+                    <i class="fa-solid fa-xmark" style="font-size: 14px;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Action Suggestion Chips -->
+        <div class="chat-quick-chips">
+            <span class="chat-chip" onclick="askQuickChip('What is PM-KISAN and how to apply?')">🌾 PM-KISAN Scheme</span>
+            <span class="chat-chip" onclick="askQuickChip('How does drip irrigation save water and what subsidy is available?')">💧 Drip Irrigation</span>
+            <span class="chat-chip" onclick="askQuickChip('What fertilizer is recommended for Wheat sowing?')">🌱 Wheat Fertilizers</span>
+            <span class="chat-chip" onclick="askQuickChip('How to report crop loss under PMFBY insurance?')">🛡️ Crop Insurance</span>
+            <span class="chat-chip" onclick="askQuickChip('What is the Kisan Call Center helpline number?')">📞 Kisan Helpline</span>
+        </div>
+
+        <!-- Messages Body -->
+        <div class="chat-body" id="agriChatBody">
+            <!-- Initial Welcome Message -->
+            <div class="chat-msg chat-msg-bot">
+                <div class="fw-bold text-success mb-1" style="font-size: 12px;">
+                    <i class="fa-solid fa-seedling me-1"></i> KisanMitra AI
+                </div>
+                <div>Namaste! I am your <strong>AgriBot</strong> assistant. Ask me anything about modern farming techniques, crop diseases, fertilizer dosage, government schemes, or APMC mandi prices!</div>
+                <div class="mt-2 text-muted" style="font-size: 10px;">Powered by AgriHelper RAG Knowledge Engine</div>
+            </div>
+        </div>
+
+        <!-- Input Bar -->
+        <div class="chat-input-bar">
+            <input type="text" id="agriChatInput" class="chat-input" placeholder="Ask a question about your crops or schemes..." autocomplete="off">
+            <button class="chat-send-btn" id="agriChatSendBtn" onclick="sendAgriChatMessage()" title="Send">
+                <i class="fa-solid fa-paper-plane" style="font-size: 12px;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Chatbot Action Button -->
     <button class="floating-chatbot-btn" id="openChatbotBtn" title="Ask AgriBot AI Assistant" onclick="toggleAgriBot()">
         <span class="chatbot-pulse"></span>
         <i class="fa-solid fa-robot"></i>
@@ -347,14 +573,178 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Global Cart & Chatbot Scripts -->
+    <!-- Global Cart & RAG Chatbot Client Scripts -->
     <script>
+        let chatIsOpen = false;
+        let chatHistoryLoaded = false;
+
         function toggleAgriBot() {
-            alert("AgriBot AI assistant is configured and ready for Phase 3 RAG integration!");
+            const drawer = document.getElementById("agriChatDrawer");
+            if (!drawer) return;
+            chatIsOpen = !chatIsOpen;
+
+            if (chatIsOpen) {
+                drawer.style.display = "flex";
+                const input = document.getElementById("agriChatInput");
+                if (input) setTimeout(() => input.focus(), 200);
+
+                if (!chatHistoryLoaded) {
+                    loadChatHistory();
+                    chatHistoryLoaded = true;
+                }
+            } else {
+                drawer.style.display = "none";
+            }
         }
 
-        // Fetch Cart Count if logged in
+        function askQuickChip(question) {
+            const input = document.getElementById("agriChatInput");
+            if (input) {
+                input.value = question;
+                sendAgriChatMessage();
+            }
+        }
+
+        function sendAgriChatMessage() {
+            const input = document.getElementById("agriChatInput");
+            const body = document.getElementById("agriChatBody");
+            if (!input || !body) return;
+
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Append user bubble
+            const userMsg = document.createElement("div");
+            userMsg.className = "chat-msg chat-msg-user";
+            userMsg.textContent = text;
+            body.appendChild(userMsg);
+            input.value = "";
+            body.scrollTop = body.scrollHeight;
+
+            // Append typing indicator
+            const typingInd = document.createElement("div");
+            typingInd.className = "typing-indicator";
+            typingInd.id = "chatTypingIndicator";
+            typingInd.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            body.appendChild(typingInd);
+            body.scrollTop = body.scrollHeight;
+
+            // Fetch from RAG API
+            fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: text })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const ind = document.getElementById("chatTypingIndicator");
+                    if (ind) ind.remove();
+
+                    const botMsg = document.createElement("div");
+                    botMsg.className = "chat-msg chat-msg-bot";
+
+                    // Format Markdown to clean HTML safely
+                    const formatted = formatBotReply(data.reply || "I am unable to answer that question right now.");
+                    
+                    let sourcesHtml = "";
+                    if (data.sources && data.sources.length > 0) {
+                        const tags = data.sources.map(s => `<span class="badge bg-success-subtle text-success border border-success-subtle me-1" style="font-size: 9px;"><i class="fa-regular fa-file-lines me-1"></i>${s}</span>`).join("");
+                        sourcesHtml = `<div class="mt-2 pt-1 border-top border-secondary border-opacity-25">${tags}</div>`;
+                    }
+
+                    botMsg.innerHTML = `
+                        <div class="fw-bold text-success mb-1" style="font-size: 11px;">
+                            <i class="fa-solid fa-seedling me-1"></i> KisanMitra AI
+                        </div>
+                        <div>${formatted}</div>
+                        ${sourcesHtml}
+                    `;
+
+                    body.appendChild(botMsg);
+                    body.scrollTop = body.scrollHeight;
+                })
+                .catch(err => {
+                    const ind = document.getElementById("chatTypingIndicator");
+                    if (ind) ind.remove();
+
+                    const botMsg = document.createElement("div");
+                    botMsg.className = "chat-msg chat-msg-bot text-danger";
+                    botMsg.textContent = "Error connecting to KisanMitra. Please try again or call the Kisan Helpline at 1800-180-1551.";
+                    body.appendChild(botMsg);
+                    body.scrollTop = body.scrollHeight;
+                });
+        }
+
+        function formatBotReply(raw) {
+            if (!raw) return "";
+            // Replace bold **text**
+            let html = raw.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Replace bullet points
+            html = html.replace(/^[•\-\*]\s+(.*)$/gm, '<li style="margin-left: 14px;">$1</li>');
+            // Wrap in paragraphs
+            html = html.replace(/\n\n/g, '<br><br>');
+            return html;
+        }
+
+        function loadChatHistory() {
+            fetch("/api/chat/history")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.history && data.history.length > 0) {
+                        const body = document.getElementById("agriChatBody");
+                        data.history.forEach(item => {
+                            const u = document.createElement("div");
+                            u.className = "chat-msg chat-msg-user";
+                            u.textContent = item.question;
+                            body.appendChild(u);
+
+                            const b = document.createElement("div");
+                            b.className = "chat-msg chat-msg-bot";
+                            b.innerHTML = `
+                                <div class="fw-bold text-success mb-1" style="font-size: 11px;"><i class="fa-solid fa-seedling me-1"></i> KisanMitra AI</div>
+                                <div>${formatBotReply(item.answer)}</div>
+                            `;
+                            body.appendChild(b);
+                        });
+                        body.scrollTop = body.scrollHeight;
+                    }
+                })
+                .catch(() => {});
+        }
+
+        function clearAgriChat() {
+            if (!confirm("Clear your conversation history with AgriBot?")) return;
+            fetch("/api/chat/clear", { method: "POST" })
+                .then(() => {
+                    const body = document.getElementById("agriChatBody");
+                    if (body) {
+                        body.innerHTML = `
+                            <div class="chat-msg chat-msg-bot">
+                                <div class="fw-bold text-success mb-1" style="font-size: 12px;"><i class="fa-solid fa-seedling me-1"></i> KisanMitra AI</div>
+                                <div>Chat history cleared. How can I assist you with your crops today?</div>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(() => {});
+        }
+
+        // Enter key in input
         document.addEventListener("DOMContentLoaded", function() {
+            const input = document.getElementById("agriChatInput");
+            if (input) {
+                input.addEventListener("keydown", function(e) {
+                    if (e.key === "Enter") {
+                        sendAgriChatMessage();
+                    }
+                });
+            }
+
+            // Cart counter
             fetch("/api/cart/count")
                 .then(res => res.json())
                 .then(data => {

@@ -65,8 +65,13 @@ def run_tests():
 
     for route, name in get_routes:
         resp = client.get(route)
-        assert resp.status_code == 200, f"Route {route} ({name}) failed with status {resp.status_code}"
-        print(f"[PASS] GET {route:<35} -> 200 OK ({name})")
+        if route == '/community/post':
+            # Protected by @login_required in Phase 1
+            assert resp.status_code == 302, f"Route {route} expected 302 redirect to /login"
+            print(f"[PASS] GET {route:<35} -> 302 Redirect (@login_required)")
+        else:
+            assert resp.status_code == 200, f"Route {route} ({name}) failed with status {resp.status_code}"
+            print(f"[PASS] GET {route:<35} -> 200 OK ({name})")
 
     # 3. Test Market POST endpoints
     # Options test
@@ -79,7 +84,7 @@ def run_tests():
     assert chat_resp.status_code == 200, f"/api/chat failed: {chat_resp.status_code}"
     chat_data = chat_resp.get_json()
     assert 'reply' in chat_data, "Chatbot response missing 'reply'"
-    print(f"[PASS] POST /api/chat returned reply: {chat_data['reply'][:60]}...")
+    print("[PASS] POST /api/chat returned reply successfully.")
 
     # 5. Test Auth Registration & Login
     with app.app_context():

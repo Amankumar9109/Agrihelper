@@ -1,0 +1,33 @@
+# FARMER FREQUENTLY ASKED QUESTIONS (FAQ) & QUICK REFERENCE
+
+## General Agriculture FAQs
+
+Q1: What is the official Kisan Call Center (KCC) helpline number?
+A1: The toll-free national Kisan Call Center number is 1800-180-1551. It operates 7 days a week from 6:00 AM to 10:00 PM in 22 local Indian languages with agriculture university graduates providing real-time guidance.
+
+Q2: How do I know which fertilizer my soil needs?
+A2: Get a Soil Health Card (SHC) by submitting a soil sample to your nearest Krishi Vigyan Kendra (KVK) or Block Agriculture Office. The test analyzes 12 parameters (pH, EC, Organic Carbon, N, P, K, S, Zn, Fe, Cu, Mn, Bo) and provides customized recommendations for your targeted crop.
+
+Q3: Why are my tomato leaves curling and developing yellow patches?
+A3: Tomato Leaf Curl is predominantly a viral disease transmitted by Whiteflies (Bemisia tabaci). To control it:
+1. Spray systemic insecticide like Imidacloprid 17.8% SL (0.5 ml/liter of water) or Acetamiprid 20% SP (0.5 g/liter) to control vector whiteflies.
+2. Install yellow sticky traps (15–20 traps per acre) in the field.
+3. Remove and safely destroy severely infected plants to prevent transmission.
+
+Q4: What should I do if unseasonal rain or hailstorm damages my standing crops?
+A4: If enrolled in PMFBY (Pradhan Mantri Fasal Bima Yojana), report localized damage within 72 hours of the calamity through the Crop Insurance Mobile App, by calling 1800-180-1551, or informing the bank where your KCC loan was sanctioned. Provide photographs of the flooded or flattened field and GPS coordinates.
+
+Q5: What is the difference between Urea, DAP, and MOP?
+A5:
+- Urea contains 46% Nitrogen (N) for rapid leaf and stem vegetative growth.
+- DAP (Di-Ammonium Phosphate) contains 18% Nitrogen and 46% Phosphorus (P2O5) for root establishment and energy transfer.
+- MOP (Muriate of Potash) contains 60% Potassium (K2O) for grain weight, fruit luster, disease resistance, and water regulation.
+
+Q6: How can I check live APMC mandi prices before taking my harvest to market?
+A6: Use AgriHelper's Market section or the national e-NAM portal (enam.gov.in). Check the Modal Price (the rate at which maximum lots were traded) in your local district and neighboring mandis to select the highest-paying market.
+
+Q7: What is the best organic method to control pest attacks?
+A7: Use Neem Seed Kernel Extract (NSKE 5%) or cold-pressed Neem Oil (3000 to 10000 ppm at 2-3 ml/L water) combined with bio-pesticides like Trichoderma viride and Pseudomonas fluorescens for soil-borne root diseases, and Bacillus thuringiensis (Bt) for caterpillar infestations.
+
+Q8: How do I fix yellowing leaves in wheat (nitrogen vs zinc deficiency)?
+A8: If older bottom leaves turn uniformly pale yellow starting from leaf tips, it is Nitrogen deficiency—apply Urea top-dressing before irrigation. If yellowing appears as white/chlorotic bands on middle and younger leaves, it is Zinc deficiency—spray 0.5% Zinc Sulphate (21% Zn) mixed with 0.25% slaked lime in water.

@@ -1,110 +1,297 @@
-/* General page styling */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f4f6f9;
-  color: #333;
-  margin: 0;
-  padding: 0;
+/**
+ * AgriHelper Market Intelligence & Interactive India Map Styles
+ */
+
+/* Main Container & Layout */
+.market-dashboard-container {
+  max-width: 1400px;
+  margin: 90px auto 40px auto;
+  padding: 0 20px;
 }
 
-/* Main container */
-.container {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 30px;
-  background: white;
+/* Header Section */
+.market-header-hero {
+  background: linear-gradient(135deg, rgba(20, 83, 45, 0.7), rgba(9, 26, 16, 0.9));
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: 16px;
+  padding: 24px 30px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+
+/* Split Grid Layout */
+.market-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .market-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Wrappers */
+.market-card {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+}
+
+/* Map Header Bar */
+.map-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* SVG India Map Container */
+.map-stage {
+  position: relative;
+  width: 100%;
+  height: 580px;
+  background: radial-gradient(circle at 50% 50%, #0d1e15 0%, #06110a 100%);
   border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.15);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Section heading */
-.container h2 {
-  margin-bottom: 20px;
-  text-align: center;
-  color: #2c3e50;
-}
-
-/* Dropdown styling */
-select {
-  display: block;
+.india-svg {
   width: 100%;
-  margin: 15px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  background-color: #f9f9f9;
-  transition: border 0.3s ease;
+  height: 100%;
+  max-height: 570px;
 }
 
-select:focus {
-  border-color: #3498db;
-  outline: none;
-}
-
-/* Button styling */
-button {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  background-color: #3498db;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  margin-top: 10px;
+/* State Paths Styling */
+.india-state-path {
+  stroke: rgba(255, 255, 255, 0.25);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-button:hover {
-  background-color: #2980b9;
+.india-state-path:hover {
+  stroke: #ffffff;
+  stroke-width: 2.2;
+  filter: brightness(1.25) drop-shadow(0 0 6px rgba(74, 222, 128, 0.8));
 }
 
-/* Output area */
-#output {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+.india-state-path.active-state {
+  stroke: #4ade80 !important;
+  stroke-width: 3.2 !important;
+  filter: url(#activeGlow);
 }
 
-/* Price info */
-#priceData {
-  margin-bottom: 30px;
+.state-code-label {
+  fill: rgba(255, 255, 255, 0.7);
+  font-size: 8px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Map Zoom Toolbar */
+.map-zoom-toolbar {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10;
+}
+
+.map-tool-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.map-tool-btn:hover {
+  background: #15803d;
+  border-color: #4ade80;
+  color: #ffffff;
+}
+
+/* Map Legend */
+.map-legend-bar {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.legend-gradient-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #ef4444 100%);
+  margin: 6px 0;
+}
+
+/* Floating Glassmorphism Tooltip */
+.india-map-tooltip {
+  position: fixed;
+  display: none;
+  background: rgba(10, 20, 15, 0.94);
+  border: 1px solid rgba(74, 222, 128, 0.4);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #f8fafc;
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  min-width: 220px;
+  backdrop-filter: blur(8px);
+}
+
+.india-map-tooltip .tooltip-header {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: #4ade80;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+}
+
+.india-map-tooltip .tooltip-footer {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 6px;
+  font-style: italic;
   text-align: center;
 }
 
-#priceData h3 {
-  margin-bottom: 10px;
-  color: #2c3e50;
+/* Sidebar Selector Controls */
+.market-form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-#priceData p {
-  margin: 5px 0;
-  font-size: 18px;
+.market-select {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
 }
 
-/* Chart canvas */
-canvas {
-  margin: 20px 0;
-  max-width: 100%;
+.market-select:focus {
+  border-color: #4ade80 !important;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.25) !important;
 }
 
-/* Responsive behavior */
-@media (max-width: 600px) {
-  .container {
-    padding: 20px;
-  }
-
-  button {
-    font-size: 14px;
-  }
-
-  select {
-    font-size: 14px;
-  }
+.market-select option {
+  background-color: #0f172a;
+  color: #ffffff;
 }
 
+/* Primary Action Button */
+.btn-analyze-prices {
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+}
+
+.btn-analyze-prices:hover {
+  background: linear-gradient(135deg, #16a34a, #166534);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+  color: #ffffff;
+}
+
+/* Price Highlight Cards */
+.price-metric-card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.price-metric-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.price-metric-card.modal-card {
+  background: linear-gradient(135deg, rgba(20, 83, 45, 0.5), rgba(15, 23, 42, 0.8));
+  border-color: rgba(74, 222, 128, 0.4);
+}
+
+.price-val {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.price-lbl {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* Trend Pills (7D / 30D) */
+.trend-pill {
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.trend-pill:hover,
+.trend-pill.active {
+  background: #15803d;
+  color: #ffffff;
+  border-color: #4ade80;
+}
+
+/* Chart Canvas Wrapper */
+.chart-container-box {
+  position: relative;
+  height: 230px;
+  width: 100%;
+}

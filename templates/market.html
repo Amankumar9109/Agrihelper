@@ -1,46 +1,233 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Market Price Dashboard</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='market.css') }}">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-  <div class="container">
-    <h2>Select Market Details</h2>
+{% extends "base.html" %}
 
-    <!-- State Dropdown: rendered with Jinja -->
-    <select id="stateDropdown" class="form-select">
-      <option selected disabled>Select State</option>
-      {% for state in states %}
-        <option value="{{ state }}">{{ state }}</option>
-      {% endfor %}
-    </select>
+{% block title %}Commodity Market Intelligence & Interactive India Map - AgriHelper{% endblock %}
 
-    <!-- These will be filled dynamically via JavaScript -->
-    <select id="districtDropdown" class="form-select">
-      <option selected disabled>Select District</option>
-    </select>
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='market.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+{% endblock %}
 
-    <select id="marketDropdown" class="form-select">
-      <option selected disabled>Select Market</option>
-    </select>
+{% block content %}
+<div class="market-dashboard-container">
 
-    <select id="commodityDropdown" class="form-select">
-      <option selected disabled>Select Commodity</option>
-    </select>
-
-    <button id="getPrices">Get Prices</button>
+  <!-- Header Hero Banner -->
+  <div class="market-header-hero">
+    <div class="row align-items-center g-3">
+      <div class="col-lg-8">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill">
+            <i class="fa-solid fa-satellite-dish me-1"></i> APMC & e-NAM Mandi Network
+          </span>
+          <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-1 rounded-pill">
+            <i class="fa-solid fa-bolt me-1"></i> Real-time Feeds
+          </span>
+        </div>
+        <h1 class="display-6 fw-bold text-white mb-2 brand-font">Commodity Price Intelligence & India Map</h1>
+        <p class="text-secondary mb-0">
+          Explore real-time modal prices, APMC market arrivals, and historical 7/30-day commodity trends across all Indian states. Click any state on the map to inspect local mandis.
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <div class="d-flex justify-content-lg-end gap-3 flex-wrap">
+          <div class="text-center px-3 py-2 bg-dark rounded-3 border border-secondary border-opacity-25">
+            <div class="fs-4 fw-bold text-success">{{ total_mandis }}</div>
+            <div class="small text-muted">Reporting Mandis</div>
+          </div>
+          <div class="text-center px-3 py-2 bg-dark rounded-3 border border-secondary border-opacity-25">
+            <div class="fs-4 fw-bold text-warning">{{ total_commodities }}</div>
+            <div class="small text-muted">Crops Tracked</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="output">
-    <div id="priceData"></div>
-    <canvas id="stateMarketChart"></canvas>
-    <canvas id="nationalChart"></canvas>
+  <!-- Main Grid: Interactive Map + Sidebar Intelligence -->
+  <div class="market-grid">
+
+    <!-- LEFT COLUMN: Interactive India Map Card -->
+    <div class="market-card">
+      <div class="map-header-bar">
+        <div>
+          <h4 class="text-white mb-1 brand-font d-flex align-items-center gap-2">
+            <i class="fa-solid fa-map-location-dot text-success"></i> National Price Heatmap
+          </h4>
+          <span class="text-muted small">Hover for state insights &bull; Click to drill down into mandis</span>
+        </div>
+
+        <!-- Choropleth Crop Selector -->
+        <div class="d-flex align-items-center gap-2">
+          <label for="mapCommodityFilter" class="small text-muted mb-0 fw-semibold text-nowrap">Heatmap Crop:</label>
+          <select id="mapCommodityFilter" class="form-select form-select-sm market-select" style="min-width: 160px;">
+            <option value="All" selected>All Commodities</option>
+            {% for comm in top_commodities %}
+              <option value="{{ comm }}">{{ comm }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <!-- SVG Map Canvas Wrapper -->
+      <div class="map-stage">
+        <!-- Floating Tooltip Card -->
+        <div id="indiaMapTooltip" class="india-map-tooltip"></div>
+
+        <!-- Pan / Zoom Controls -->
+        <div class="map-zoom-toolbar">
+          <button class="map-tool-btn" id="mapZoomIn" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
+          <button class="map-tool-btn" id="mapZoomOut" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
+          <button class="map-tool-btn" id="mapResetZoom" title="Reset View"><i class="fa-solid fa-arrows-rotate"></i></button>
+        </div>
+
+        <!-- India SVG Container -->
+        <div id="indiaMapContainer" style="width: 100%; height: 100%;"></div>
+      </div>
+
+      <!-- Map Legend Bar -->
+      <div class="map-legend-bar">
+        <div class="d-flex justify-content-between align-items-center small text-muted mb-1">
+          <span id="legendCommodityTitle" class="fw-semibold text-light">All Commodities (Avg ₹/Qtl)</span>
+          <span>Color Gradient</span>
+        </div>
+        <div class="legend-gradient-bar"></div>
+        <div class="d-flex justify-content-between align-items-center small">
+          <span id="legendMinPrice" class="text-success fw-bold">₹0</span>
+          <span class="text-warning fw-semibold">Median</span>
+          <span id="legendMaxPrice" class="text-danger fw-bold">₹0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Mandi Selector & Price Intelligence -->
+    <div class="market-card" id="marketControlsSidebar">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="text-white mb-0 brand-font d-flex align-items-center gap-2">
+          <i class="fa-solid fa-chart-pie text-warning"></i> Mandi Analytics
+        </h4>
+        <span id="activeStateBadge" class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill" style="display: none;"></span>
+      </div>
+
+      <!-- Dropdown Selectors -->
+      <div class="row g-2 mb-3">
+        <!-- State -->
+        <div class="col-sm-6">
+          <label class="market-form-label"><i class="fa-solid fa-map-pin text-success"></i> State</label>
+          <select id="stateDropdown" class="form-select market-select">
+            <option selected disabled>Select State</option>
+            {% for state in states %}
+              <option value="{{ state }}">{{ state }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- District -->
+        <div class="col-sm-6">
+          <label class="market-form-label"><i class="fa-solid fa-city text-info"></i> District</label>
+          <select id="districtDropdown" class="form-select market-select">
+            <option selected disabled>Select District</option>
+          </select>
+        </div>
+
+        <!-- Market / Mandi -->
+        <div class="col-sm-6">
+          <label class="market-form-label"><i class="fa-solid fa-store text-warning"></i> Market (Mandi)</label>
+          <select id="marketDropdown" class="form-select market-select">
+            <option selected disabled>Select Market</option>
+          </select>
+        </div>
+
+        <!-- Commodity -->
+        <div class="col-sm-6">
+          <label class="market-form-label"><i class="fa-solid fa-wheat-awn text-success"></i> Commodity</label>
+          <select id="commodityDropdown" class="form-select market-select">
+            <option selected disabled>Select Commodity</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="getPrices" class="btn btn-analyze-prices w-100 mb-4">
+        <i class="fa-solid fa-chart-line me-2"></i> Analyze Mandi Prices & Trends
+      </button>
+
+      <!-- Output Section (Shown after clicking Analyze) -->
+      <div id="marketOutputContainer" style="display: none;">
+        
+        <!-- Mandi Banner -->
+        <div id="selectedMandiHeader" class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mb-3"></div>
+
+        <!-- 3 Highlight Price Cards -->
+        <div class="row g-2 mb-3">
+          <div class="col-4">
+            <div class="price-metric-card">
+              <div class="price-lbl">Min Rate</div>
+              <div class="price-val text-info" id="valMinPrice">₹-</div>
+              <span class="small text-muted">per quintal</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="price-metric-card modal-card">
+              <div class="price-lbl text-success">Modal (Avg)</div>
+              <div class="price-val text-success" id="valModalPrice">₹-</div>
+              <span class="small text-muted">per quintal</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="price-metric-card">
+              <div class="price-lbl">Max Rate</div>
+              <div class="price-val text-danger" id="valMaxPrice">₹-</div>
+              <span class="small text-muted">per quintal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Historical Trend Chart Box (Phase 2 Requirement) -->
+        <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+            <div>
+              <span class="fw-bold text-white small brand-font"><i class="fa-solid fa-arrow-trend-up text-success me-1"></i> Price Trend Trajectory</span>
+              <span id="trendChangeBadge" class="badge ms-2"></span>
+            </div>
+            <div class="d-flex gap-1">
+              <button class="trend-pill" data-days="7">7 Days</button>
+              <button class="trend-pill active" data-days="30">30 Days</button>
+            </div>
+          </div>
+          <div class="chart-container-box">
+            <canvas id="priceTrendChart"></canvas>
+          </div>
+        </div>
+
+        <!-- State-wise Mandi Comparison -->
+        <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25 mb-3">
+          <span class="fw-bold text-white small brand-font d-block mb-2">
+            <i class="fa-solid fa-chart-column text-warning me-1"></i> Mandi Rates Across Selected State
+          </span>
+          <div class="chart-container-box">
+            <canvas id="stateMarketChart"></canvas>
+          </div>
+        </div>
+
+        <!-- National Comparison Line -->
+        <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+          <span class="fw-bold text-white small brand-font d-block mb-2">
+            <i class="fa-solid fa-earth-americas text-info me-1"></i> National Comparison Across States
+          </span>
+          <div class="chart-container-box">
+            <canvas id="nationalChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
   </div>
 
-  <script src="{{ url_for('static', filename='market.js') }}"></script>
-</body>
-</html>
+</div>
+{% endblock %}
 
+{% block extra_js %}
+<!-- India Map Data & Controller Scripts -->
+<script src="{{ url_for('static', filename='india_map/india_states_data.js') }}"></script>
+<script src="{{ url_for('static', filename='india_map/map.js') }}"></script>
+<script src="{{ url_for('static', filename='market.js') }}"></script>
+{% endblock %}

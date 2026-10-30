@@ -1,0 +1,41 @@
+# CENTRAL & STATE GOVERNMENT SCHEMES FOR INDIAN FARMERS
+
+## 1. Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)
+- Objective: To provide income support to all landholding farmer families across India to fulfill financial needs for agricultural inputs and domestic requirements.
+- Financial Benefit: Rs. 6,000 per year directly transferred into the bank accounts of eligible farmers through Direct Benefit Transfer (DBT) in three equal 4-monthly installments of Rs. 2,000 each (Period 1: April-July, Period 2: August-November, Period 3: December-March).
+- Eligibility: All landholding farmer families who have cultivable landholding in their names. Exclusions include institutional landholders, farmer families holding constitutional posts, serving or retired officers/employees of state or central government, and individuals paying income tax.
+- Required Documents: Aadhaar Card, Land ownership papers (Khata/Khasra/ROR), active Bank Account linked with Aadhaar, mobile number for eKYC OTP verification.
+- How to Apply: Online via pmkisan.gov.in portal or CSC (Common Service Center) or PM-KISAN mobile app with facial authentication. Mandatory eKYC is completed through OTP or biometric authentication.
+
+## 2. Pradhan Mantri Fasal Bima Yojana (PMFBY)
+- Objective: Comprehensive risk insurance cover against natural hazards (drought, flood, unseasonal rains, pest infestation, cyclone, hailstorm, landslides).
+- Premium Rates for Farmers:
+  * Kharif foodgrain & oilseed crops: Uniform premium of 2.0% of Sum Insured.
+  * Rabi foodgrain & oilseed crops: Uniform premium of 1.5% of Sum Insured.
+  * Annual Commercial / Horticultural crops: Uniform premium of 5.0% of Sum Insured.
+  * The balance of actuarial premium is subsidized equally (50:50) by Central and State Governments.
+- Claim Process: Crop loss must be reported within 72 hours of localized calamity occurrence through the Crop Insurance App, National Crop Insurance Portal (pmfby.gov.in), or the bank/toll-free helpline (1800-180-1551). Remote sensing satellite imagery and drone surveys assist in rapid claim settlements.
+
+## 3. Soil Health Card Scheme (SHC)
+- Objective: Provide soil test reports to farmers every 2 years to promote balanced and judicious use of chemical and organic fertilizers.
+- Details Provided in the Card:
+  * 12 essential parameters: Primary nutrients (N, P, K), Secondary nutrient (S), Micronutrients (Zn, Fe, Cu, Mn, Bo), and Physical parameters (pH, EC, Organic Carbon).
+  * Crop-wise customized fertilizer dosage recommendations to lower input costs and prevent soil degradation.
+- Cost: Free of cost to registered farmers. Samples are collected from fields by state agriculture department field staff and tested at authorized Soil Testing Laboratories (STLs).
+
+## 4. electronic National Agriculture Market (e-NAM)
+- Objective: A pan-India electronic trading portal networking existing APMC mandis to create a unified national market for agricultural commodities.
+- Benefits to Farmers:
+  * Transparent online bidding mechanism prevents middleman exploitation.
+  * Access to buyers across all connected states leading to better price realization.
+  * Free electronic weighing and quality assaying testing facilities at mandi gates.
+  * Direct payment settlement into the farmer's verified bank account without intermediaries.
+- Portal: enam.gov.in. Over 1,300+ wholesale mandis across 23 states and UTs are integrated into e-NAM.
+
+## 5. Kisan Credit Card (KCC) Scheme
+- Objective: Ensure adequate and timely short-term credit to farmers for agricultural production, post-harvest expenses, and working capital for allied activities like dairy and fisheries.
+- Credit Limit & Interest Subvention:
+  * Collateral-free loan up to Rs. 1.60 Lakh (extended to Rs. 3.0 Lakh with minimal hypothecation).
+  * Concessional interest rate of 7% per annum. Prompt repaying farmers receive an additional 3% prompt repayment incentive (PRI), resulting in an effective interest rate of only 4% per annum.
+- Validity: 5 years, with annual review and built-in ATM-enabled RuPay debit card for easy cash withdrawal from any bank ATM.
+- Application: Available at all Commercial Banks, Regional Rural Banks (RRBs), and Cooperative Banks. Simplified 1-page application form.

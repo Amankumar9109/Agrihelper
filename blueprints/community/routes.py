@@ -11,6 +11,7 @@ def community():
     return render_template('community.html', posts=posts)
 
 @community_bp.route('/community/post', methods=['GET', 'POST'])
+@login_required
 def post():
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
@@ -21,8 +22,7 @@ def post():
             flash('Title and content are required.', 'danger')
             return render_template('post.html')
 
-        user_id = current_user.id if current_user.is_authenticated else 1
-        new_post = Post(title=title, content=content, category=category, user_id=user_id)
+        new_post = Post(title=title, content=content, category=category, user_id=current_user.id)
         db.session.add(new_post)
         db.session.commit()
 
