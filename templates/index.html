@@ -214,9 +214,12 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html">Log in / Sign up</a></li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link text-warning fw-bold" href="{{ url_for('auth.logout') }}"><i class="fa-solid fa-user me-1"></i>{{ current_user.name }} (Logout)</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log in / Sign up</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

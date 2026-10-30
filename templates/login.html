@@ -234,21 +234,23 @@
 <body style="background-color: #055e0c6d;">
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form >
+            <form action="{{ url_for('auth.signup') }}" method="POST">
                 <h1>Create Account</h1>
-                <input type="text" name="name" placeholder="Name" required />
-                <input type="email" name="email" placeholder="Email" required />
-                <input type="password" name="password" placeholder="Password" required />
+                {% if error %}<p style="color: #dc2626; font-weight: bold; margin: 5px 0;">{{ error }}</p>{% endif %}
+                <input type="text" name="name" placeholder="Full Name" required />
+                <input type="email" name="email" placeholder="Email Address" required />
+                <input type="password" name="password" placeholder="Password (min 6 chars)" minlength="6" required />
                 <button type="submit">Sign Up</button>
             </form>
         </div>
 
         <div class="form-container sign-in-container">
-            <form >
+            <form action="{{ url_for('auth.login') }}" method="POST">
                 <h1>Sign In</h1>
-                <input type="email" name="email" placeholder="Email" required />
+                {% if error %}<p style="color: #dc2626; font-weight: bold; margin: 5px 0;">{{ error }}</p>{% endif %}
+                <input type="email" name="email" placeholder="Email Address" required />
                 <input type="password" name="password" placeholder="Password" required />
-                <a href="#">Forgot your password?</a>
+                <a href="{{ url_for('main.home') }}" style="color: #15803d; font-weight: 600;">&larr; Back to Home</a>
                 <button type="submit">Sign In</button>
             </form>
         </div>

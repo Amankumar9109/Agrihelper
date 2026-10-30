@@ -32,3 +32,8 @@ venv.bak/
 .vscode/
 .idea/
 .DS_Store
+
+# SQLite & Instance data
+instance/
+*.db
+*.sqlite3

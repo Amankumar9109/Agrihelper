@@ -1,2 +1,6 @@
 flask
 pandas
+flask-sqlalchemy
+flask-migrate
+flask-login
+python-dotenv

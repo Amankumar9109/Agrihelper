@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}AgriHelper - Smart Agricultural Platform{% endblock %}</title>
+
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 & FontAwesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Base Design System Styling -->
+    <style>
+        :root {
+            --agri-primary: #15803d;
+            --agri-primary-hover: #166534;
+            --agri-secondary: #047857;
+            --agri-accent: #f59e0b;
+            --agri-accent-hover: #d97706;
+            --agri-dark: #091a10;
+            --agri-card-bg: rgba(15, 23, 42, 0.75);
+            --agri-glass: rgba(255, 255, 255, 0.08);
+            --agri-border: rgba(255, 255, 255, 0.12);
+            --agri-text: #f8fafc;
+            --agri-text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--agri-dark);
+            color: var(--agri-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        h1, h2, h3, h4, .brand-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Glassmorphism Navbar */
+        .agri-nav {
+            background: rgba(9, 26, 16, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--agri-border);
+            transition: all 0.3s ease;
+            z-index: 1030;
+        }
+
+        .agri-nav .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #4ade80 !important;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .agri-nav .navbar-brand i {
+            color: var(--agri-accent);
+        }
+
+        .agri-nav .nav-link {
+            color: #cbd5e1 !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 14px !important;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .agri-nav .nav-link:hover,
+        .agri-nav .nav-link.active {
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Cart Badge */
+        .cart-btn-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -4px;
+            right: -6px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            border: 2px solid var(--agri-dark);
+        }
+
+        /* Main Content Layout */
+        main.main-content {
+            flex: 1 0 auto;
+        }
+
+        /* Flash Message Toasts */
+        .flash-container {
+            position: fixed;
+            top: 85px;
+            right: 20px;
+            z-index: 1050;
+            max-width: 360px;
+        }
+
+        /* Modern Agri Footer */
+        .agri-footer {
+            background: #06110a;
+            border-top: 1px solid var(--agri-border);
+            color: var(--agri-text-muted);
+            padding-top: 3.5rem;
+            padding-bottom: 2rem;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .agri-footer h5 {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .agri-footer a {
+            color: var(--agri-text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .agri-footer a:hover {
+            color: #4ade80;
+        }
+
+        .agri-footer .helpline-badge {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: var(--agri-accent);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Floating AI Chatbot Button (Phase 3 ready) */
+        .floating-chatbot-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.4);
+            cursor: pointer;
+            z-index: 1040;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .floating-chatbot-btn:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 15px 30px rgba(34, 197, 94, 0.6);
+            color: #ffffff;
+        }
+
+        .chatbot-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(34, 197, 94, 0.5);
+            animation: pulse-wave 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse-wave {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Shared Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top agri-nav">
+        <div class="container">
+            <a class="navbar-brand brand-font" href="{{ url_for('main.home') }}">
+                <i class="fa-solid fa-seedling"></i> AgriHelper
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#agriNavbar" aria-controls="agriNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="agriNavbar">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.home') }}"><i class="fa-solid fa-house me-1"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('farming.techniques') }}"><i class="fa-solid fa-tractor me-1"></i> Techniques</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('market.market') }}"><i class="fa-solid fa-chart-line me-1"></i> Market Insights</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('weather.weather') }}"><i class="fa-solid fa-cloud-sun me-1"></i> Weather</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('policy.policy') }}"><i class="fa-solid fa-landmark me-1"></i> Schemes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('community.community') }}"><i class="fa-solid fa-users me-1"></i> Community</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link cart-btn-wrapper" href="{{ url_for('store.store') }}">
+                            <i class="fa-solid fa-bag-shopping me-1"></i> Store
+                            <span class="cart-badge" id="nav-cart-badge" style="display: none;">0</span>
+                        </a>
+                    </li>
+
+                    <!-- Authentication / User profile -->
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item dropdown ms-lg-2">
+                        <a class="nav-link dropdown-toggle btn btn-sm btn-outline-success text-light px-3 py-1" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-regular fa-circle-user me-1 text-success"></i> {{ current_user.name }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                            <li><h6 class="dropdown-header">{{ current_user.email }}</h6></li>
+                            <li><hr class="dropdown-divider border-secondary"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('store.store') }}"><i class="fa-solid fa-box-open me-2"></i> My Orders</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('community.community') }}"><i class="fa-solid fa-pen me-2"></i> My Posts</a></li>
+                            <li><hr class="dropdown-divider border-secondary"></li>
+                            <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-sm btn-success px-3 py-2 fw-semibold rounded-pill" href="{{ url_for('auth.login') }}">
+                            <i class="fa-solid fa-arrow-right-to-bracket me-1"></i> Log In
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages Container -->
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'danger' or category == 'error' else ('success' if category == 'success' else 'info') }} alert-dismissible fade show shadow-lg border-0" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Floating Chatbot Action Button (Phase 3 ready) -->
+    <button class="floating-chatbot-btn" id="openChatbotBtn" title="Ask AgriBot AI Assistant" onclick="toggleAgriBot()">
+        <span class="chatbot-pulse"></span>
+        <i class="fa-solid fa-robot"></i>
+    </button>
+
+    <!-- Shared Footer -->
+    <footer class="agri-footer mt-auto">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="brand-font text-success"><i class="fa-solid fa-seedling me-2"></i>AgriHelper</h5>
+                    <p class="text-secondary pe-lg-4">
+                        Empowering Indian farmers with real-time commodity market insights, AI agronomy advisory, smart weather forecasts, and direct community collaboration.
+                    </p>
+                    <div class="helpline-badge">
+                        <i class="fa-solid fa-phone-volume me-2"></i> Kisan Call Center: <strong>1800-180-1551</strong>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5>Quick Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ url_for('market.market') }}">Mandi Prices</a></li>
+                        <li class="mb-2"><a href="{{ url_for('weather.weather') }}">Weather Forecast</a></li>
+                        <li class="mb-2"><a href="{{ url_for('policy.policy') }}">Govt Schemes</a></li>
+                        <li class="mb-2"><a href="{{ url_for('farming.techniques') }}">Modern Techniques</a></li>
+                        <li class="mb-2"><a href="{{ url_for('store.store') }}">Agri Store</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Community & Advisory</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ url_for('community.community') }}">Farmer Forum</a></li>
+                        <li class="mb-2"><a href="javascript:void(0)" onclick="toggleAgriBot()">AgriBot AI Assistant</a></li>
+                        <li class="mb-2"><a href="{{ url_for('community.post') }}">Share Experience</a></li>
+                        <li class="mb-2"><a href="{{ url_for('farming.drip_irrigation') }}">Precision Drip Irrigation</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Platform Info</h5>
+                    <p class="text-secondary small mb-2">Designed and engineered to modernize agriculture with AI, automated data pipelines, and verified national datasets.</p>
+                    <div class="d-flex gap-3 fs-5 mt-3">
+                        <a href="https://github.com/Amankumar9109/Agrihelper" target="_blank" class="text-secondary"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="text-secondary"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="text-secondary"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" class="text-secondary"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center py-2 small text-secondary">
+                <p class="mb-0">&copy; 2026 AgriHelper Platform. All rights reserved.</p>
+                <p class="mb-0">Built for Indian Agriculture &bull; Supporting PM-KISAN, e-NAM & APMC data</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global Cart & Chatbot Scripts -->
+    <script>
+        function toggleAgriBot() {
+            alert("AgriBot AI assistant is configured and ready for Phase 3 RAG integration!");
+        }
+
+        // Fetch Cart Count if logged in
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("/api/cart/count")
+                .then(res => res.json())
+                .then(data => {
+                    const badge = document.getElementById("nav-cart-badge");
+                    if (badge && data.count > 0) {
+                        badge.textContent = data.count;
+                        badge.style.display = "inline-block";
+                    }
+                })
+                .catch(() => {});
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
