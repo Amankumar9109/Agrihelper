@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Server Error | AgriHelper{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center" style="margin-top: 100px; margin-bottom: 80px;">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="p-5 bg-dark rounded-4 border border-secondary border-opacity-25 shadow-lg">
+        <div class="display-1 fw-bold text-danger mb-3 font-monospace">500</div>
+        <h2 class="h3 fw-bold text-white mb-3">Something Went Wrong</h2>
+        <p class="text-secondary mb-4">
+          Our servers encountered an unexpected glitch while tending to the fields. Our engineers have been alerted and are working to resolve it.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          <a href="{{ url_for('main.home') }}" class="btn btn-success fw-bold rounded-pill px-4 py-2">
+            <i class="fa-solid fa-house me-1"></i> Return Home
+          </a>
+          <button onclick="window.location.reload()" class="btn btn-outline-light rounded-pill px-3 py-2">
+            <i class="fa-solid fa-rotate-right me-1"></i> Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

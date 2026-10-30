@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Page Not Found | AgriHelper{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center" style="margin-top: 100px; margin-bottom: 80px;">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="p-5 bg-dark rounded-4 border border-secondary border-opacity-25 shadow-lg">
+        <div class="display-1 fw-bold text-success mb-3 font-monospace">404</div>
+        <h2 class="h3 fw-bold text-white mb-3">Field Not Found!</h2>
+        <p class="text-secondary mb-4">
+          The crop page or resource you are looking for might have been moved, renamed, or is temporarily unavailable.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          <a href="{{ url_for('main.home') }}" class="btn btn-success fw-bold rounded-pill px-4 py-2">
+            <i class="fa-solid fa-house me-1"></i> Return Home
+          </a>
+          <a href="{{ url_for('market.market') }}" class="btn btn-outline-secondary rounded-pill px-3 py-2">
+            <i class="fa-solid fa-chart-line me-1"></i> Mandi Prices
+          </a>
+          <a href="{{ url_for('policy.policy') }}" class="btn btn-outline-secondary rounded-pill px-3 py-2">
+            <i class="fa-solid fa-landmark me-1"></i> Govt Schemes
+          </a>
+          <a href="{{ url_for('store.store') }}" class="btn btn-outline-secondary rounded-pill px-3 py-2">
+            <i class="fa-solid fa-bag-shopping me-1"></i> Agri-Store
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

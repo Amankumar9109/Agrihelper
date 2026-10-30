@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | AgriHelper Community{% endblock %}
+
+{% block extra_css %}
+<style>
+  .post-detail-container {
+    margin-top: 85px;
+    margin-bottom: 3rem;
+  }
+
+  .post-detail-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 2.5rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    margin-bottom: 2rem;
+  }
+
+  .post-detail-img-box {
+    width: 100%;
+    max-height: 480px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    background: #1e293b;
+  }
+
+  .post-detail-img-box img {
+    width: 100%;
+    height: 100%;
+    max-height: 480px;
+    object-fit: cover;
+  }
+
+  .post-content-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+    white-space: pre-line;
+  }
+
+  .author-badge-card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1.25rem;
+  }
+
+  .comment-card {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .comment-card:hover {
+    border-color: rgba(74, 222, 128, 0.3);
+  }
+
+  .btn-like-detail {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-like-detail:hover,
+  .btn-like-detail.liked {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container post-detail-container">
+  
+  <!-- Breadcrumb -->
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <a href="{{ url_for('community.community') }}" class="btn btn-outline-secondary rounded-pill px-3">
+      <i class="fa-solid fa-arrow-left me-1"></i> Back to All Discussions
+    </a>
+    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill">
+      {{ post.category }}
+    </span>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      
+      <!-- Main Post Card -->
+      <article class="post-detail-card">
+        
+        <!-- Author & Date Header -->
+        <div class="d-flex align-items-center justify-content-between border-bottom border-secondary border-opacity-25 pb-3 mb-3">
+          <div class="d-flex align-items-center gap-3">
+            <img src="{{ post.author.avatar_url or 'https://ui-avatars.com/api/?name=Farmer&background=15803d&color=fff' }}"
+                 alt="{{ post.author.name if post.author else 'Farmer' }}"
+                 class="rounded-circle border border-success"
+                 width="48"
+                 height="48"
+                 style="object-fit: cover;">
+            <div>
+              <h5 class="text-white fw-bold mb-0">{{ post.author.name if post.author else 'AgriHelper Member' }}</h5>
+              <small class="text-secondary">
+                <i class="fa-regular fa-calendar-days me-1"></i> Published on {{ post.created_at.strftime('%d %B %Y at %I:%M %p') }}
+              </small>
+            </div>
+          </div>
+
+          <!-- Edit / Delete for Owner -->
+          {% if current_user.is_authenticated and current_user.id == post.user_id %}
+          <div class="d-flex gap-2">
+            <a href="{{ url_for('community.edit_post', post_id=post.id) }}" class="btn btn-sm btn-outline-light rounded-pill px-3">
+              <i class="fa-solid fa-pen me-1"></i> Edit
+            </a>
+            <form method="POST" action="{{ url_for('community.delete_post', post_id=post.id) }}" onsubmit="return confirm('Are you sure you want to delete this post?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                <i class="fa-solid fa-trash me-1"></i> Delete
+              </button>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Post Title -->
+        <h1 class="display-6 fw-bold text-white mb-3 brand-font">{{ post.title }}</h1>
+
+        <!-- Post Image -->
+        {% if post.image_url %}
+        <div class="post-detail-img-box">
+          <img src="{{ post.image_url }}" alt="{{ post.title }}">
+        </div>
+        {% endif %}
+
+        <!-- Content -->
+        <div class="post-content-text mb-4">
+          {{ post.content }}
+        </div>
+
+        <!-- Interaction Footer -->
+        <div class="d-flex align-items-center justify-content-between border-top border-secondary border-opacity-25 pt-3">
+          <div class="d-flex align-items-center gap-3">
+            <button type="button"
+                    class="btn-like-detail {% if is_liked %}liked{% endif %}"
+                    id="btnDetailLike"
+                    onclick="toggleDetailLike({{ post.id }})">
+              <i class="fa-solid fa-heart"></i>
+              <span id="detailLikeCount">{{ post.get_likes_count() }}</span>
+              <span>Likes</span>
+            </button>
+
+            <span class="text-secondary small">
+              <i class="fa-regular fa-comment me-1"></i>
+              <span id="commentHeaderCount">{{ comments|length }}</span> Comments
+            </span>
+          </div>
+
+          <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="copyPostLink()">
+            <i class="fa-solid fa-share-nodes me-1"></i> Share
+          </button>
+        </div>
+
+      </article>
+
+      <!-- Comments Section -->
+      <section id="commentsSection" class="post-detail-card">
+        <h4 class="fw-bold text-white mb-4 d-flex align-items-center gap-2">
+          <i class="fa-solid fa-comments text-success"></i>
+          <span>Discussion (<span id="commentCountSpan">{{ comments|length }}</span>)</span>
+        </h4>
+
+        <!-- Add Comment Form -->
+        {% if current_user.is_authenticated %}
+        <div class="mb-4">
+          <form method="POST" action="{{ url_for('community.add_comment', post_id=post.id) }}" id="commentForm">
+            <div class="d-flex gap-3">
+              <img src="{{ current_user.avatar_url or 'https://ui-avatars.com/api/?name=Farmer&background=15803d&color=fff' }}"
+                   alt="{{ current_user.name }}"
+                   class="rounded-circle border border-success"
+                   width="40"
+                   height="40"
+                   style="object-fit: cover;">
+              <div class="flex-grow-1">
+                <textarea name="content"
+                          id="commentContentInput"
+                          class="form-control bg-dark text-white border-secondary border-opacity-25 mb-2"
+                          rows="3"
+                          placeholder="Share your answer, experience or feedback..."
+                          required></textarea>
+                <div class="text-end">
+                  <button type="submit" class="btn btn-success fw-bold rounded-pill px-4">
+                    <i class="fa-solid fa-paper-plane me-1"></i> Post Comment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        {% else %}
+        <div class="alert alert-dark border-secondary border-opacity-25 text-center p-3 mb-4 rounded-3">
+          <span class="text-secondary">Have insight to share?</span>
+          <a href="{{ url_for('auth.login', next=request.path) }}" class="btn btn-sm btn-success rounded-pill ms-2 px-3">
+            <i class="fa-solid fa-arrow-right-to-bracket me-1"></i> Log In to Join Discussion
+          </a>
+        </div>
+        {% endif %}
+
+        <!-- Comments Stream -->
+        <div id="commentsList">
+          {% for comment in comments %}
+          <div class="comment-card" id="comment-{{ comment.id }}">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div class="d-flex align-items-center gap-2">
+                <img src="{{ comment.author.avatar_url or 'https://ui-avatars.com/api/?name=Farmer&background=15803d&color=fff' }}"
+                     alt="{{ comment.author.name if comment.author else 'Farmer' }}"
+                     class="rounded-circle"
+                     width="30"
+                     height="30"
+                     style="object-fit: cover;">
+                <span class="fw-bold text-white small">{{ comment.author.name if comment.author else 'Community Farmer' }}</span>
+                <span class="text-secondary small">&bull; {{ comment.created_at.strftime('%d %b %Y, %I:%M %p') }}</span>
+              </div>
+
+              {% if current_user.is_authenticated and (current_user.id == comment.user_id or current_user.id == post.user_id) %}
+              <form method="POST" action="{{ url_for('community.delete_comment', comment_id=comment.id) }}" onsubmit="return confirm('Delete this comment?');">
+                <button type="submit" class="btn btn-sm text-danger p-0 border-0" title="Delete comment">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+              </form>
+              {% endif %}
+            </div>
+            <p class="text-light mb-0 small" style="white-space: pre-line;">{{ comment.content }}</p>
+          </div>
+          {% else %}
+          <div id="noCommentsYet" class="text-center py-4 text-secondary">
+            <i class="fa-regular fa-message fs-3 mb-2 d-block"></i>
+            No comments yet. Start the conversation!
+          </div>
+          {% endfor %}
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- Sidebar Author Bio & Rules -->
+    <div class="col-lg-4">
+      <div class="author-badge-card mb-4 shadow">
+        <h6 class="text-success fw-bold text-uppercase small mb-3">
+          <i class="fa-solid fa-address-card me-1"></i> Author Profile
+        </h6>
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <img src="{{ post.author.avatar_url or 'https://ui-avatars.com/api/?name=Farmer&background=15803d&color=fff' }}"
+               alt="{{ post.author.name if post.author else 'Farmer' }}"
+               class="rounded-circle border border-success"
+               width="56"
+               height="56"
+               style="object-fit: cover;">
+          <div>
+            <h5 class="text-white fw-bold mb-0">{{ post.author.name if post.author else 'AgriHelper Member' }}</h5>
+            <small class="text-secondary">Community Contributor</small>
+          </div>
+        </div>
+        <p class="small text-secondary mb-0">
+          Member of the AgriHelper farming network. Actively contributing knowledge and experience to help Bharat's agriculture thrive.
+        </p>
+      </div>
+
+      <div class="author-badge-card shadow">
+        <h6 class="text-warning fw-bold text-uppercase small mb-3">
+          <i class="fa-solid fa-shield-cat me-1"></i> Community Guidelines
+        </h6>
+        <ul class="small text-secondary ps-3 mb-0 d-flex flex-column gap-2">
+          <li>Be respectful and supportive to fellow cultivators.</li>
+          <li>Share actionable tips, genuine experiences, and verified techniques.</li>
+          <li>Never post commercial spam or unverified medical advice for cattle/crops.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  async function toggleDetailLike(postId) {
+    {% if not current_user.is_authenticated %}
+    window.location.href = "{{ url_for('auth.login', next=request.path) }}";
+    return;
+    {% endif %}
+
+    const btn = document.getElementById('btnDetailLike');
+    const countSpan = document.getElementById('detailLikeCount');
+
+    try {
+      const resp = await fetch(`/community/post/${postId}/like`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await resp.json();
+      if (data.success) {
+        countSpan.textContent = data.likes_count;
+        if (data.liked) {
+          btn.classList.add('liked');
+        } else {
+          btn.classList.remove('liked');
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function copyPostLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      alert("Post link copied to clipboard!");
+    }).catch(err => {
+      console.error(err);
+    });
+  }
+</script>
+{% endblock %}

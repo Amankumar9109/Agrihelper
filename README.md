@@ -1,170 +1,137 @@
-# 🌱 AgriHelper
+# 🌱 AgriHelper - Next-Generation Agricultural Platform for India
 
-**Empowering Farmers with Smart Agriculture, Market Intelligence, and Modern Techniques**
+**Empowering Bharat's Farmers with Smart Agriculture, Market Intelligence, AI Advisory, and Direct Subsidies**
 
-AgriHelper is a Flask-powered web platform designed to revolutionize the agricultural ecosystem in India. It bridges the gap between traditional farming and modern technology by providing real-time APMC mandi crop prices, weather insights, modern sustainable farming guides, government policy directories, an agricultural marketplace, and a farmer community platform.
-
----
-
-## 📌 Key Features
-
-### 1. 📊 Market Insights & Analytics
-- **Dynamic Cascading Filters:** Select `State` ➔ `District` ➔ `Market (Mandi)` ➔ `Commodity`.
-- **Price Breakdown:** Real-time computation of **Modal Price**, **Minimum Price**, and **Maximum Price** (₹/Quintal).
-- **Comparative Analysis:** Compare modal prices across different markets within the state and nationwide benchmarks.
-- Powered by Pandas data processing over comprehensive agricultural market datasets.
-
-### 2. 🚜 Modern Farming Techniques
-Interactive, dedicated guides for high-efficiency and sustainable agricultural practices:
-- **Drip Irrigation:** Water-efficient micro-irrigation systems.
-- **Soil Health Management:** Nutrient balancing, pH monitoring, and fertility improvement.
-- **Vertical Farming:** Space-efficient indoor growing systems.
-- **Agricultural Drones:** Aerial crop monitoring and automated spraying.
-- **Hydroponics:** Soil-less crop cultivation.
-- **AI & Data Analytics:** Precision farming, crop health diagnosis, and yield prediction.
-
-### 3. 📜 Government Schemes & Policies
-Comprehensive guides explaining financial support, eligibility, and step-by-step application instructions:
-- **PM-KISAN:** ₹6,000/year direct income transfer to farmers.
-- **PMFBY:** Crop insurance protection against climate hazards and natural calamities.
-- **Soil Health Card Scheme:** Soil testing reports and customized fertilizer recommendations.
-- **eNAM (National Agriculture Market):** Unified national digital trading platform.
-- **Kisan Credit Card (KCC):** Accessible credit for farm inputs and equipment.
-
-### 4. ☀️ Weather Analytics
-- Climate conditions and weather forecasting to assist farmers with sowing, irrigation, and harvesting decisions.
-
-### 5. 🛒 AgriHelper Store
-- Direct marketplace showcase for seeds, organic fertilizers, tools, and modern machinery.
-
-### 6. 🤝 Farmer Community
-- Knowledge-sharing forum where farmers and agricultural specialists can publish questions, discuss challenges, and share farming practices.
+AgriHelper is a production-ready, full-stack Flask agricultural ecosystem built to revolutionize farming across India. It connects small, marginal, and commercial cultivators to authentic APMC mandi commodity prices, an AI-powered agricultural RAG chatbot, a virtual interactive India map, official government welfare schemes with eligibility checking, an e-commerce farming supplies store with Razorpay payments, and an active farmer community forum.
 
 ---
 
-## 🛠️ Tech Stack
+## 📌 Comprehensive Feature Highlights
 
-- **Backend:** Python 3, Flask, Pandas
-- **Frontend:** HTML5, CSS3, JavaScript (ES6+), Bootstrap 5, Tailwind CSS, FontAwesome
-- **Data Source:** Static JSON dataset (`static/data/market_data.json`)
-- **Execution Script:** Batch script (`run.bat`) for quick startup on Windows
+### 1. 🗺️ Interactive Virtual India Map & APMC Market Insights (Phase 2)
+- **High-Precision SVG India Map:** Interactive vector map covering all 36 Indian States and Union Territories.
+- **Dynamic Choropleth Heatmap:** Visualizes mandi density and price intensity by state with real-time hovering tooltips.
+- **230+ Agricultural Commodities:** Instant modal, min, and max price discovery across 1,360+ registered mandis.
+- **30-Day Historical Trend Charts:** Chart.js powered price trajectory curves with percentage price change badges.
+- **Fallback Simulation Engine:** High-fidelity cached APMC data ensuring 100% uptime regardless of external government portal latency.
+
+### 2. 🤖 AgriBot - AI-Powered RAG Agronomist (Phase 3)
+- **Retrieval-Augmented Generation (RAG):** 31 categorized domain chunks spanning Crop Calendars, Pest Diagnostics, Irrigation Schedules, Government Schemes, and APMC Market Guides.
+- **TF-IDF & Cosine Similarity Vector Retrieval:** Instant semantic context matching with zero external API dependencies.
+- **Interactive Slide-Out Drawer:** Accessible globally across every page on desktop and mobile.
+- **Session & Persistent History:** Automatically saves conversation history for authenticated farmers with 1-click history clearing.
+
+### 3. 💳 Razorpay E-Commerce Store & Cart System (Phase 4)
+- **12 Curated Agricultural Products:** Certified wheat/rice seeds, organic vermicompost, foliar NPK, solar insect traps, brass impact sprinklers, and digital 4-in-1 soil meters.
+- **Dynamic Shopping Cart:** Live quantity adjustments, individual subtotals, free delivery threshold indicator (free shipping above ₹999).
+- **Razorpay Payment Gateway:** Secure order creation in paise, cryptographic HMAC-SHA256 signature verification, and automated dev test sandbox fallback.
+- **Invoices & Order History:** Itemized tax invoice confirmation receipt and customer order history tracking.
+
+### 4. 📜 Real-Time Government Schemes & Eligibility Wizard (Phase 5)
+- **12 Verified Central & State Schemes:** Direct DBT cash transfers (PM-KISAN), subsidized crop insurance (PMFBY), solar agri pumps (PM-KUSUM), drip irrigation subsidies (PMKSY), and 4% credit (KCC).
+- **24-Hour Cache Synchronization:** Automatic database caching refreshed every 24 hours or on-demand via `POST /api/schemes/refresh`.
+- **Farmer Eligibility Wizard:** Interactive 3-step recommendation tool matching landholding size, crop type, and needs to the highest-matching subsidies.
+- **Returning User Notification:** Alerts farmers of newly added or updated schemes since their previous login.
+- **Backward Compatibility:** Dedicated guides (`/policy/p1` through `/policy/p5`) remain fully accessible.
+
+### 5. 🤝 Community Forum Upgrade (Phase 6)
+- **Category Feeds:** Discussion, Questions, Tips, and Success Stories.
+- **Multipart Photo Uploads:** Upload farm pictures directly to `static/uploads/posts/` with client-side preview.
+- **One-Like-Per-User System:** Toggleable heart upvotes backed by database `UniqueConstraint('user_id', 'post_id')`.
+- **Threaded Comment Stream:** Post answers and tips with instant timestamped updates.
+- **Server-Side Pagination:** Seamless 9-post grid pagination.
+
+### 6. 🔒 Weather Security Proxy & Agricultural Advisory (Phase 7)
+- **Zero Client API Key Leakage:** Replaced client-side weather API calls with secure server-side proxy `/api/weather?city=...`.
+- **On-Farm Meteorological Advisory:** Localized indicators for spraying safety (wind velocity < 15 km/h), irrigation needs, and disease risks.
+- **7-Day Agro-Temperature Trend:** Visual daily temperature outlook for Indian agricultural districts.
+
+### 7. 🎨 Global Polish, Theme & Deployment (Phase 7)
+- **Dark / Light Mode Toggle:** Global toggle saved in `localStorage` with smooth CSS token switching.
+- **Global Toast Notification System:** Non-blocking Bootstrap toasts replacing disruptive `alert()` dialogs.
+- **Custom Error Pages:** Dedicated `404.html` and `500.html` error pages with helpful routing and JSON API fallback.
+- **SEO & Social Sharing:** Dynamic Open Graph, Twitter Cards, and meta descriptions across all pages.
+- **Production WSGI Deployment:** Configured with `Procfile` (`gunicorn "app:create_app()"`), `runtime.txt`, and `.env.example`.
 
 ---
 
-## 📂 Project Structure
+## 🛠️ Tech Stack & Architecture
 
-```text
-agrihelper/
-├── app.py                      # Flask backend routes, API endpoints, & data processing
-├── requirements.txt            # Python dependencies
-├── run.bat                     # Windows startup batch script
-├── static/
-│   ├── data/
-│   │   └── market_data.json    # Mandi commodity pricing dataset
-│   ├── market.css / market.js  # Styling & AJAX logic for market filtering
-│   ├── modern_farming.css      # Styling for farming technique modules
-│   ├── policy.css / policy.js  # Styling & search filter for government schemes
-│   ├── script.js               # Global UI scripts
-│   ├── style.css               # Landing page styles
-│   └── weather.js              # Weather widget scripts
-└── templates/
-    ├── index.html              # Landing page
-    ├── market.html             # Market price checker & visualizer
-    ├── modern_farming.html     # Modern farming hub
-    ├── drip.html, soil.html... # Individual modern farming guides
-    ├── policy.html             # Government policies directory
-    ├── p1.html - p5.html       # Individual policy detail pages
-    ├── weather.html            # Weather forecast page
-    ├── store.html              # Agricultural store
-    ├── community.html          # Farmer community discussion board
-    ├── post.html               # Community post creation
-    └── login.html              # Authentication page
+- **Backend:** Python 3.13, Flask 3.x, Flask-SQLAlchemy, Flask-Login, Flask-Migrate, Gunicorn
+- **Database:** SQLite (development) / PostgreSQL (production)
+- **Frontend:** Vanilla HTML5, CSS3 Variables, Bootstrap 5.3, FontAwesome 6.5, Chart.js, D3/SVG Map
+- **Security:** Werkzeug password hashing, HMAC-SHA256 Razorpay signature verification, server-side weather proxy
+- **Payments:** Razorpay Python SDK (`razorpay-2.0.1`)
+- **AI & Data:** TF-IDF Cosine Similarity Vector Retrieval, Pandas 2.x
+
+---
+
+## 🚀 Quickstart Guide
+
+### 1. Prerequisites
+Ensure you have Python 3.10+ installed.
+
+### 2. Clone and Setup Environment
+```bash
+git clone https://github.com/Amankumar9109/Agrihelper.git
+cd Agrihelper
+
+# Create and activate virtual environment
+py -m venv venv
+venv\Scripts\activate   # Windows
+# source venv/bin/activate  # macOS / Linux
+
+# Install dependencies
+py -m pip install -r requirements.txt
 ```
 
----
+### 3. Environment Configuration
+Copy `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+*(All features run out-of-the-box with dev simulation fallbacks if API keys are not immediately configured!)*
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Python 3.10+** installed on your system.
-- `pip` (Python package manager).
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Amankumar9109/Agrihelper.git
-   cd Agrihelper
-   ```
-
-2. **Create a virtual environment (optional but recommended):**
-   ```bash
-   python -m venv venv
-   # On Windows (PowerShell):
-   .\venv\Scripts\Activate.ps1
-   # On Linux/macOS:
-   source venv/bin/activate
-   ```
-
-3. **Install the dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
----
-
-## ▶️ Running the Application
-
-### Option 1: Using the Python Launcher (Windows)
-```powershell
+### 4. Run Locally
+```bash
 py app.py
 ```
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 
-### Option 2: Standard Python command
-```powershell
-python app.py
-```
+---
 
-### Option 3: Using the Windows Batch script
-Double-click `run.bat` or run:
-```powershell
-.\run.bat
-```
+## 🧪 Comprehensive Automated Test Suites
 
-Once started, open your web browser and navigate to:
-```
-http://127.0.0.1:5000/
+AgriHelper includes automated test suites for every single architectural phase:
+
+| Phase | Test Command | Coverage |
+|---|---|---|
+| **Phase 0** | `py test_phase0.py` | 9 Blueprints, 20 Routes, Factory Pattern |
+| **Phase 1** | `py test_phase1.py` | Local Registration, Password Hashes, Google OAuth & Role Gatekeepers |
+| **Phase 2** | `py test_phase2.py` | APMC Pricing, India Map, 30-Day Trends, Mandi Analytics |
+| **Phase 3** | `py test_phase3.py` | AgriBot RAG Vector Engine, 31 Chunks, History Persistence |
+| **Phase 4** | `py test_phase4.py` | Cart CRUD, Razorpay Order Generation, Payment Verification |
+| **Phase 5** | `py test_phase5.py` | 12 Government Schemes, 24h Caching, Eligibility Wizard |
+| **Phase 6** | `py test_phase6.py` | Community CRUD, Image Uploads, Comments, 1-Like-Per-User |
+| **Phase 7** | `py test_phase7.py` | Weather Proxy, Custom 404/500, Theme Toggle, Gunicorn Config |
+
+To execute the **entire platform regression test suite** in one command:
+```bash
+py test_phase0.py; py test_phase1.py; py test_phase2.py; py test_phase3.py; py test_phase4.py; py test_phase5.py; py test_phase6.py; py test_phase7.py
 ```
 
 ---
 
-## 💡 Troubleshooting
+## 🌐 Production Deployment
 
-- **`ModuleNotFoundError: No module named 'flask'`:**
-  If you have multiple Python versions installed (e.g. MinGW/MSYS2 in your `PATH`), make sure you run the app with the Python version where packages were installed:
-  ```powershell
-  py app.py
-  ```
-  Or check your active Python path:
-  ```powershell
-  where python
-  py --list
-  ```
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! If you'd like to improve features, add new schemes, or optimize data processing:
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/NewFeature`).
-3. Commit your changes (`git commit -m 'Add new feature'`).
-4. Push to the branch (`git push origin feature/NewFeature`).
-5. Open a Pull Request.
+AgriHelper is pre-configured for instant zero-downtime deployment on **Render**, **Railway**, or **Heroku**:
+- **Procfile:** `web: gunicorn "app:create_app()"`
+- **Runtime:** `python-3.13.0`
+- **WSGI Server:** Gunicorn configured in `requirements.txt`
 
 ---
 
 ## 📄 License
 
-This project is open-source and available under the [MIT License](LICENSE).
+Distributed under the MIT License. See `LICENSE` for more information.
+Designed with ❤️ for Bharat's Agricultural Community.

@@ -549,12 +549,12 @@ class GovernmentScheme(db.Model):
 - Store `last_scheme_check` timestamp on User model
 
 ### Deliverables — Phase 5
-- [ ] GovernmentScheme model with migration
-- [ ] Data fetching script (API + scraper) with 24h caching
-- [ ] Dynamic policy listing page with filters and search
-- [ ] Category-based filtering (Financial / Insurance / Market / Credit)
-- [ ] Backward compatibility: p1–p5 detailed pages still accessible
-- [ ] "New scheme" indicator for returning users
+- [x] GovernmentScheme model with migration
+- [x] Data fetching script (API + scraper) with 24h caching
+- [x] Dynamic policy listing page with filters and search
+- [x] Category-based filtering (Financial / Insurance / Market / Credit)
+- [x] Backward compatibility: p1–p5 detailed pages still accessible
+- [x] "New scheme" indicator for returning users
 
 ---
 
@@ -600,13 +600,13 @@ class Comment(db.Model):
 Keep the 4 existing hardcoded posts as seed data inserted via a migration or startup script.
 
 ### Deliverables — Phase 6
-- [ ] Post + Comment models with migrations
-- [ ] Full CRUD for posts (create, read, update, delete)
-- [ ] Comment system on post detail pages
-- [ ] Like/upvote system (one per user)
-- [ ] Category filtering tabs
-- [ ] Image upload support
-- [ ] Pagination
+- [x] Post + Comment models with migrations
+- [x] Full CRUD for posts (create, read, update, delete)
+- [x] Comment system on post detail pages
+- [x] Like/upvote system (one per user)
+- [x] Category filtering tabs
+- [x] Image upload support
+- [x] Pagination
 
 ---
 
@@ -671,14 +671,14 @@ web: gunicorn app:create_app()
 ```
 
 ### Deliverables — Phase 7
-- [ ] Weather API key moved server-side
-- [ ] Dark mode toggle
-- [ ] Toast notification system
-- [ ] Custom error pages
-- [ ] SEO meta tags on all pages
-- [ ] Unit tests for critical paths
-- [ ] Deployment config files (Procfile, runtime.txt)
-- [ ] Production-ready with gunicorn
+- [x] Weather API key moved server-side
+- [x] Dark mode toggle
+- [x] Toast notification system
+- [x] Custom error pages
+- [x] SEO meta tags on all pages
+- [x] Unit tests for critical paths
+- [x] Deployment config files (Procfile, runtime.txt)
+- [x] Production-ready with gunicorn
 
 ---
 

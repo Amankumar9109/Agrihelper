@@ -1,101 +1,742 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Government Policies for Farmers | AgriHelper</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='policy.css') }}">
-  <script defer src="{{ url_for('static', filename='script.js') }}"></script>
-</head>
-<body>
-  <header>
-    <h1>🌱 Government Schemes for Farmers</h1>
-    <p>Explore all central government schemes designed to empower farmers with financial support, insurance, and market access.</p>
-    <input type="text" id="searchBar" placeholder="Search scheme name..." />
-  </header>
+{% extends "base.html" %}
 
-  <main id="policyList">
+{% block title %}Government Schemes for Farmers | Direct DBT, Subsidies & Insurance | AgriHelper{% endblock %}
 
-        <!-- Policy Card 1 -->
-    <a href="{{ url_for('p1') }}" class="card-link">
-      <section class="policy-card">
-        <h2>👨‍🌾 PM-KISAN</h2>
-        <p><strong>Support:</strong> ₹6,000/year to eligible farmers in 3 installments.</p>
-        <h3>How to Apply:</h3>
-        <ol>
-          <li>Visit the local revenue or agriculture office.</li>
-          <li>Submit Aadhaar, land records, and bank passbook.</li>
-          <li>Register online via <a href="https://pmkisan.gov.in/" target="_blank">pmkisan.gov.in</a>.</li>
-        </ol>
-        <span class="link-btn">Read More</span>
-      </section>
-    </a>
+{% block extra_css %}
+<style>
+  .policy-hero {
+    background: linear-gradient(135deg, rgba(16, 52, 32, 0.88), rgba(6, 78, 59, 0.95)),
+                url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1600&auto=format&fit=crop&q=80') center/cover;
+    border-radius: 18px;
+    padding: 3rem 2rem;
+    margin-top: 85px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
 
-    <!-- Policy Card 2 -->
-    <a href="{{ url_for('p2') }}" class="card-link">
-      <section class="policy-card">
-        <h2>🌾 PMFBY</h2>
-        <p><strong>Support:</strong> Crop insurance against natural calamities.</p>
-        <h3>How to Apply:</h3>
-        <ol>
-          <li>Check if your crop is covered on <a href="https://pmfby.gov.in/" target="_blank">pmfby.gov.in</a>.</li>
-          <li>Apply through your bank, CSC, or the PMFBY portal.</li>
-          <li>Pay a small premium. The government covers the rest.</li>
-        </ol>
-        <span class="link-btn">Read More</span>
-      </section>
-    </a>
+  .cat-pill {
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: inline-block;
+  }
 
-    <!-- Policy Card 3 -->
-    <a href="{{ url_for('p3') }}" class="card-link">
-      <section class="policy-card">
-        <h2>🧪 Soil Health Card Scheme</h2>
-        <p><strong>Support:</strong> Detailed report on soil quality + fertilizer suggestions.</p>
-        <h3>How to Apply:</h3>
-        <ol>
-          <li>Contact your nearest Krishi Vigyan Kendra (KVK).</li>
-          <li>Give a sample of your farm soil.</li>
-          <li>Receive a card with suggestions within a few weeks.</li>
-        </ol>
-        <span class="link-btn">Read More</span>
-      </section>
-    </a>
+  .cat-pill:hover,
+  .cat-pill.active {
+    background: #15803d;
+    color: #ffffff;
+    border-color: #4ade80;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  }
 
-    <!-- Policy Card 4 -->
-    <a href="{{ url_for('p4') }}" class="card-link">
-      <section class="policy-card">
-        <h2>📈 eNAM (National Agriculture Market)</h2>
-        <p><strong>Support:</strong> Sell crops online at competitive prices across India.</p>
-        <h3>How to Join:</h3>
-        <ol>
-          <li>Check if your mandi is registered with eNAM.</li>
-          <li>Get your produce quality graded.</li>
-          <li>Register through the mandi or at <a href="https://enam.gov.in/" target="_blank">enam.gov.in</a>.</li>
-        </ol>
-        <span class="link-btn">Read More</span>
-      </section>
-    </a>
+  .scheme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
 
-    <!-- Policy Card 5 -->
-    <a href="{{ url_for('p5') }}" class="card-link">
-      <section class="policy-card">
-        <h2>💳 Kisan Credit Card (KCC)</h2>
-        <p><strong>Support:</strong> Instant credit for crop input, harvesting, etc.</p>
-        <h3>How to Apply:</h3>
-        <ol>
-          <li>Visit any bank with land proof and Aadhaar.</li>
-          <li>Fill out the KCC form or apply through the PM-KISAN portal.</li>
-          <li>Get the card in a few days to use like a debit card.</li>
-        </ol>
-        <span class="link-btn">Read More</span>
-      </section>
-    </a>
+  .scheme-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
 
-  </main>
+  .scheme-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(74, 222, 128, 0.4);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  }
 
-  <footer>
-    <p>© 2025 AgriHelper | Helping Bharat's Farmers Grow Smarter 🌾</p>
-  </footer>
-</body>
-</html>
+  .scheme-card-header {
+    padding: 1.25rem 1.25rem 0.75rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    position: relative;
+  }
 
+  .scheme-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(34, 197, 94, 0.18);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .scheme-category {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .scheme-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.35;
+    margin-top: 4px;
+    margin-bottom: 6px;
+  }
+
+  .scheme-tagline {
+    font-size: 0.88rem;
+    color: #cbd5e1;
+    line-height: 1.45;
+  }
+
+  .scheme-card-body {
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .section-box {
+    background: rgba(30, 41, 59, 0.5);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .section-box-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #4ade80;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-box-text {
+    font-size: 0.84rem;
+    color: #e2e8f0;
+    line-height: 1.4;
+    margin-bottom: 0;
+  }
+
+  .scheme-details-collapse {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 0.75rem;
+  }
+
+  .scheme-card-footer {
+    padding: 1rem 1.25rem;
+    background: rgba(15, 23, 42, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .btn-portal {
+    background: linear-gradient(135deg, #15803d, #166534);
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-portal:hover {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: #ffffff;
+    box-shadow: 0 3px 10px rgba(34, 197, 94, 0.3);
+  }
+
+  .btn-guide {
+    background: rgba(30, 41, 59, 0.8);
+    color: #93c5fd;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid rgba(147, 197, 253, 0.25);
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-guide:hover {
+    background: rgba(59, 130, 246, 0.2);
+    color: #bfdbfe;
+    border-color: rgba(147, 197, 253, 0.5);
+  }
+
+  .btn-toggle-details {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+  }
+
+  .btn-toggle-details:hover {
+    color: #4ade80;
+  }
+
+  /* Wizard Modal Styling */
+  .modal-content-custom {
+    background: #0f172a;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 18px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+    color: #f8fafc;
+  }
+
+  .wizard-step-label {
+    font-weight: 700;
+    color: #4ade80;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .wizard-option-card {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 12px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .wizard-option-card:hover {
+    border-color: #4ade80;
+    background: rgba(34, 197, 94, 0.1);
+  }
+
+  .wizard-option-card.selected {
+    border-color: #22c55e;
+    background: rgba(34, 197, 94, 0.2);
+    box-shadow: 0 0 0 1px #22c55e;
+  }
+
+  .wizard-option-icon {
+    font-size: 1.3rem;
+    color: #4ade80;
+    width: 32px;
+    text-align: center;
+  }
+
+  .match-badge {
+    background: linear-gradient(135deg, #15803d, #16a34a);
+    color: white;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-2">
+
+  <!-- Hero Header -->
+  <div class="policy-hero">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill mb-2">
+          <i class="fa-solid fa-shield-halved me-1"></i> Official Government Portals & Real-Time Sync
+        </span>
+        <h1 class="display-5 fw-bold text-white mb-2 brand-font">Government Schemes for Farmers</h1>
+        <p class="lead text-light mb-3 fs-6">
+          Access verified Central & State agricultural schemes offering direct DBT transfers, subsidized solar pumps, comprehensive crop insurance, and 4% credit.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+          <button type="button" class="btn btn-success fw-bold px-4 py-2 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#eligibilityWizardModal">
+            <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Check My Eligibility Wizard
+          </button>
+          <button type="button" id="btnSyncSchemes" class="btn btn-outline-light fw-semibold px-3 py-2 rounded-pill" onclick="syncSchemes()">
+            <i class="fa-solid fa-rotate me-1"></i> Sync Latest Data
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+        <div class="d-inline-block text-start bg-dark bg-opacity-75 p-3 rounded-4 border border-secondary border-opacity-25 shadow">
+          <div class="d-flex align-items-center gap-3">
+            <div class="rounded-circle bg-success bg-opacity-25 p-3 text-success fs-3">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div>
+              <div class="h3 fw-bold text-white mb-0" id="totalSchemesCount">{{ total_schemes }}</div>
+              <small class="text-secondary fw-semibold">Active Welfare Schemes</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Schemes Banner for Returning Users -->
+  {% if current_user.is_authenticated and new_schemes_count > 0 %}
+  <div class="alert alert-success bg-dark border-success border-opacity-50 text-white shadow-sm d-flex align-items-center justify-content-between mb-4 rounded-3 p-3">
+    <div class="d-flex align-items-center gap-3">
+      <span class="badge bg-success p-2 rounded-circle"><i class="fa-solid fa-bell text-white"></i></span>
+      <div>
+        <strong>Fresh Updates!</strong> There are <strong>{{ new_schemes_count }}</strong> new or updated government schemes since your last visit.
+      </div>
+    </div>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
+
+  <!-- Filter & Live Search Toolbar -->
+  <div class="row align-items-center g-3 mb-4">
+    <div class="col-lg-8">
+      <div class="d-flex align-items-center gap-2 overflow-x-auto pb-2" style="scrollbar-width: thin;">
+        {% for cat in categories %}
+        <a href="javascript:void(0)"
+           class="cat-pill {% if selected_category == cat %}active{% endif %}"
+           onclick="filterCategory('{{ cat }}', this)">
+          {{ cat }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="input-group">
+        <span class="input-group-text bg-dark border-secondary border-opacity-25 text-secondary">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <input type="text"
+               id="schemeSearchInput"
+               class="form-control bg-dark text-white border-secondary border-opacity-25"
+               placeholder="Search scheme name, subsidy, DBT..."
+               value="{{ search_query }}"
+               onkeyup="handleLiveSearch(this.value)">
+        <button class="btn btn-outline-secondary border-opacity-25" type="button" onclick="clearSearch()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schemes Directory Grid -->
+  <div class="scheme-grid" id="schemeContainer">
+    {% for scheme in schemes %}
+    <div class="scheme-card" data-category="{{ scheme.category }}" data-name="{{ scheme.name|lower }} {{ scheme.code|lower }} {{ scheme.description|lower }}">
+      <div class="scheme-card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="scheme-category">{{ scheme.category }}</span>
+          {% if scheme.badge %}
+          <span class="scheme-badge">{{ scheme.badge }}</span>
+          {% endif %}
+        </div>
+        <h3 class="scheme-title">{{ scheme.name }}</h3>
+        <p class="scheme-tagline mb-0">{{ scheme.tagline or scheme.description[:120] ~ '...' }}</p>
+      </div>
+
+      <div class="scheme-card-body">
+        <div class="section-box">
+          <div class="section-box-title">
+            <i class="fa-solid fa-gift"></i> Key Benefits
+          </div>
+          <p class="section-box-text">{{ scheme.benefits }}</p>
+        </div>
+
+        <div class="section-box">
+          <div class="section-box-title">
+            <i class="fa-solid fa-user-check"></i> Eligibility Criteria
+          </div>
+          <p class="section-box-text">{{ scheme.eligibility }}</p>
+        </div>
+
+        <!-- Collapsible Details -->
+        <div class="scheme-details-collapse">
+          <button class="btn-toggle-details mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ scheme.id }}" aria-expanded="false">
+            <span>View Full Details & Application Steps</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="collapse" id="details-{{ scheme.id }}">
+            <div class="p-2 bg-dark rounded-3 border border-secondary border-opacity-25 mb-2">
+              <div class="fw-bold text-success small mb-1"><i class="fa-solid fa-file-lines me-1"></i> Documents Required:</div>
+              <p class="small text-secondary mb-2">{{ scheme.documents_required or 'Aadhaar Card, Land records, Bank Passbook' }}</p>
+              
+              <div class="fw-bold text-success small mb-1"><i class="fa-solid fa-list-ol me-1"></i> How to Apply:</div>
+              <p class="small text-secondary mb-1" style="white-space: pre-line;">{{ scheme.how_to_apply }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scheme-card-footer">
+        <a href="{{ scheme.official_url }}" target="_blank" rel="noopener noreferrer" class="btn-portal">
+          <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Official Portal
+        </a>
+        <div class="d-flex gap-2">
+          {% if scheme.legacy_route %}
+          <a href="{{ url_for(scheme.legacy_route) }}" class="btn-guide">
+            <i class="fa-solid fa-book-open me-1"></i> Detailed Guide
+          </a>
+          {% endif %}
+          <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="openWizardForScheme('{{ scheme.code }}')">
+            <i class="fa-solid fa-check me-1"></i> Check Fit
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Empty State (hidden by default) -->
+  <div id="noSchemesFound" class="text-center py-5 d-none">
+    <div class="fs-1 text-secondary mb-3"><i class="fa-solid fa-magnifying-glass"></i></div>
+    <h4 class="text-white">No Schemes Found</h4>
+    <p class="text-secondary">Try searching for different keywords or select 'All' categories.</p>
+    <button class="btn btn-outline-success rounded-pill px-4" onclick="clearSearch()">Reset Filters</button>
+  </div>
+
+</div>
+
+<!-- Eligibility Checker Wizard Modal -->
+<div class="modal fade" id="eligibilityWizardModal" tabindex="-1" aria-labelledby="eligibilityWizardLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content modal-content-custom">
+      <div class="modal-header border-secondary border-opacity-25">
+        <h5 class="modal-title text-white fw-bold" id="eligibilityWizardLabel">
+          <i class="fa-solid fa-wand-magic-sparkles text-success me-2"></i> Farmer Scheme Eligibility Checker
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        
+        <div id="wizardQuestionsSection">
+          <!-- Step 1: Landholding Size -->
+          <div class="mb-4">
+            <div class="wizard-step-label">Step 1 — Total Landholding Size</div>
+            <div class="row g-2">
+              <div class="col-md-4">
+                <div class="wizard-option-card selected" data-group="land_size" data-val="marginal" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-seedling"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Marginal Farmer</div>
+                    <small class="text-secondary">Less than 1 Hectare (2.5 Acres)</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="wizard-option-card" data-group="land_size" data-val="small" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Small Farmer</div>
+                    <small class="text-secondary">1 to 2 Hectares (2.5 – 5 Acres)</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="wizard-option-card" data-group="land_size" data-val="medium_large" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-tractor"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Medium / Large</div>
+                    <small class="text-secondary">More than 2 Hectares (5+ Acres)</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Farming Type -->
+          <div class="mb-4">
+            <div class="wizard-step-label">Step 2 — Primary Farming Activity</div>
+            <div class="row g-2">
+              <div class="col-md-3">
+                <div class="wizard-option-card selected" data-group="farm_type" data-val="crops" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-leaf"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Cereals & Pulses</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="wizard-option-card" data-group="farm_type" data-val="horticulture" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-apple-whole"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Horticulture</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="wizard-option-card" data-group="farm_type" data-val="organic" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-certificate"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Organic / Natural</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="wizard-option-card" data-group="farm_type" data-val="dairy" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-cow"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Dairy & Livestock</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Priority Need -->
+          <div class="mb-4">
+            <div class="wizard-step-label">Step 3 — What Support Are You Seeking?</div>
+            <div class="row g-2">
+              <div class="col-md-4">
+                <div class="wizard-option-card selected" data-group="primary_need" data-val="cash" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Direct Cash / Income</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="wizard-option-card" data-group="primary_need" data-val="solar_pump" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Solar Water Pump</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="wizard-option-card" data-group="primary_need" data-val="irrigation" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-droplet"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Drip / Sprinkler Kit</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="wizard-option-card" data-group="primary_need" data-val="insurance" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Crop Loss Insurance</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="wizard-option-card" data-group="primary_need" data-val="machinery" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-gear"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">Tractor / Implements</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="wizard-option-card" data-group="primary_need" data-val="credit" onclick="selectWizardOption(this)">
+                  <div class="wizard-option-icon"><i class="fa-solid fa-credit-card"></i></div>
+                  <div>
+                    <div class="fw-bold text-white small">4% Low-Interest Loan</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-end pt-2">
+            <button type="button" class="btn btn-success fw-bold px-4 py-2 rounded-pill shadow" onclick="submitEligibilityWizard()">
+              <i class="fa-solid fa-chart-pie me-2"></i> Evaluate My Eligible Schemes
+            </button>
+          </div>
+        </div>
+
+        <!-- Results Section (revealed after evaluation) -->
+        <div id="wizardResultsSection" class="d-none">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="text-white fw-bold mb-0">Recommended Schemes for Your Profile:</h6>
+            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" onclick="resetWizard()">
+              <i class="fa-solid fa-arrow-left me-1"></i> Edit Answers
+            </button>
+          </div>
+
+          <div id="wizardMatchesList" class="d-flex flex-column gap-3"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  let activeCategory = '{{ selected_category }}';
+
+  // Live client-side search & filtering
+  function handleLiveSearch(query) {
+    const q = query.trim().toLowerCase();
+    const cards = document.querySelectorAll('.scheme-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const cardCategory = card.getAttribute('data-category') || '';
+      const cardText = card.getAttribute('data-name') || '';
+
+      const matchCategory = (activeCategory === 'All' || cardCategory.toLowerCase().includes(activeCategory.toLowerCase()));
+      const matchText = (q === '' || cardText.includes(q));
+
+      if (matchCategory && matchText) {
+        card.style.display = 'flex';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    const noResults = document.getElementById('noSchemesFound');
+    if (visibleCount === 0) {
+      noResults.classList.remove('d-none');
+    } else {
+      noResults.classList.add('d-none');
+    }
+  }
+
+  function filterCategory(category, element) {
+    activeCategory = category;
+    document.querySelectorAll('.cat-pill').forEach(el => el.classList.remove('active'));
+    if (element) {
+      element.classList.add('active');
+    }
+
+    const searchVal = document.getElementById('schemeSearchInput').value;
+    handleLiveSearch(searchVal);
+  }
+
+  function clearSearch() {
+    document.getElementById('schemeSearchInput').value = '';
+    filterCategory('All', document.querySelector('.cat-pill'));
+  }
+
+  // Sync Latest Schemes from API
+  async function syncSchemes() {
+    const btn = document.getElementById('btnSyncSchemes');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-1"></i> Syncing...`;
+    btn.disabled = true;
+
+    try {
+      const resp = await fetch('/api/schemes/refresh', { method: 'POST' });
+      const data = await resp.json();
+      if (data.success) {
+        btn.innerHTML = `<i class="fa-solid fa-circle-check text-success me-1"></i> Synced!`;
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      }
+    } catch (err) {
+      console.error(err);
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
+  }
+
+  // Wizard Option Selection
+  let wizardAnswers = {
+    land_size: 'marginal',
+    farm_type: 'crops',
+    primary_need: 'cash'
+  };
+
+  function selectWizardOption(card) {
+    const group = card.getAttribute('data-group');
+    const val = card.getAttribute('data-val');
+    wizardAnswers[group] = val;
+
+    document.querySelectorAll(`.wizard-option-card[data-group="${group}"]`).forEach(c => {
+      c.classList.remove('selected');
+    });
+    card.classList.add('selected');
+  }
+
+  function openWizardForScheme(code) {
+    const modal = new bootstrap.Modal(document.getElementById('eligibilityWizardModal'));
+    modal.show();
+  }
+
+  async function submitEligibilityWizard() {
+    const questionsDiv = document.getElementById('wizardQuestionsSection');
+    const resultsDiv = document.getElementById('wizardResultsSection');
+    const matchesList = document.getElementById('wizardMatchesList');
+
+    matchesList.innerHTML = `<div class="text-center py-4"><i class="fa-solid fa-spinner fa-spin fs-3 text-success"></i><p class="text-secondary mt-2">Evaluating government rules...</p></div>`;
+    questionsDiv.classList.add('d-none');
+    resultsDiv.classList.remove('d-none');
+
+    try {
+      const resp = await fetch('/api/schemes/check-eligibility', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(wizardAnswers)
+      });
+      const data = await resp.json();
+
+      if (data.success && data.matches && data.matches.length > 0) {
+        let html = '';
+        data.matches.forEach(m => {
+          const s = m.scheme;
+          const reasonsHtml = m.reasons.map(r => `<li><i class="fa-solid fa-circle-check text-success me-1"></i> ${r}</li>`).join('');
+          html += `
+            <div class="p-3 bg-dark bg-opacity-75 rounded-3 border border-secondary border-opacity-25">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge bg-success-subtle text-success">${s.category}</span>
+                <span class="match-badge">${m.match_score}% Match</span>
+              </div>
+              <h5 class="text-white fw-bold mb-1">${s.name}</h5>
+              <p class="small text-secondary mb-2">${s.tagline || s.description.substring(0, 100) + '...'}</p>
+              <ul class="small text-light list-unstyled mb-3">${reasonsHtml}</ul>
+              <div class="d-flex gap-2">
+                <a href="${s.official_url}" target="_blank" class="btn btn-sm btn-success rounded-pill px-3">
+                  <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Apply Online
+                </a>
+              </div>
+            </div>
+          `;
+        });
+        matchesList.innerHTML = html;
+      } else {
+        matchesList.innerHTML = `<div class="text-center py-3 text-secondary">No exact matches found for this specific combination. Please check the full directory.</div>`;
+      }
+    } catch (e) {
+      console.error(e);
+      matchesList.innerHTML = `<div class="text-danger text-center">Failed to evaluate schemes. Please try again.</div>`;
+    }
+  }
+
+  function resetWizard() {
+    document.getElementById('wizardQuestionsSection').classList.remove('d-none');
+    document.getElementById('wizardResultsSection').classList.add('d-none');
+  }
+</script>
+{% endblock %}

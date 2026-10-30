@@ -1,5 +1,5 @@
 import os
-from flask import Flask, url_for as flask_url_for
+from flask import Flask, request, render_template, jsonify, url_for as flask_url_for
 from config import config
 from extensions import db, migrate, login_manager
 
@@ -78,9 +78,43 @@ def create_app(config_name=None):
 
         return dict(url_for=smart_url_for)
 
-    # Auto-create tables on startup if not existing
+    # Auto-create tables on startup and apply lightweight migrations if needed
     with app.app_context():
         db.create_all()
+        try:
+            from sqlalchemy import text
+            with db.engine.connect() as conn:
+                # Check users columns
+                result = conn.execute(text("PRAGMA table_info(users)"))
+                columns = [row[1] for row in result.fetchall()]
+                if 'last_scheme_check' not in columns:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN last_scheme_check DATETIME"))
+                    conn.commit()
+
+                # Check posts columns
+                p_result = conn.execute(text("PRAGMA table_info(posts)"))
+                p_columns = [row[1] for row in p_result.fetchall()]
+                if 'image_url' not in p_columns:
+                    conn.execute(text("ALTER TABLE posts ADD COLUMN image_url VARCHAR(300)"))
+                    conn.commit()
+                if 'updated_at' not in p_columns:
+                    conn.execute(text("ALTER TABLE posts ADD COLUMN updated_at DATETIME"))
+                    conn.commit()
+        except Exception as e:
+            app.logger.warning(f"Schema migration warning: {e}")
+
+    # Register Custom Error Handlers
+    @app.errorhandler(404)
+    def page_not_found(e):
+        if request.path.startswith('/api/'):
+            return jsonify({'error': 'Resource not found', 'status_code': 404}), 404
+        return render_template('errors/404.html'), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        if request.path.startswith('/api/'):
+            return jsonify({'error': 'Internal server error', 'status_code': 500}), 500
+        return render_template('errors/500.html'), 500
 
     return app
 

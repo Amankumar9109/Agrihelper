@@ -1,413 +1,319 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AgriHelper</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #14532d;        /* Earthy green */
-    --secondary: #064e3b;      /* Dark teal */
-    --accent: #ffb300;         /* Golden amber */
-    --dark: #0f2a13;           /* Deep slate */
-    --light: #f1f5f9;          /* Soft light */
-        }
+{% extends "base.html" %}
 
-        /* Base Styles */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background: var(--dark);
-            color: var(--light);
-            overflow-x: hidden;
-            scroll-behavior: smooth; /* Added for smooth scrolling */
-        }
+{% block title %}AgriHelper - Smart Agricultural Platform for Bharat's Farmers{% endblock %}
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--primary), var(--secondary));
-            border-radius: 4px;
-        }
+{% block meta_description %}AgriHelper empowers Indian farmers with live APMC mandi prices, RAG AI advisor, verified government schemes, organic seeds, and a vibrant community forum.{% endblock %}
 
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),
-                        url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449') center/cover;
-        }
+{% block extra_css %}
+<style>
+  /* Hero Section */
+  .hero {
+    min-height: 85vh;
+    background: linear-gradient(135deg, rgba(9, 26, 16, 0.85), rgba(6, 78, 59, 0.92)),
+                url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1800&auto=format&fit=crop&q=80') center/cover fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 20px 60px;
+    position: relative;
+    border-bottom: 1px solid rgba(74, 222, 128, 0.2);
+  }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 0 20px;
-        }
+  .gradient-text {
+    background: linear-gradient(45deg, #4ade80, #facc15, #86efac);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+  }
 
-        .gradient-text {
-            background: linear-gradient(45deg, var(--accent), var(--secondary), var(--light));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            background-size: 300% 300%;
-            animation: gradient-flow 5s ease infinite;
-        }
+  /* 3D Service Cards */
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem;
+    perspective: 1000px;
+  }
 
-        /* Services Section */
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
+  .service-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2.25rem 1.75rem;
+    transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
 
-        .service-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+  .service-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(74, 222, 128, 0.4);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  }
 
-        .service-card i {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
+  .service-icon-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 1.25rem;
+    transition: all 0.3s ease;
+  }
 
-        /* Navigation */
-        .navbar {
-            background: rgb(21, 81, 49) !important;
-            backdrop-filter: blur(10px);
-        }
+  .service-card:hover .service-icon-box {
+    background: #15803d;
+    color: #ffffff;
+    transform: scale(1.08);
+  }
 
-        .navbar-brand, .nav-link {
-            color: white !important;
-        }
+  .service-card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+  }
 
-        .nav-link {
-            padding: 0.5rem 1rem;
-        }
+  .service-card-desc {
+    color: #94a3b8;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
 
-        /* Animations */
-        @keyframes gradient-flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  .service-arrow {
+    margin-top: auto;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #4ade80;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .hero {
-                height: 90vh;
-            }
-            
-            .display-1 {
-                font-size: 2.5rem !important;
-            }
-            
-            .service-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .navbar-collapse {
-                background: rgba(15,45,29,0.95);
-                padding: 1rem;
-                margin-top: 10px;
-                border-radius: 10px;
-            }
-            
-            .service-card {
-                padding: 1.25rem;
-            }
-            
-            .section {
-                padding: 3rem 1rem;
-            }
-        }
+  .service-card:hover .service-arrow {
+    transform: translateX(4px);
+    color: #facc15;
+  }
 
-        /* Section Styling */
-        .section {
-            padding: 5rem 2rem;
-            background: var(--dark);
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--primary);
-            padding: 2rem;
-            text-align: center;
-        }
-        /* 3D Service Cards */
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            perspective: 1000px;
-        }
+  .section-title-wrap {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 3.5rem;
+  }
+</style>
+{% endblock %}
 
-        .service-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 2rem;
-            transform-style: preserve-3d;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255,255,255,0.2),
-                transparent
-            );
-            transition: 0.5s;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        }
-
-        .service-card:hover::before {
-            left: 100%;
-        }
-        a:link {
-            color: white;
-            text-decoration: none;
-        }
-        
-        /* Added to prevent jumping when hash is in URL */
-        html {
-            scroll-padding-top: 70px; /* Adjust based on your navbar height */
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">AgriHelper</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link text-warning fw-bold d-inline-flex align-items-center gap-1" href="{{ url_for('auth.logout') }}">
-                            {% if current_user.avatar_url %}
-                            <img src="{{ current_user.avatar_url }}" alt="{{ current_user.name }}" class="rounded-circle border border-warning" width="22" height="22" style="object-fit: cover;">
-                            {% else %}
-                            <i class="fa-solid fa-user"></i>
-                            {% endif %}
-                            <span>{{ current_user.name }} (Logout)</span>
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Log in / Sign up</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+{% block content %}
+<!-- Hero Section -->
+<section id="home" class="hero">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill mb-3">
+          <i class="fa-solid fa-leaf me-1"></i> AI-Powered Agricultural Ecosystem for India
+        </span>
+        <h1 class="gradient-text display-3 fw-bold mb-3 brand-font">AgriHelper</h1>
+        <p class="lead text-light fs-4 mb-4">
+          Revolutionizing Agriculture through Live Mandi Intelligence, AI Advisory, Subsidies & Community.
+        </p>
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+          <a href="#services" class="btn btn-warning fw-bold px-4 py-3 rounded-pill shadow">
+            <i class="fa-solid fa-compass me-2"></i> Explore Services
+          </a>
+          <button type="button" class="btn btn-outline-light fw-semibold px-4 py-3 rounded-pill shadow-sm" onclick="toggleAgriChatDrawer()">
+            <i class="fa-solid fa-robot text-success me-2"></i> Talk to AgriBot AI
+          </button>
         </div>
-    </nav>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1 class="gradient-text display-1 fw-bold mb-4">AgriHelper</h1>
-            <p class="lead fs-3 mb-5">Revolutionizing Agriculture with AgriHelper</p>
-            <div class="d-flex gap-3 justify-content-center">
-                <a href="#services" class="btn btn-lg btn-warning">Our Services</a>
-                <a href="#contact" class="btn btn-lg btn-outline-light">Contact Us</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="section">
-        <section class="section" id="services" style="background-color: #00000000;">
-            <div class="container">
-                <h2 class="gradient-text text-center mb-5 display-3">Our Services</h2>
-                <div class="service-grid">
-                    <a href="{{ url_for('techniques') }}" class="service-card text-decoration-none text-light">
-    				<i class="fas fa-tractor"></i>
-    				<h3>Modern Farming</h3>
-    				<p>Explore innovative methods to boost productivity and sustainability</p>
-				</a>
-                <a href="{{ url_for('weather') }}" class="service-card text-decoration-none text-light">
-    					<i class="fas fa-cloud-sun"></i>
-                    	<h3>Weather Analysis</h3>
-                    	<p>Advanced weather prediction and climate monitoring</p>
-				</a>
-                <a href="{{ url_for('market') }}" class="service-card text-decoration-none text-light">
-    					<i class="fas fa-chart-line"></i>
-    					<h3>Market Insights</h3>
-    					<p>Real-time commodity pricing and trend analysis</p>
-				</a>
-                <a href="{{ url_for('policy') }}" class="service-card text-decoration-none text-light">
-                <i class="fas fa-file-alt"></i>
-                <h3>Government Policies</h3>
-                <p>Explore central schemes, benefits & how to apply</p>
-            	</a>
-            	<a href="{{ url_for('community') }}" class="service-card text-decoration-none text-light">
-    			<i class="fas fa-users"></i> <!-- Icon for the community -->
-   		 		<h3>AgriHelper Community</h3> <!-- Title of the card -->
-    			<p>Join a community of farmers and experts sharing insights and resources for better agricutlural practices</p> <!-- Description of the card -->
-				</a>
-				<a href="{{ url_for('store') }}" class="service-card text-decoration-none text-light">
-  				<i class="fas fa-shopping-cart"></i>
-  				<h3>AgriHelper Store</h3>
-  				<p>Browse and purchase essential farming tools, seeds, and equipment.</p>
-</a>
-         
-                </div>
-            </div>
-        </section>
-        </section>
+<!-- Services Section -->
+<section id="services" class="py-5" style="background: rgba(9, 26, 16, 0.4);">
+  <div class="container py-4">
     
-    <!-- About Section -->
-    <section id="about" class="section bg-dark">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h2 class="gradient-text mb-4">About AgriHelper</h2>
-                    <p class="lead">We combine cutting-edge technology with agricultural expertise to help farmers maximize yields and optimize operations.</p>
-                    <p>AgriHelper is a website designed to support farmers by providing valuable information and tools related to agriculture. It covers topics like crop rotation, irrigation methods, weather updates, and the use of modern farming equipment. The site also features detailed guides on government schemes for farmers and includes a market section where agricultural products can be explored. AgriHelper aims to make farming smarter, easier, and more efficient for the Indian farming community.</p>
-                </div>
-                <div class="col-lg-6">
-                  <img src="https://static.investindia.gov.in/s3fs-public/2020-01/shutterstock_1116673256.jpg" class="img-fluid rounded-3" alt="Farm Technology">
-                </div>
-            </div>
+    <div class="section-title-wrap">
+      <h2 class="display-5 fw-bold text-white brand-font mb-2">Our Core Services</h2>
+      <p class="text-secondary fs-6">
+        Everything a modern cultivator needs—from pre-sowing soil diagnostics and live APMC market rates to verified government subsidies.
+      </p>
+    </div>
+
+    <div class="service-grid">
+      
+      <!-- 1. Modern Farming Techniques -->
+      <a href="{{ url_for('farming.techniques') }}" class="service-card">
+        <div class="service-icon-box">
+          <i class="fa-solid fa-tractor"></i>
         </div>
-    </section>
+        <h3 class="service-card-title">Modern Farming</h3>
+        <p class="service-card-desc">
+          High-density planting, automated drip fertigation, precision soil testing, and aerial drone spray guidance.
+        </p>
+        <span class="service-arrow">Learn Techniques <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <h2 class="gradient-text text-center mb-5 display-4">Contact Us</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <form class="contact-form" action="https://formsubmit.co/zadafiyaharsh2@email.com" method="POST">
-                        <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Your Name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="email" class="form-control" placeholder="Your Email"  name="email" required> 
-                        </div>
-                        <div class="mb-3">
-                            <textarea class="form-control" rows="5" placeholder="Your Message" name="text" required></textarea>
-                        </div>
-                        <button type="submit" name="submit" class="btn btn-warning btn-lg w-100">Send Message</button>
-                    </form>
-                </div>
-            </div>
+      <!-- 2. Weather Analysis -->
+      <a href="{{ url_for('weather.weather') }}" class="service-card">
+        <div class="service-icon-box">
+          <i class="fa-solid fa-cloud-sun-rain"></i>
         </div>
-    </section>
+        <h3 class="service-card-title">Weather & Spray Advisory</h3>
+        <p class="service-card-desc">
+          Hyper-local temperature, wind velocity, precipitation risk, and on-farm spray window indicators.
+        </p>
+        <span class="service-arrow">Check Weather <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p class="mb-0">&copy; 2023 AgriHelper. All rights reserved.</p>
-            <div class="social-links mt-3">
-                <a href="#" class="text-light mx-2"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-light mx-2"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-light mx-2"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-light mx-2"><i class="fab fa-linkedin-in"></i></a>
-            </div>
+      <!-- 3. Market Insights & India Map -->
+      <a href="{{ url_for('market.market') }}" class="service-card">
+        <div class="service-icon-box">
+          <i class="fa-solid fa-chart-line"></i>
         </div>
-    </footer>
+        <h3 class="service-card-title">Market Insights & Mandi Map</h3>
+        <p class="service-card-desc">
+          Interactive virtual India map, live modal APMC prices for 230+ commodities, and 30-day historical trends.
+        </p>
+        <span class="service-arrow">View Mandi Rates <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Enhanced smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    // Calculate the position to scroll to, accounting for fixed navbar
-                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
-                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Update URL hash without jumping
-                    if (history.pushState) {
-                        history.pushState(null, null, targetId);
-                    } else {
-                        window.location.hash = targetId;
-                    }
-                }
-            });
-        });
+      <!-- 4. Government Policies & Schemes -->
+      <a href="{{ url_for('policy.policy') }}" class="service-card">
+        <div class="service-icon-box">
+          <i class="fa-solid fa-landmark"></i>
+        </div>
+        <h3 class="service-card-title">Government Schemes</h3>
+        <p class="service-card-desc">
+          Official central and state welfare programs including PM-KISAN, PMFBY, PM-KUSUM, with an Eligibility Wizard.
+        </p>
+        <span class="service-arrow">Explore Schemes <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
 
-        // Navbar background change on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
-            } else {
-                navbar.style.boxShadow = 'none';
-            }
-        });
+      <!-- 5. Community Forum -->
+      <a href="{{ url_for('community.community') }}" class="service-card">
+        <div class="service-icon-box">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <h3 class="service-card-title">Farmer Community</h3>
+        <p class="service-card-desc">
+          Ask questions, upload photo diagnostics, share harvest milestones, and collaborate with verified cultivators.
+        </p>
+        <span class="service-arrow">Join Forum <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
 
-        // Animation on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                }
-            });
-        }, { threshold: 0.1 });
+      <!-- 6. AgriHelper Store -->
+      <a href="{{ url_for('store.store') }}" class="service-card">
+        <div class="service-icon-box">
+          <i class="fa-solid fa-bag-shopping"></i>
+        </div>
+        <h3 class="service-card-title">Agri-Store & Supplies</h3>
+        <p class="service-card-desc">
+          Certified high-germination seeds, bio-fertilizers, knapsack sprayers, and drip equipment with Razorpay checkout.
+        </p>
+        <span class="service-arrow">Shop Supplies <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
 
-        document.querySelectorAll('.service-card, .section').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Fix for initial page load with hash in URL
-        window.addEventListener('load', function() {
-            if (window.location.hash) {
-                setTimeout(() => {
-                    const target = document.querySelector(window.location.hash);
-                    if (target) {
-                        const navbarHeight = document.querySelector('.navbar').offsetHeight;
-                        window.scrollTo({
-                            top: target.offsetTop - navbarHeight,
-                            behavior: 'instant'
-                        });
-                    }
-                }, 0);
-            }
-        });
-    </script>
-</body>
-</html>
+    </div>
+
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-5">
+  <div class="container py-4">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-1 rounded-pill mb-2">
+          About Our Mission
+        </span>
+        <h2 class="display-6 fw-bold text-white mb-3 brand-font">Bridging Technology & Bharat's Soil</h2>
+        <p class="lead text-light fs-6 mb-3">
+          We combine cutting-edge artificial intelligence with deep agronomic science to help small, marginal, and commercial farmers maximize net farm income.
+        </p>
+        <p class="text-secondary small line-height-lg mb-4">
+          AgriHelper supports farmers across India through actionable mandi price analytics, localized weather alerts, verified central subsidy guidelines, and direct e-commerce supply chains. Our RAG-powered AgriBot is trained on authentic government publications and agricultural research to provide answers 24/7 in simple language.
+        </p>
+        <div class="d-flex gap-3">
+          <div class="p-3 bg-dark bg-opacity-75 rounded-3 border border-secondary border-opacity-25 text-center flex-fill">
+            <div class="h3 fw-bold text-success mb-0">1,360+</div>
+            <small class="text-secondary">APMC Mandis</small>
+          </div>
+          <div class="p-3 bg-dark bg-opacity-75 rounded-3 border border-secondary border-opacity-25 text-center flex-fill">
+            <div class="h3 fw-bold text-warning mb-0">12+</div>
+            <small class="text-secondary">Welfare Schemes</small>
+          </div>
+          <div class="p-3 bg-dark bg-opacity-75 rounded-3 border border-secondary border-opacity-25 text-center flex-fill">
+            <div class="h3 fw-bold text-info mb-0">100%</div>
+            <small class="text-secondary">Free Access</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-2 bg-dark rounded-4 border border-secondary border-opacity-25 shadow-lg">
+          <img src="https://static.investindia.gov.in/s3fs-public/2020-01/shutterstock_1116673256.jpg"
+               class="img-fluid rounded-3 w-100"
+               alt="Smart Agriculture India"
+               loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5" style="background: rgba(9, 26, 16, 0.4);">
+  <div class="container py-4">
+    <div class="section-title-wrap">
+      <h2 class="display-5 fw-bold text-white brand-font mb-2">Get in Touch</h2>
+      <p class="text-secondary fs-6">
+        Have suggestions, questions, or partnership inquiries? Reach out to our agricultural support team.
+      </p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="p-4 p-md-5 bg-dark rounded-4 border border-secondary border-opacity-25 shadow-lg">
+          <form onsubmit="handleContactSubmit(event)">
+            <div class="mb-3">
+              <label class="form-label text-white small fw-bold">Full Name</label>
+              <input type="text" class="form-control bg-dark text-white border-secondary border-opacity-25" placeholder="Farmer / Partner Name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-white small fw-bold">Email or Phone Number</label>
+              <input type="text" class="form-control bg-dark text-white border-secondary border-opacity-25" placeholder="contact@agrihelper.in or 9876543210" required>
+            </div>
+            <div class="mb-4">
+              <label class="form-label text-white small fw-bold">Your Message / Query</label>
+              <textarea class="form-control bg-dark text-white border-secondary border-opacity-25" rows="4" placeholder="How can our agronomy team support your farm?" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success fw-bold w-100 py-3 rounded-pill shadow">
+              <i class="fa-solid fa-paper-plane me-2"></i> Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function handleContactSubmit(e) {
+    e.preventDefault();
+    showToast("Thank you for reaching out! Our agricultural team will contact you shortly.", "success");
+    e.target.reset();
+  }
+</script>
+{% endblock %}

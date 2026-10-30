@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     google_id = db.Column(db.String(100), unique=True, nullable=True, index=True)
     provider = db.Column(db.String(20), default='local')  # 'local' or 'google'
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    last_scheme_check = db.Column(db.DateTime, nullable=True)
 
     # Relationships
     cart_items = db.relationship('CartItem', backref='user', lazy='dynamic', cascade='all, delete-orphan')

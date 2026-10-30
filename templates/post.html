@@ -1,107 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Submit Your Post</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+{% extends "base.html" %}
 
-    * {
-      box-sizing: border-box;
-    }
+{% block title %}{% if is_edit %}Edit Post - {{ post.title }}{% else %}Share a Post or Question | AgriHelper Community{% endif %}{% endblock %}
 
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: #f6f5f7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
+{% block extra_css %}
+<style>
+  .post-form-card {
+    background: #0f172a;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    border-radius: 18px;
+    padding: 2.5rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    margin-top: 90px;
+    margin-bottom: 3rem;
+  }
 
-    .post-form-container {
-      background: #ffffff;
-      padding: 30px;
-      max-width: 500px;
-      width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    }
+  .form-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 6px;
+  }
 
-    .post-form-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #055e0c;
-    }
+  .form-control, .form-select {
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    transition: all 0.2s;
+  }
 
-    form {
-      display: flex;
-      flex-direction: column;
-    }
+  .form-control:focus, .form-select:focus {
+    background: #1e293b;
+    border-color: #22c55e;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.25rem rgba(34, 197, 94, 0.25);
+  }
 
-    input, textarea {
-      padding: 12px 15px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      resize: none;
-    }
+  .image-preview-box {
+    max-height: 240px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1e293b;
+    display: none;
+    margin-top: 10px;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+  }
 
-    input[type="file"] {
-      padding: 5px;
-    }
+  .image-preview-box img {
+    width: 100%;
+    height: 100%;
+    max-height: 240px;
+    object-fit: cover;
+  }
+</style>
+{% endblock %}
 
-    button {
-      background-color: #055e0c;
-      color: white;
-      padding: 12px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background 0.3s;
-    }
+{% block content %}
+<div class="container py-2">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="post-form-card">
+        
+        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-secondary border-opacity-25 pb-3">
+          <div>
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill mb-1">
+              <i class="fa-solid fa-users me-1"></i> Farmer Community Forum
+            </span>
+            <h2 class="h3 fw-bold text-white mb-0">
+              {% if is_edit %}Edit Community Post{% else %}Create New Discussion{% endif %}
+            </h2>
+          </div>
+          <a href="{{ url_for('community.community') }}" class="btn btn-outline-secondary rounded-pill px-3">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back
+          </a>
+        </div>
 
-    button:hover {
-      background-color: #044a09;
-    }
+        <form method="POST" enctype="multipart/form-data" id="postForm">
+          <!-- Title Input -->
+          <div class="mb-3">
+            <label for="postTitle" class="form-label">
+              Post Title <span class="text-danger">*</span>
+            </label>
+            <input type="text"
+                   name="title"
+                   id="postTitle"
+                   class="form-control"
+                   placeholder="e.g. Best organic pesticide for tomato leaf curl disease?"
+                   value="{% if is_edit %}{{ post.title }}{% else %}{{ title or '' }}{% endif %}"
+                   required
+                   maxlength="200">
+            <div class="form-text text-secondary">Be specific so fellow farmers and agronomists can offer relevant advice.</div>
+          </div>
 
-    .note {
-      font-size: 12px;
-      color: #777;
-      text-align: center;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body style="background-color: #044a099c;">
+          <!-- Category Selection -->
+          <div class="mb-3">
+            <label for="postCategory" class="form-label">Category</label>
+            <select name="category" id="postCategory" class="form-select">
+              <option value="Discussion" {% if (is_edit and post.category == 'Discussion') or (category == 'Discussion') %}selected{% endif %}>
+                Discussion & Thoughts
+              </option>
+              <option value="Questions" {% if (is_edit and post.category == 'Questions') or (category == 'Questions') %}selected{% endif %}>
+                Farmer Question / Problem
+              </option>
+              <option value="Tips" {% if (is_edit and post.category == 'Tips') or (category == 'Tips') %}selected{% endif %}>
+                Farming Tip & Best Practice
+              </option>
+              <option value="Success Stories" {% if (is_edit and post.category == 'Success Stories') or (category == 'Success Stories') %}selected{% endif %}>
+                Success Story / Yield Milestone
+              </option>
+            </select>
+          </div>
 
-  <div class="post-form-container">
-    <h2>Share a Post with the Community</h2>
-    <form id="postForm">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email (optional)" />
-      <input type="text" name="title" placeholder="Post Title" required />
-      <textarea name="content" rows="6" placeholder="Write your post here..." required></textarea>
-      
-      <button type="submit">Submit Post</button>
-      <p class="note">Your post will be reviewed before being published.</p>
-    </form>
+          <!-- Image Upload / Attachment -->
+          <div class="mb-3">
+            <label class="form-label">Attach Photo (Optional)</label>
+            <input type="file"
+                   name="image_file"
+                   id="imageFileInput"
+                   class="form-control"
+                   accept="image/png, image/jpeg, image/jpg, image/webp"
+                   onchange="handleImagePreview(this)">
+            
+            <div class="mt-2">
+              <small class="text-secondary">Or provide an external Image URL:</small>
+              <input type="url"
+                     name="image_url"
+                     id="imageUrlInput"
+                     class="form-control form-control-sm mt-1"
+                     placeholder="https://..."
+                     value="{% if is_edit %}{{ post.image_url or '' }}{% else %}{{ image_url or '' }}{% endif %}"
+                     onchange="handleUrlPreview(this.value)">
+            </div>
+
+            <!-- Image Preview Box -->
+            <div class="image-preview-box" id="imagePreviewBox" {% if is_edit and post.image_url %}style="display: block;"{% endif %}>
+              <img id="imagePreview" src="{% if is_edit and post.image_url %}{{ post.image_url }}{% endif %}" alt="Preview">
+            </div>
+          </div>
+
+          <!-- Post Content -->
+          <div class="mb-4">
+            <label for="postContent" class="form-label">
+              Detailed Content <span class="text-danger">*</span>
+            </label>
+            <textarea name="content"
+                      id="postContent"
+                      class="form-control"
+                      rows="7"
+                      placeholder="Share details about your crop, soil type, irrigation schedule, or observations..."
+                      required>{% if is_edit %}{{ post.content }}{% else %}{{ content or '' }}{% endif %}</textarea>
+            <div class="d-flex justify-content-between form-text text-secondary mt-1">
+              <span>Markdown and linebreaks supported.</span>
+              <span id="charCount">0 characters</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="d-flex justify-content-end gap-2">
+            <a href="{{ url_for('community.community') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+            <button type="submit" class="btn btn-success fw-bold px-4 py-2 rounded-pill shadow">
+              <i class="fa-solid fa-paper-plane me-2"></i>
+              {% if is_edit %}Save Changes{% else %}Publish Discussion{% endif %}
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
   </div>
-	<script>
-    const postForm = document.getElementById("postForm");
+</div>
+{% endblock %}
 
-    postForm.addEventListener("submit", function (event) {
-      event.preventDefault(); // Prevent form from actually submitting
-      alert("Thank you! Your post has been submitted and is pending review.");
-      postForm.reset(); // Optional: clear the form after submission
-    });
-  </script>
+{% block extra_js %}
+<script>
+  const contentArea = document.getElementById('postContent');
+  const charCount = document.getElementById('charCount');
 
-</body>
-</html>
+  contentArea.addEventListener('input', () => {
+    charCount.textContent = `${contentArea.value.length} characters`;
+  });
+  charCount.textContent = `${contentArea.value.length} characters`;
 
+  function handleImagePreview(input) {
+    const previewBox = document.getElementById('imagePreviewBox');
+    const previewImg = document.getElementById('imagePreview');
+
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+        previewBox.style.display = 'block';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function handleUrlPreview(url) {
+    const previewBox = document.getElementById('imagePreviewBox');
+    const previewImg = document.getElementById('imagePreview');
+    if (url.trim()) {
+      previewImg.src = url.trim();
+      previewBox.style.display = 'block';
+    } else {
+      previewBox.style.display = 'none';
+    }
+  }
+</script>
+{% endblock %}
