@@ -18,8 +18,9 @@ class Config:
     RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', '')
     RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', '')
 
-    # AI Chatbot / Groq
+    # AI Chatbot / Groq & Gemini
     GROQ_API_KEY = os.getenv('GROQ_API_KEY', '')
+    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
 
     # Weather
     WEATHER_API_KEY = os.getenv('WEATHER_API_KEY', 'f322870c8eb54fe48e6175526251703')

@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+
+{% block title %}{{ technique.title }} | Modern Farming Techniques | AgriHelper{% endblock %}
+
+{% block extra_css %}
+<style>
+  .detail-hero {
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.94), rgba(15, 23, 42, 0.98)),
+                url('{{ technique.image_url }}') center/cover;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    margin-top: 85px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+  }
+
+  .stat-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #4ade80;
+  }
+
+  .content-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .step-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #15803d;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .crop-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    display: inline-block;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-3" style="margin-top: 10px;">
+    <ol class="breadcrumb small">
+      <li class="breadcrumb-item"><a href="{{ url_for('main.home') }}" class="text-success text-decoration-none">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('farming.techniques') }}" class="text-success text-decoration-none">Modern Techniques</a></li>
+      <li class="breadcrumb-item active text-muted" aria-current="page">{{ technique.title }}</li>
+    </ol>
+  </nav>
+
+  <!-- Detail Hero Header -->
+  <div class="detail-hero">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+          <span class="badge bg-success px-3 py-2 rounded-pill fw-semibold">
+            <i class="fa-solid {{ technique.icon }} me-1"></i> {{ technique.category }}
+          </span>
+          <span class="badge bg-dark border border-secondary px-3 py-2 rounded-pill text-warning fw-semibold">
+            <i class="fa-solid fa-award me-1"></i> {{ technique.badge }}
+          </span>
+        </div>
+        <h1 class="display-4 fw-bold text-white mb-3">{{ technique.title }}</h1>
+        <p class="lead text-light mb-4">{{ technique.tagline }}</p>
+
+        <div class="d-flex flex-wrap gap-2">
+          <a href="#implementation" class="btn btn-success fw-bold px-4 py-2 rounded-pill">
+            <i class="fa-solid fa-list-check me-2"></i> Step-by-Step Setup
+          </a>
+          <button class="btn btn-outline-light fw-bold px-4 py-2 rounded-pill" onclick="openKisanMitraWithPrompt('How do I apply for government subsidy and install {{ technique.title }} on my farm? Give complete procedure.')">
+            <i class="fa-solid fa-robot me-2"></i> Consult KisanMitra AI
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-4 text-center mt-4 mt-lg-0">
+        <img src="{{ technique.image_url }}" alt="{{ technique.title }}" class="img-fluid rounded-4 shadow-lg border border-secondary" style="max-height: 240px; width: 100%; object-fit: cover;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics Row -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="stat-card">
+        <i class="fa-solid fa-hand-holding-dollar text-warning fs-3 mb-1"></i>
+        <div class="stat-val">{{ technique.subsidy_percentage }}</div>
+        <div class="text-muted small">Govt Subsidy Assistance</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card">
+        <i class="fa-solid fa-droplet text-info fs-3 mb-1"></i>
+        <div class="stat-val text-info">{{ technique.water_savings }}</div>
+        <div class="text-muted small">Water Conserved</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card">
+        <i class="fa-solid fa-arrow-trend-up text-success fs-3 mb-1"></i>
+        <div class="stat-val text-success">{{ technique.yield_boost }}</div>
+        <div class="text-muted small">Crop Yield Increase</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card">
+        <i class="fa-solid fa-clock-rotate-left text-primary fs-3 mb-1"></i>
+        <div class="stat-val text-primary">{{ technique.roi_payback }}</div>
+        <div class="text-muted small">Estimated Payback Period</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Main Content Column -->
+    <div class="col-lg-8">
+
+      <!-- Overview -->
+      <div class="content-card">
+        <h3 class="fw-bold text-white mb-3">
+          <i class="fa-solid fa-circle-info text-success me-2"></i> Scientific Overview
+        </h3>
+        <p class="text-light leading-relaxed fs-6 mb-0">{{ technique.overview }}</p>
+      </div>
+
+      <!-- How It Works -->
+      <div class="content-card">
+        <h3 class="fw-bold text-white mb-3">
+          <i class="fa-solid fa-gears text-info me-2"></i> How the System Operates
+        </h3>
+        <p class="text-light leading-relaxed fs-6 mb-0">{{ technique.how_it_works }}</p>
+      </div>
+
+      <!-- Key Benefits -->
+      <div class="content-card">
+        <h3 class="fw-bold text-white mb-3">
+          <i class="fa-solid fa-circle-check text-success me-2"></i> Proven Field Benefits
+        </h3>
+        <div class="d-flex flex-column gap-3">
+          {% for ben in technique.key_benefits %}
+            <div class="d-flex align-items-start gap-3">
+              <i class="fa-solid fa-check text-success fs-5 mt-1"></i>
+              <div class="text-light fs-6">{{ ben }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Implementation Steps -->
+      <div class="content-card" id="implementation">
+        <h3 class="fw-bold text-white mb-3">
+          <i class="fa-solid fa-list-ol text-warning me-2"></i> Step-by-Step Implementation Guide
+        </h3>
+        <div class="d-flex flex-column gap-4">
+          {% for step in technique.implementation_steps %}
+            <div class="d-flex align-items-start gap-3">
+              <div class="step-circle">{{ loop.index }}</div>
+              <div class="text-light fs-6 pt-1">{{ step }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Suitable Crops -->
+      <div class="content-card">
+        <h3 class="fw-bold text-white mb-3">
+          <i class="fa-solid fa-seedling text-success me-2"></i> Ideal Crops & Varieties
+        </h3>
+        <p class="text-muted small mb-3">These crops yield maximum economic return and rapid payback when paired with this technique:</p>
+        <div class="d-flex flex-wrap gap-2">
+          {% for crop in technique.suitable_crops %}
+            <span class="crop-pill"><i class="fa-solid fa-leaf text-success me-1"></i> {{ crop }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar Column -->
+    <div class="col-lg-4">
+
+      <!-- Government Subsidy Card -->
+      <div class="content-card">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h5 class="fw-bold text-white mb-0">
+            <i class="fa-solid fa-landmark text-warning me-2"></i> Govt Subsidies
+          </h5>
+          <span class="badge bg-warning text-dark fw-bold">Active</span>
+        </div>
+        <div class="p-3 rounded-3 mb-3" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);">
+          <div class="fw-bold text-white">{{ technique.subsidy_scheme }}</div>
+          <div class="small text-success mt-1">
+            <i class="fa-solid fa-badge-percent me-1"></i> Financial Assistance: <strong>{{ technique.subsidy_percentage }}</strong>
+          </div>
+        </div>
+        {% if related_schemes %}
+          <div class="small text-muted mb-2">Matched Government Schemes:</div>
+          {% for sch in related_schemes %}
+            <div class="mb-2 p-2 rounded bg-dark border border-secondary">
+              <div class="fw-semibold text-light small">{{ sch.name }}</div>
+              <div class="text-muted" style="font-size: 0.75rem;">{{ sch.badge }}</div>
+            </div>
+          {% endfor %}
+        {% endif %}
+        <a href="{{ url_for('policy.policy') }}" class="btn btn-outline-warning btn-sm w-100 fw-bold rounded-pill mt-2">
+          <i class="fa-solid fa-file-invoice-dollar me-1"></i> View All Govt Schemes
+        </a>
+      </div>
+
+      <!-- Live Mini ROI Calculator -->
+      <div class="content-card">
+        <h5 class="fw-bold text-white mb-3">
+          <i class="fa-solid fa-calculator text-success me-2"></i> Estimated Savings
+        </h5>
+        <div class="mb-3">
+          <label class="form-label text-muted small">Your Farm Land (Acres):</label>
+          <input
+            type="number"
+            id="side-calc-acres"
+            class="form-control form-control-sm bg-dark text-white border-secondary"
+            value="1.0"
+            min="0.5"
+            max="50"
+            step="0.5"
+            oninput="updateSideRoi('{{ technique.slug }}')"
+          >
+        </div>
+        <div class="p-3 rounded-3 mb-3" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.08);">
+          <div class="d-flex justify-content-between mb-2 small">
+            <span class="text-muted">Est. Setup Cost:</span>
+            <span class="text-light fw-bold" id="side-cost">₹{{ '{:,.0f}'.format(roi_summary.base_setup_cost) }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2 small">
+            <span class="text-muted">Govt Subsidy:</span>
+            <span class="text-success fw-bold" id="side-sub">₹{{ '{:,.0f}'.format(roi_summary.estimated_subsidy) }}</span>
+          </div>
+          <hr class="border-secondary my-2">
+          <div class="d-flex justify-content-between small">
+            <span class="text-white fw-bold">Net Investment:</span>
+            <span class="text-warning fw-bold fs-6" id="side-net">₹{{ '{:,.0f}'.format(roi_summary.net_farmer_cost) }}</span>
+          </div>
+        </div>
+        <div class="text-center small text-muted">
+          <i class="fa-solid fa-clock-rotate-left me-1"></i> Payback: <strong class="text-light" id="side-pay">{{ roi_summary.payback_period }}</strong>
+        </div>
+      </div>
+
+      <!-- Related Agri Store Products -->
+      {% if related_products %}
+        <div class="content-card">
+          <h5 class="fw-bold text-white mb-3">
+            <i class="fa-solid fa-basket-shopping text-info me-2"></i> Compatible Store Kits
+          </h5>
+          <div class="d-flex flex-column gap-3">
+            {% for prod in related_products %}
+              <div class="d-flex align-items-center gap-3 p-2 rounded bg-dark border border-secondary">
+                <img src="{{ prod.image }}" alt="{{ prod.name }}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                <div class="flex-grow-1 overflow-hidden">
+                  <div class="text-white small fw-bold text-truncate">{{ prod.name }}</div>
+                  <div class="text-success small fw-bold">₹{{ '{:,.0f}'.format(prod.price) }}</div>
+                </div>
+                <a href="{{ url_for('store.store') }}" class="btn btn-outline-success btn-sm rounded-circle" title="View in Store">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+          <a href="{{ url_for('store.store') }}" class="btn btn-outline-light btn-sm w-100 fw-bold rounded-pill mt-3">
+            <i class="fa-solid fa-store me-1"></i> Explore Full Agri Store
+          </a>
+        </div>
+      {% endif %}
+
+      <!-- AI Consultation Box -->
+      <div class="p-3 rounded-4 text-center" style="background: rgba(21, 128, 61, 0.15); border: 1px solid rgba(74, 222, 128, 0.3);">
+        <i class="fa-solid fa-robot text-success fs-2 mb-2"></i>
+        <h6 class="text-white fw-bold">Got Questions?</h6>
+        <p class="text-muted small mb-3">Ask KisanMitra about pest control, spacing, or local subsidies for this technique.</p>
+        <button class="btn btn-success btn-sm fw-bold rounded-pill px-4" onclick="openKisanMitraWithPrompt('I want to learn more about {{ technique.title }}. What are the most common mistakes farmers make and how can I avoid them?')">
+          Chat with KisanMitra
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function updateSideRoi(slug) {
+    const acres = parseFloat(document.getElementById('side-calc-acres').value) || 1.0;
+    fetch("{{ url_for('farming.api_calculate_roi') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ technique: slug, acres: acres, crop: 'General' })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success && data.data) {
+        const d = data.data;
+        document.getElementById('side-cost').innerText = "₹" + Math.round(d.base_setup_cost).toLocaleString('en-IN');
+        document.getElementById('side-sub').innerText = "₹" + Math.round(d.estimated_subsidy).toLocaleString('en-IN');
+        document.getElementById('side-net').innerText = "₹" + Math.round(d.net_farmer_cost).toLocaleString('en-IN');
+        document.getElementById('side-pay').innerText = d.payback_period;
+      }
+    })
+    .catch(err => console.error("Side ROI error:", err));
+  }
+
+  function openKisanMitraWithPrompt(promptText) {
+    if (typeof toggleAgriBot === 'function') {
+      const container = document.getElementById('agribot-container');
+      if (container && container.classList.contains('d-none')) {
+        toggleAgriBot();
+      }
+      const input = document.getElementById('agribot-input');
+      if (input) {
+        input.value = promptText;
+        input.focus();
+      }
+    }
+  }
+</script>
+{% endblock %}

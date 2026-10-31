@@ -748,6 +748,7 @@ flask-debugtoolbar
 | **Phase 5** | Real-Time Gov Schemes | 3–4 days | Day 29 |
 | **Phase 6** | Community Forum Upgrade | 3–4 days | Day 33 |
 | **Phase 7** | Polish + Deployment | 3–5 days | Day 38 |
+| **Phase 8** | Modern Farming Techniques & Smart ROI Calculator | 2–3 days | Day 40 (Completed ✅) |
 
 **Total estimated time: ~5–6 weeks** (working part-time / ~4 hours/day)
 

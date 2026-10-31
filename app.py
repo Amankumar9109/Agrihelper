@@ -66,7 +66,11 @@ def create_app(config_name=None):
             'p3': 'policy.p3',
             'p4': 'policy.p4',
             'p5': 'policy.p5',
-            'home': 'main.home'
+            'home': 'main.home',
+            'main.index': 'main.home',
+            'index': 'main.home',
+            'chat': 'chatbot.chat_page',
+            'kisanmitra': 'chatbot.chat_page'
         }
 
         def smart_url_for(endpoint, **values):

@@ -1,49 +1,234 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soil Health Monitoring | Modern Farming Techniques</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='modern_farming.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <!-- Hero Banner -->
-    <section class="hero">
-        <div class="container">
-            <h1 class="display-3 fw-bold">Soil Health Monitoring</h1>
-            <p class="lead">Using sensors and apps to track nutrients and pH levels for better planting decisions.</p>
+{% block title %}Soil Health Monitoring | Modern Farming Techniques | AgriHelper{% endblock %}
+
+{% block extra_css %}
+<style>
+  .detail-hero {
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.94), rgba(15, 23, 42, 0.98)),
+                url('{{ technique.image_url }}') center/cover;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    margin-top: 85px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+  }
+  .stat-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+  .stat-val { font-size: 1.5rem; font-weight: 800; color: #4ade80; }
+  .content-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .step-circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #15803d; color: #ffffff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .crop-pill {
+    padding: 6px 14px; border-radius: 20px; font-size: 0.82rem;
+    background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0; display: inline-block;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb small">
+      <li class="breadcrumb-item"><a href="{{ url_for('main.home') }}" class="text-success text-decoration-none">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('farming.techniques') }}" class="text-success text-decoration-none">Modern Techniques</a></li>
+      <li class="breadcrumb-item active text-muted">Soil Health</li>
+    </ol>
+  </nav>
+
+  <!-- Detail Hero Header -->
+  <div class="detail-hero">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+          <span class="badge bg-success px-3 py-2 rounded-pill fw-semibold">
+            <i class="fa-solid fa-vial-virus me-1"></i> Soil & Nutrition
+          </span>
+          <span class="badge bg-dark border border-secondary px-3 py-2 rounded-pill text-warning fw-semibold">
+            <i class="fa-solid fa-award me-1"></i> 100% Free Soil Card
+          </span>
         </div>
-    </section>
+        <h1 class="display-4 fw-bold text-white mb-3">Soil Health Monitoring</h1>
+        <p class="lead text-light mb-4">Scientific NPK nutrient balancing, pH calibration, and IoT sensor monitoring for maximum soil fertility and zero fertilizer wastage.</p>
 
-    <!-- Technique Details -->
-    <section class="section">
-        <div class="tech-content">
-        <div class="image-box">
-            <img src="https://www.no-tillfarmer.com/ext/resources/2024/12/17/soil-health-technologies-hero.jpg?t=1735328686&width=700" class="tech-image" alt="Soil Health Monitoring">
+        <div class="d-flex flex-wrap gap-2">
+          <a href="#implementation" class="btn btn-success fw-bold px-4 py-2 rounded-pill">
+            <i class="fa-solid fa-list-check me-2"></i> Testing Procedure
+          </a>
+          <button class="btn btn-outline-light fw-bold px-4 py-2 rounded-pill" onclick="openKisanMitraWithPrompt('How to interpret my Soil Health Card NPK values and calculate urea dosage?')">
+            <i class="fa-solid fa-robot me-2"></i> Ask KisanMitra AI
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-4 text-center mt-4 mt-lg-0">
+        <img src="https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=800&auto=format&fit=crop&q=80" alt="Soil Health" class="img-fluid rounded-4 shadow-lg border border-secondary" style="max-height: 240px; width: 100%; object-fit: cover;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics Row -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="stat-card">
+        <i class="fa-solid fa-hand-holding-dollar text-warning fs-3 mb-1"></i>
+        <div class="stat-val">Free</div>
+        <div class="text-muted small">Soil Health Card Scheme</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card">
+        <i class="fa-solid fa-coins text-success fs-3 mb-1"></i>
+        <div class="stat-val text-success">-25%</div>
+        <div class="text-muted small">Fertilizer Cost Reduced</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card">
+        <i class="fa-solid fa-arrow-trend-up text-info fs-3 mb-1"></i>
+        <div class="stat-val text-info">+20%</div>
+        <div class="text-muted small">Crop Productivity Boost</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card">
+        <i class="fa-solid fa-clock-rotate-left text-primary fs-3 mb-1"></i>
+        <div class="stat-val text-primary">Immediate</div>
+        <div class="text-muted small">Cost Recovery Season</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <!-- Scientific Overview -->
+      <div class="content-card">
+        <h3 class="fw-bold text-white mb-3"><i class="fa-solid fa-circle-info text-success me-2"></i> What is Soil Health Monitoring?</h3>
+        <p class="text-light fs-6 mb-0">{{ technique.overview }}</p>
+      </div>
+
+      <!-- How it Works -->
+      <div class="content-card">
+        <h3 class="fw-bold text-white mb-3"><i class="fa-solid fa-gears text-info me-2"></i> How It Works</h3>
+        <p class="text-light fs-6 mb-0">{{ technique.how_it_works }}</p>
+      </div>
+
+      <!-- Key Benefits -->
+      <div class="content-card">
+        <h3 class="fw-bold text-white mb-3"><i class="fa-solid fa-circle-check text-success me-2"></i> Key Benefits</h3>
+        <div class="d-flex flex-column gap-3">
+          {% for ben in technique.key_benefits %}
+            <div class="d-flex align-items-start gap-3">
+              <i class="fa-solid fa-check text-success fs-5 mt-1"></i>
+              <div class="text-light fs-6">{{ ben }}</div>
             </div>
-            <h2>What is Soil Health Monitoring?</h2>
-            <p>Soil health monitoring involves using sensors and technology to assess soil quality, including nutrients, pH levels, and moisture content. With this data, farmers can make more informed decisions to improve crop production.</p>
-
-            <h3>Benefits:</h3>
-            <ul>
-                <li>Precise control over soil quality</li>
-                <li>Improved crop yields</li>
-                <li>Reduced environmental impact</li>
-                <li>Enhanced sustainable farming practices</li>
-            </ul>
-
-            <h3>How It Works:</h3>
-            <p>By installing sensors in the soil, farmers can measure key parameters such as nitrogen, phosphorus, potassium, and moisture levels. Apps connected to these sensors analyze the data and recommend actions for optimal crop growth.</p>
+          {% endfor %}
         </div>
-    </section>
+      </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 AgriHelper | Helping Farmers Grow with Technology</p>
-    </footer>
+      <!-- Implementation Steps -->
+      <div class="content-card" id="implementation">
+        <h3 class="fw-bold text-white mb-3"><i class="fa-solid fa-list-ol text-warning me-2"></i> Soil Sampling & Testing Protocol</h3>
+        <div class="d-flex flex-column gap-4">
+          {% for step in technique.implementation_steps %}
+            <div class="d-flex align-items-start gap-3">
+              <div class="step-circle">{{ loop.index }}</div>
+              <div class="text-light fs-6 pt-1">{{ step }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
 
-</body>
-</html>
+      <!-- Suitable Crops -->
+      <div class="content-card">
+        <h3 class="fw-bold text-white mb-3"><i class="fa-solid fa-seedling text-success me-2"></i> Target Crops</h3>
+        <div class="d-flex flex-wrap gap-2">
+          {% for crop in technique.suitable_crops %}
+            <span class="crop-pill"><i class="fa-solid fa-leaf text-success me-1"></i> {{ crop }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
 
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <div class="content-card">
+        <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-landmark text-warning me-2"></i> Government Assistance</h5>
+        <div class="p-3 rounded-3 mb-3 bg-dark border border-secondary">
+          <div class="fw-bold text-white">Soil Health Card Scheme (SHC)</div>
+          <div class="small text-success mt-1">Status: <strong>Free Diagnostic Testing Every 3 Years</strong></div>
+        </div>
+        <a href="{{ url_for('policy.policy') }}" class="btn btn-outline-warning btn-sm w-100 fw-bold rounded-pill">
+          View Scheme Details
+        </a>
+      </div>
+
+      {% if related_products %}
+        <div class="content-card">
+          <h5 class="fw-bold text-white mb-3"><i class="fa-solid fa-basket-shopping text-info me-2"></i> Testing Tools & Bio-Fertilizers</h5>
+          <div class="d-flex flex-column gap-3">
+            {% for prod in related_products %}
+              <div class="d-flex align-items-center gap-3 p-2 rounded bg-dark border border-secondary">
+                <img src="{{ prod.image }}" alt="{{ prod.name }}" class="rounded" style="width: 48px; height: 48px; object-fit: cover;">
+                <div class="flex-grow-1 overflow-hidden">
+                  <div class="text-white small fw-bold text-truncate">{{ prod.name }}</div>
+                  <div class="text-success small fw-bold">₹{{ '{:,.0f}'.format(prod.price) }}</div>
+                </div>
+                <a href="{{ url_for('store.store') }}" class="btn btn-outline-success btn-sm rounded-circle">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="p-3 rounded-4 text-center" style="background: rgba(21, 128, 61, 0.15); border: 1px solid rgba(74, 222, 128, 0.3);">
+        <i class="fa-solid fa-robot text-success fs-2 mb-2"></i>
+        <h6 class="text-white fw-bold">Test Soil with KisanMitra</h6>
+        <p class="text-muted small mb-3">Ask about crop-specific fertilizer ratios, zinc dosage, or organic compost application.</p>
+        <button class="btn btn-success btn-sm fw-bold rounded-pill px-4" onclick="openKisanMitraWithPrompt('What is the ideal NPK ratio and compost dosage for Wheat crop on sandy loam soil?')">
+          Ask KisanMitra
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function openKisanMitraWithPrompt(promptText) {
+    if (typeof toggleAgriBot === 'function') {
+      const container = document.getElementById('agribot-container');
+      if (container && container.classList.contains('d-none')) {
+        toggleAgriBot();
+      }
+      const input = document.getElementById('agribot-input');
+      if (input) {
+        input.value = promptText;
+        input.focus();
+      }
+    }
+  }
+</script>
+{% endblock %}

@@ -1,12 +1,14 @@
 """
-Phase 3 Verification Test Suite for AgriHelper
+Phase 3 Comprehensive Verification Test Suite for AgriHelper
 Verifies:
-1. Knowledge base document indexing (all 5 files loaded)
-2. RAG Semantic vector retrieval across different agricultural topics
-3. /api/chat POST endpoint returning agronomy answers & cited sources
-4. Chat history persistence for authenticated users
-5. /api/chat/history and /api/chat/clear endpoints
-6. Error handling for empty or malformed queries
+1. Knowledge base document indexing (NumPy-accelerated vector index)
+2. RAG Semantic vector retrieval across English & Hinglish queries
+3. /chat and /kisanmitra dedicated consultation pages
+4. /api/chat POST endpoint returning agronomy answers & rich clickable citations
+5. /api/chat/suggested endpoint returning categorized prompt chips
+6. Chat history persistence for authenticated users
+7. /api/chat/history and /api/chat/clear endpoints
+8. Error handling for empty or malformed queries
 """
 import os
 from app import create_app
@@ -40,18 +42,40 @@ def run_phase3_tests():
         ("drip irrigation water savings and subsidy", "farming_techniques.txt"),
         ("Wheat sowing time and critical irrigation stages", "crop_calendar.txt"),
         ("Kisan Call Center toll free helpline number", "faq.txt"),
-        ("APMC modal price and MSP commodities", "market_guide.txt")
+        ("APMC modal price and MSP commodities", "market_guide.txt"),
+        ("gehu me kitna paani de", "crop_calendar.txt"),
+        ("tomato leaf curl kitnashak neem spray", "faq.txt")
     ]
 
     for q, expected_source in test_queries:
-        retrieved = engine.retrieve(q, top_k=2)
+        retrieved = engine.retrieve(q, top_k=3)
         assert len(retrieved) > 0, f"No chunks retrieved for: {q}"
         sources = [c['source'] for c in retrieved]
         assert expected_source in sources, f"Expected {expected_source} in {sources} for query: {q}"
         print(f"[PASS] Query '{q[:35]}...' -> Retrieved from {expected_source}")
 
-    # 3. Test /api/chat Endpoint
-    print("\n--- 3. Testing /api/chat Endpoint ---")
+    # 3. Test Dedicated Chat Routes
+    print("\n--- 3. Testing Dedicated Full-Page Chat Routes ---")
+    res_chat = client.get('/chat')
+    assert res_chat.status_code == 200
+    assert "KisanMitra" in res_chat.data.decode('utf-8')
+    assert "Curated Advisory Topics" in res_chat.data.decode('utf-8')
+
+    res_km = client.get('/kisanmitra')
+    assert res_km.status_code == 200
+    print("[PASS] GET /chat and /kisanmitra rendered full-page consultation room (200 OK).")
+
+    # 4. Test /api/chat/suggested Endpoint
+    print("\n--- 4. Testing /api/chat/suggested Endpoint ---")
+    sugg_resp = client.get('/api/chat/suggested')
+    assert sugg_resp.status_code == 200
+    sugg_data = sugg_resp.get_json()
+    assert sugg_data['success'] is True
+    assert len(sugg_data['suggestions']) >= 4
+    print(f"[PASS] /api/chat/suggested returned {len(sugg_data['suggestions'])} categorized prompt bundles.")
+
+    # 5. Test /api/chat Endpoint
+    print("\n--- 5. Testing /api/chat Endpoint ---")
     # Empty message validation
     empty_resp = client.post('/api/chat', json={'message': '   '})
     assert empty_resp.status_code == 400
@@ -66,10 +90,12 @@ def run_phase3_tests():
     assert 'reply' in data and len(data['reply']) > 40
     assert 'sources' in data and len(data['sources']) > 0
     assert 'government_schemes.txt' in data['sources']
-    print(f"[PASS] /api/chat replied ({len(data['reply'])} chars) with sources: {data['sources']}")
+    assert 'source_links' in data and len(data['source_links']) > 0
+    assert any(s['url'] == '/policy' for s in data['source_links'])
+    print(f"[PASS] /api/chat replied ({len(data['reply'])} chars) with sources & rich links: {[s['name'] for s in data['source_links']]}")
 
-    # 4. Test Chat History Persistence with Authenticated User
-    print("\n--- 4. Testing Chat History with Authenticated User ---")
+    # 6. Test Chat History Persistence with Authenticated User
+    print("\n--- 6. Testing Chat History with Authenticated User ---")
     with app.app_context():
         # Setup test user
         user = User.query.filter_by(email='rag_farmer@agrihelper.in').first()

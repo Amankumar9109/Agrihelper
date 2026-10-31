@@ -1,83 +1,516 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Farming Techniques</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='modern_farming.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <!-- Hero Banner -->
-    <section class="hero">
-        <div class="container">
-            <h1 class="display-3 fw-bold">Modern Farming Techniques</h1>
-            <p class="lead">Empowering Farmers with Innovation</p>
+{% block title %}Modern Farming Techniques | Precision Ag, Drip, Drones & Hydroponics | AgriHelper{% endblock %}
+
+{% block extra_css %}
+<style>
+  .tech-hero {
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.92), rgba(15, 23, 42, 0.96)),
+                url('https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=1600&auto=format&fit=crop&q=80') center/cover;
+    border-radius: 20px;
+    padding: 3.5rem 2rem;
+    margin-top: 85px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tech-hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cat-pill {
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .cat-pill:hover,
+  .cat-pill.active {
+    background: #15803d;
+    color: #ffffff;
+    border-color: #4ade80;
+    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+  }
+
+  .tech-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
+  }
+
+  .tech-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(74, 222, 128, 0.45);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+  }
+
+  .tech-card-img-wrap {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tech-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .tech-card:hover .tech-card-img {
+    transform: scale(1.05);
+  }
+
+  .tech-badge-overlay {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+  }
+
+  .tech-category-overlay {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(21, 128, 61, 0.9);
+    color: #ffffff;
+    letter-spacing: 0.4px;
+  }
+
+  .tech-card-body {
+    padding: 1.35rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .tech-title {
+    font-size: 1.22rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .tech-tagline {
+    font-size: 0.88rem;
+    color: #cbd5e1;
+    line-height: 1.45;
+  }
+
+  .tech-stat-pill {
+    background: rgba(30, 41, 59, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .calc-container {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(6, 78, 59, 0.4));
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .calc-metric-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .calc-metric-box:hover {
+    border-color: #4ade80;
+    transform: translateY(-2px);
+  }
+
+  .calc-value {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #4ade80;
+  }
+
+  .calc-label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Hero Header -->
+  <div class="tech-hero">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="badge bg-success text-white px-3 py-2 rounded-pill mb-3">
+          <i class="fa-solid fa-seedling me-1"></i> Sustainable & Precision Agriculture
+        </span>
+        <h1 class="display-4 fw-bold text-white mb-3">Modern Farming Techniques</h1>
+        <p class="lead text-light mb-4" style="max-width: 680px;">
+          Empowering farmers with cutting-edge technology — from precision micro-irrigation and Kisan Drones to soilless hydroponics and AI analytics. Maximize your crop yields, slash input costs, and secure government subsidies.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="#roi-calculator" class="btn btn-success fw-bold px-4 py-2 rounded-pill shadow-sm">
+            <i class="fa-solid fa-calculator me-2"></i> Calculate Farm ROI & Savings
+          </a>
+          <button class="btn btn-outline-light fw-bold px-4 py-2 rounded-pill" onclick="openKisanMitraWithPrompt('Explain the top 3 modern farming techniques suitable for small farmers in India and available subsidies.')">
+            <i class="fa-solid fa-robot me-2"></i> Ask KisanMitra AI
+          </button>
         </div>
-    </section>
-
-    <!-- Techniques Section -->
-    <section class="section">
-        <div class="container">
-            <h2 class="text-center mb-5">Innovative Techniques for Future Farming</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <a href="/modern_farming/drip_irrigation" class="text-decoration-none">
-                        <div class="tech-card h-100">
-                            <h4>Drip Irrigation</h4>
-                            <p>Efficient water management method that reduces wastage and improves crop yields.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="/modern_farming/soil_health" class="text-decoration-none">
-                        <div class="tech-card h-100">
-                            <h4>Soil Health Monitoring</h4>
-                            <p>Using sensors and apps to track nutrients and pH levels for better planting decisions.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="/modern_farming/vertical_farming" class="text-decoration-none">
-                        <div class="tech-card h-100">
-                            <h4>Vertical Farming</h4>
-                            <p>Grow crops in stacked layers using minimal land and controlled environments.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="/modern_farming/drones_agriculture" class="text-decoration-none">
-                        <div class="tech-card h-100">
-                            <h4>Drones in Agriculture</h4>
-                            <p>Use drones for aerial surveys, planting, and pesticide spraying with precision.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="/modern_farming/hydroponics" class="text-decoration-none">
-                        <div class="tech-card h-100">
-                            <h4>Hydroponics</h4>
-                            <p>Growing plants without soil using nutrient-rich water solutions in greenhouses.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="/modern_farming/ai_data_analytics" class="text-decoration-none">
-                        <div class="tech-card h-100">
-                            <h4>AI & Data Analytics</h4>
-                            <p>Make smarter decisions on crop rotation, pest control, and yield prediction using data.</p>
-                        </div>
-                    </a>
-                </div>
+      </div>
+      <div class="col-lg-4 d-none d-lg-block text-center">
+        <div class="p-3 rounded-4" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+          <div class="row g-3 text-center">
+            <div class="col-6">
+              <div class="p-2">
+                <i class="fa-solid fa-water fs-2 text-info mb-1"></i>
+                <div class="fs-4 fw-bold text-white">Up to 70%</div>
+                <div class="small text-muted">Water Saved</div>
+              </div>
             </div>
+            <div class="col-6">
+              <div class="p-2">
+                <i class="fa-solid fa-arrow-trend-up fs-2 text-success mb-1"></i>
+                <div class="fs-4 fw-bold text-white">40-80%</div>
+                <div class="small text-muted">Higher Yield</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-2">
+                <i class="fa-solid fa-indian-rupee-sign fs-2 text-warning mb-1"></i>
+                <div class="fs-4 fw-bold text-white">55%</div>
+                <div class="small text-muted">Govt Subsidy</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-2">
+                <i class="fa-solid fa-microchip fs-2 text-primary mb-1"></i>
+                <div class="fs-4 fw-bold text-white">Zero</div>
+                <div class="small text-muted">Residue Option</div>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 AgriHelper | Helping Farmers Grow with Technology</p>
-    </footer>
+  <!-- Search & Filter Section -->
+  <div class="row align-items-center mb-4 g-3">
+    <div class="col-lg-6">
+      <form method="GET" action="{{ url_for('farming.techniques') }}" class="d-flex gap-2">
+        {% if selected_category and selected_category != 'All' %}
+          <input type="hidden" name="category" value="{{ selected_category }}">
+        {% endif %}
+        <div class="input-group">
+          <span class="input-group-text bg-dark border-secondary text-muted">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
+          <input
+            type="text"
+            name="q"
+            class="form-control bg-dark text-white border-secondary"
+            placeholder="Search techniques, crops (e.g. Sugarcane, Drip, Drone, Hydroponics)..."
+            value="{{ search_query }}"
+          >
+          {% if search_query %}
+            <a href="{{ url_for('farming.techniques', category=selected_category) }}" class="btn btn-outline-secondary">
+              <i class="fa-solid fa-xmark"></i>
+            </a>
+          {% endif %}
+          <button type="submit" class="btn btn-success px-4 fw-semibold">Search</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-6 text-lg-end text-muted small">
+      Showing <strong>{{ total_techniques }}</strong> verified agricultural technique modules
+    </div>
+  </div>
 
-</body>
-</html>
+  <!-- Category Pills Bar -->
+  <div class="d-flex flex-nowrap overflow-auto gap-2 pb-3 mb-4" style="scrollbar-width: thin;">
+    {% for cat in categories %}
+      <a
+        href="{{ url_for('farming.techniques', category=cat, q=search_query if search_query else None) }}"
+        class="cat-pill {% if selected_category == cat %}active{% endif %}"
+      >
+        {% if cat == 'All' %}<i class="fa-solid fa-border-all me-1"></i>{% endif %}
+        {% if cat == 'Water Management' %}<i class="fa-solid fa-faucet-drip me-1"></i>{% endif %}
+        {% if cat == 'Precision Tech' %}<i class="fa-solid fa-plane-up me-1"></i>{% endif %}
+        {% if cat == 'Protected Cultivation' %}<i class="fa-solid fa-layer-group me-1"></i>{% endif %}
+        {% if cat == 'Soil & Nutrition' %}<i class="fa-solid fa-vial me-1"></i>{% endif %}
+        {% if cat == 'AI & Automation' %}<i class="fa-solid fa-robot me-1"></i>{% endif %}
+        {% if cat == 'Clean Energy' %}<i class="fa-solid fa-solar-panel me-1"></i>{% endif %}
+        {{ cat }}
+      </a>
+    {% endfor %}
+  </div>
+
+  <!-- Interactive ROI & Savings Calculator Section -->
+  <div class="calc-container" id="roi-calculator">
+    <div class="row align-items-center mb-4">
+      <div class="col-md-8">
+        <h3 class="fw-bold text-white mb-1">
+          <i class="fa-solid fa-calculator text-success me-2"></i> Smart Farming ROI & Savings Calculator
+        </h3>
+        <p class="text-muted small mb-0">
+          Enter your farm land size, crop, and choose an advanced technique to calculate water savings, subsidy eligibility, and payback period.
+        </p>
+      </div>
+      <div class="col-md-4 text-md-end mt-2 mt-md-0">
+        <span class="badge bg-dark border border-secondary text-light px-3 py-2 rounded-pill">
+          <i class="fa-solid fa-circle-info text-info me-1"></i> Official PMKSY & SMAM Benchmark
+        </span>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <label class="form-label text-light small fw-bold">Select Technique</label>
+        <select id="calc-technique" class="form-select bg-dark text-white border-secondary" onchange="runRoiCalculation()">
+          {% for t in techniques %}
+            <option value="{{ t.slug }}">{{ t.title }} ({{ t.category }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label text-light small fw-bold">Farm Land Size (Acres)</label>
+        <div class="input-group">
+          <input
+            type="number"
+            id="calc-acres"
+            class="form-control bg-dark text-white border-secondary"
+            value="2.0"
+            min="0.5"
+            max="50"
+            step="0.5"
+            oninput="runRoiCalculation()"
+          >
+          <span class="input-group-text bg-dark border-secondary text-muted">Acres</span>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label text-light small fw-bold">Primary Crop</label>
+        <select id="calc-crop" class="form-select bg-dark text-white border-secondary" onchange="runRoiCalculation()">
+          <option value="Sugarcane">Sugarcane</option>
+          <option value="Cotton">Cotton</option>
+          <option value="Tomato">Tomato / Vegetables</option>
+          <option value="Paddy / Rice">Paddy / Rice</option>
+          <option value="Wheat">Wheat</option>
+          <option value="Fruits / Orchard">Fruits & Orchards</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Live Calculation Cards -->
+    <div class="row g-3" id="calc-results-row">
+      <div class="col-6 col-lg-3">
+        <div class="calc-metric-box">
+          <i class="fa-solid fa-droplet text-info fs-3 mb-2"></i>
+          <div class="calc-value" id="calc-water">48.0 Lakh L</div>
+          <div class="calc-label">Est. Water Saved / Year</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="calc-metric-box">
+          <i class="fa-solid fa-piggy-bank text-warning fs-3 mb-2"></i>
+          <div class="calc-value" id="calc-subsidy">₹49,500</div>
+          <div class="calc-label">Govt Subsidy Covered</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="calc-metric-box">
+          <i class="fa-solid fa-coins text-success fs-3 mb-2"></i>
+          <div class="calc-value" id="calc-net-cost">₹40,500</div>
+          <div class="calc-label">Net Farmer Investment</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="calc-metric-box">
+          <i class="fa-solid fa-clock-rotate-left text-primary fs-3 mb-2"></i>
+          <div class="calc-value" id="calc-payback">~12 months</div>
+          <div class="calc-label">Est. Payback Period</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Techniques Grid Section -->
+  <h3 class="fw-bold text-white mb-4">
+    <i class="fa-solid fa-microchip text-success me-2"></i> Comprehensive Modern Technique Guides
+  </h3>
+
+  {% if techniques %}
+    <div class="row g-4 mb-5">
+      {% for tech in techniques %}
+        <div class="col-md-6 col-lg-4">
+          <div class="tech-card">
+            <div class="tech-card-img-wrap">
+              <img src="{{ tech.image_url }}" alt="{{ tech.title }}" class="tech-card-img" loading="lazy">
+              <span class="tech-badge-overlay">
+                <i class="fa-solid {{ tech.icon }} me-1"></i> {{ tech.badge }}
+              </span>
+              <span class="tech-category-overlay">{{ tech.category }}</span>
+            </div>
+
+            <div class="tech-card-body">
+              <h4 class="tech-title">{{ tech.title }}</h4>
+              <p class="tech-tagline">{{ tech.tagline }}</p>
+
+              <div class="d-flex flex-column gap-2 mt-auto">
+                <div class="tech-stat-pill">
+                  <span class="text-muted"><i class="fa-solid fa-hand-holding-dollar text-warning me-1"></i> Subsidy Scheme:</span>
+                  <span class="fw-bold text-light">{{ tech.subsidy_scheme.split('(')[0] }}</span>
+                </div>
+                <div class="tech-stat-pill">
+                  <span class="text-muted"><i class="fa-solid fa-droplet text-info me-1"></i> Water Efficiency:</span>
+                  <span class="fw-bold text-info">{{ tech.water_savings }}</span>
+                </div>
+                <div class="tech-stat-pill">
+                  <span class="text-muted"><i class="fa-solid fa-arrow-trend-up text-success me-1"></i> Yield Boost:</span>
+                  <span class="fw-bold text-success">{{ tech.yield_boost }}</span>
+                </div>
+              </div>
+
+              <div class="pt-3 border-top border-secondary d-flex gap-2">
+                <a href="{{ url_for('farming.technique_detail', slug=tech.slug) }}" class="btn btn-success btn-sm flex-fill fw-bold rounded-pill">
+                  <i class="fa-solid fa-book-open me-1"></i> Full Guide & Setup
+                </a>
+                <button
+                  class="btn btn-outline-light btn-sm rounded-pill px-3"
+                  title="Ask KisanMitra AI about this technique"
+                  onclick="openKisanMitraWithPrompt('How do I implement {{ tech.title }} on my farm? Explain step by step cost, subsidy under {{ tech.subsidy_code }}, and suitable crops.')"
+                >
+                  <i class="fa-solid fa-robot"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-5 text-muted">
+      <i class="fa-solid fa-seedling fs-1 mb-3 text-secondary"></i>
+      <h4>No techniques matched your search criteria</h4>
+      <p>Try adjusting your search keywords or select a different category pill above.</p>
+      <a href="{{ url_for('farming.techniques') }}" class="btn btn-outline-success rounded-pill px-4">View All Techniques</a>
+    </div>
+  {% endif %}
+
+  <!-- Knowledge Integration Banner -->
+  <div class="p-4 rounded-4 text-center mt-4" style="background: rgba(15, 23, 42, 0.7); border: 1px dashed rgba(74, 222, 128, 0.3);">
+    <div class="row align-items-center">
+      <div class="col-md-8 text-md-start mb-3 mb-md-0">
+        <h5 class="text-white fw-bold mb-1">
+          <i class="fa-solid fa-graduation-cap text-success me-2"></i> Need customized agricultural advice for your village & soil?
+        </h5>
+        <p class="text-muted small mb-0">
+          Our RAG-powered KisanMitra AI has indexed ICAR technical manuals, PMKSY subsidy rules, and crop calendars to guide you in Hindi and English.
+        </p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <button class="btn btn-success fw-bold rounded-pill px-4" onclick="toggleAgriBot()">
+          <i class="fa-solid fa-comments me-2"></i> Launch KisanMitra AI
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function runRoiCalculation() {
+    const technique = document.getElementById('calc-technique').value;
+    const acres = parseFloat(document.getElementById('calc-acres').value) || 1.0;
+    const crop = document.getElementById('calc-crop').value;
+
+    fetch("{{ url_for('farming.api_calculate_roi') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ technique: technique, acres: acres, crop: crop })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success && data.data) {
+        const d = data.data;
+        const waterLakh = (d.water_saved_liters / 100000).toFixed(1);
+        document.getElementById('calc-water').innerText = waterLakh + " Lakh L";
+        document.getElementById('calc-subsidy').innerText = "₹" + Math.round(d.estimated_subsidy).toLocaleString('en-IN');
+        document.getElementById('calc-net-cost').innerText = "₹" + Math.round(d.net_farmer_cost).toLocaleString('en-IN');
+        document.getElementById('calc-payback').innerText = d.payback_period;
+      }
+    })
+    .catch(err => console.error("ROI calculation error:", err));
+  }
+
+  function openKisanMitraWithPrompt(promptText) {
+    if (typeof toggleAgriBot === 'function') {
+      const container = document.getElementById('agribot-container');
+      if (container && container.classList.contains('d-none')) {
+        toggleAgriBot();
+      }
+      const input = document.getElementById('agribot-input');
+      if (input) {
+        input.value = promptText;
+        input.focus();
+      }
+    }
+  }
+
+  // Initial calculation on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    runRoiCalculation();
+  });
+</script>
+{% endblock %}
