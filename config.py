@@ -6,7 +6,10 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-agrihelper-2026')
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL') or f"sqlite:///{os.path.join(basedir, 'instance', 'agrihelper.db')}"
+    raw_db_url = os.getenv('DATABASE_URL')
+    if raw_db_url and raw_db_url.startswith('postgres://'):
+        raw_db_url = raw_db_url.replace('postgres://', 'postgresql://', 1)
+    SQLALCHEMY_DATABASE_URI = raw_db_url or f"sqlite:///{os.path.join(basedir, 'instance', 'agrihelper.db')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Google OAuth
